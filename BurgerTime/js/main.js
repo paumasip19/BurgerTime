@@ -12,7 +12,7 @@ var gameOptions={
 
 burgertime.game = new Phaser.Game(gameOptions.gameWidth,gameOptions.gameHeight,Phaser.AUTO,null,this,false,false);
 
-burgertime.game.state.add('main',burgertime.level1);
+burgertime.game.state.add('level1',burgertime.level1);
 burgertime.game.state.add('menu',burgertime.menu);
 burgertime.game.state.start('menu');
 
