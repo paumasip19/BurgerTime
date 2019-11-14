@@ -20,19 +20,19 @@ burgertime.level1 ={
         //this.entry.body.allowGravity = false;
         //this.entry.body.immovable = true;
         
-        /*this.chef = this.game.add.sprite(this.game.world.centerX,this.game.world.centerY,'chef');
+        this.chef = this.game.add.sprite(this.game.world.centerX,this.game.world.centerY,'chef');
         this.chef.scale.setTo(2);
         this.chef.anchor.setTo(.5);
         this.chef.animations.add('right',[0,1],10,false);
         this.chef.animations.add('left',[2,3],10,false);
         this.chef.animations.add('down',[4,5],10,false);
         this.chef.animations.add('up',[6,7],10,false);
-        this.game.physics.arcade.enable(this.chef);*/
+        this.game.physics.arcade.enable(this.chef);
         this.cursors = this.game.input.keyboard.createCursorKeys();
         
-        this.chef = new burgertime.chef_prefab(this.game,this.game.world.centerX,this.game.world.centerY,100,this);
+        //this.chef = new burgertime.chef_prefab(this.game,this.game.world.centerX,this.game.world.centerY,100,this);
         console.log('1');
-        //this.game.physics.arcade.enable(this.chef);
+        this.game.physics.arcade.enable(this.chef);
         
         
         
@@ -43,7 +43,7 @@ burgertime.level1 ={
         
         
         if(this.cursors.left.isDown){
-            this.chef.body.velocity.x = -this.chef.speed;
+            this.chef.body.velocity.x = -100/*-this.chef.speed*/;
             this.chef.body.velocity.y = 0;
             this.chef.animations.play('left');
             console.log('2');
@@ -55,7 +55,7 @@ burgertime.level1 ={
             //this.chef.frame = 3;
         }*/
         else if(this.cursors.right.isDown){
-            this.chef.body.velocity.x = this.chef.speed;
+            this.chef.body.velocity.x = 100/*this.chef.speed*/;
             this.chef.body.velocity.y = 0;
             this.chef.animations.play('right');
         }/*else{
@@ -64,7 +64,7 @@ burgertime.level1 ={
             //this.chef.frame = 1;
         }*/
         else if(this.cursors.up.isDown){
-            this.chef.body.velocity.y = -this.chef.speed;
+            this.chef.body.velocity.y = -100/*-this.chef.speed*/;
             this.chef.body.velocity.x = 0;
             this.chef.animations.play('up');
         }/*else{
@@ -73,7 +73,7 @@ burgertime.level1 ={
             //this.chef.frame = 7;
         }*/
         else if(this.cursors.down.isDown){
-            this.chef.body.velocity.y = this.chef.speed;
+            this.chef.body.velocity.y = 100/*this.chef.speed*/;
             this.chef.body.velocity.x = 0;
             this.chef.animations.play('down');
         }else{
