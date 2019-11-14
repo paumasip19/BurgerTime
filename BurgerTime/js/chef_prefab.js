@@ -12,6 +12,8 @@ burgertime.chef_prefab = function(_game,_x,_y,_speed,_level){
     //this.animations.play('walk');
     this.speed = _speed;
     this.level = _level;
+    this.game.add.existing(this);
+    //_game.physics.arcade.enable(this);
     this.game.physics.arcade.enable(this);
     this.points = 0;
     this.lives = 3;
