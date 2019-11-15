@@ -13,7 +13,12 @@ burgertime.level1 ={
     },
     preload:function(){
         var ruta = 'assets/sprites/';
-        this.load.spritesheet('chef', ruta+'chef.png', 15, 16);
+        this.load.spritesheet('chef', ruta+'chef.png', 26.5, 26);
+        
+        this.load.audio('mainTheme', 'assets/audio/main_theme.mp3');
+        this.load.audio('start', 'assets/audio/game_start.mp3');
+        this.load.audio('levelComplete', 'assets/audio/stage_complete.mp3');
+        this.load.audio('death', 'assets/audio/death_theme.mp3');
     },
     create:function(){
         //this.game.physics.arcade.enable(this.entry);
@@ -33,13 +38,22 @@ burgertime.level1 ={
         this.chef = new burgertime.chef_prefab(this.game,this.game.world.centerX,this.game.world.centerY,100,this);
         console.log('1');
         this.game.physics.arcade.enable(this.chef);
+        this.espacio = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        
+        this.music = this.game.add.audio('mainTheme');
+        this.start = this.game.add.audio('start');
+        this.complete = this.game.add.audio('levelComplete');
+        this.death = this.game.add.audio('death');
         
         
+        this.music.play();
         
     },
     update:function(){
         //this.game.physics.arcade.collide(this.hero,this.entry);
         //this.game.physics.arcade.collide(this.hero,this.walls);
+        
+        
         
         
         if(this.cursors.left.isDown){
@@ -49,6 +63,7 @@ burgertime.level1 ={
             console.log('2');
             //console.log(this.chef.body.velocity.x);
             //this.chef.scale.x = -1;
+            this.chef.scale.x = 1;
         }/*else{
             this.chef.body.velocity.x = 0;
             this.chef.body.velocity.y = 0;
@@ -57,7 +72,8 @@ burgertime.level1 ={
         else if(this.cursors.right.isDown){
             this.chef.body.velocity.x = this.chef.speed;
             this.chef.body.velocity.y = 0;
-            this.chef.animations.play('right');
+            this.chef.animations.play('left');
+            this.chef.scale.x = -1;
         }/*else{
             this.chef.body.velocity.x = 0;
             this.chef.body.velocity.y = 0;
@@ -82,6 +98,20 @@ burgertime.level1 ={
             //this.chef.frame = 5;
         }
         
+        if(this.espacio.isDown){
+            this.chef.points += 100;
+            this.chef.lives -= 1;
+            this.chef.pepper += 1;
+            console.log(this.chef.points);
+            console.log(this.chef.lives);
+            console.log(this.chef.pepper);
+        }
+                
+        if(this.chef.lives <= 0){
+            this.chef.animations.play('death');
+            this.music.pause();
+            this.death.play();
+        }
         
         //hacer doble/triple salto
         //if(this.cursors.up.isDown && this.cursors.up.downDuration(1)){
@@ -94,7 +124,11 @@ burgertime.level1 ={
           //  this.hero.frame=6;
         //}
         
-    }
+    },
+    /*playDeath:function(_chef){
+        _chef.animations.play('death');
+        this.death.play();
+    }*/
 };
 
 
