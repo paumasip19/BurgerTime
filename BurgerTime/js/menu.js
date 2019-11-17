@@ -66,7 +66,7 @@ burgertime.menu ={
         
     
       if(this.enter.isDown && this.arrowCount == 0 && this.bg1.position.y == 0){
-          this.state.start('level1');
+          this.state.start('level1Trial');
       }else if(this.enter.isDown && this.arrowCount == 1 && this.bg2.position.y == 0){
           this.state.start('level1');
       }else if(this.enter.isDown && this.arrowCount == 2 && this.bg3.position.y == 0){
