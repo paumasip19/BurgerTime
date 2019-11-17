@@ -13,7 +13,7 @@ burgertime.level1 ={
     },
     preload:function(){
         var ruta = 'assets/sprites/';
-        this.load.spritesheet('chef', ruta+'chef.png', 26.5, 26);
+        this.load.spritesheet('chef', ruta+'ChefRamsay.png', 12, 25);
         
         this.load.audio('mainTheme', 'assets/audio/main_theme.mp3');
         this.load.audio('start', 'assets/audio/game_start.mp3');
@@ -35,10 +35,12 @@ burgertime.level1 ={
         this.game.physics.arcade.enable(this.chef);*/
         this.cursors = this.game.input.keyboard.createCursorKeys();
         
-        this.chef = new burgertime.chef_prefab(this.game,this.game.world.centerX,this.game.world.centerY,100,this);
+        this.chef = new burgertime.chef_prefab(this.game,this.game.world.centerX,this.game.world.centerY,90,55,this);
         console.log('1');
         this.game.physics.arcade.enable(this.chef);
         this.espacio = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        
+        this.chef.frame = 7;
         
         this.music = this.game.add.audio('mainTheme');
         this.start = this.game.add.audio('start');
@@ -46,41 +48,46 @@ burgertime.level1 ={
         this.death = this.game.add.audio('death');
         
         
-        this.music.play();
+        this.start.play();
         
+        this.dead = false;
+        this.startLevel = true;
+        this.levelCompleted = false;
+        
+        this.changeMusic = this.game.time.events.add(Phaser.Timer.SECOND*3,this.musicChange,this);
+    },
+    musicChange:function(){
+        this.music.play();
     },
     update:function(){
         //this.game.physics.arcade.collide(this.hero,this.entry);
         //this.game.physics.arcade.collide(this.hero,this.walls);
         
-        
-        
-        
         if(this.cursors.left.isDown){
-            this.chef.body.velocity.x = -this.chef.speed;
+            this.chef.body.velocity.x = -this.chef.speedX;
             this.chef.body.velocity.y = 0;
-            this.chef.animations.play('left');
+            this.chef.animations.play('walk');
             console.log('2');
             //console.log(this.chef.body.velocity.x);
             //this.chef.scale.x = -1;
-            this.chef.scale.x = 1;
+            this.chef.scale.x = 2;
         }/*else{
             this.chef.body.velocity.x = 0;
             this.chef.body.velocity.y = 0;
             //this.chef.frame = 3;
         }*/
         else if(this.cursors.right.isDown){
-            this.chef.body.velocity.x = this.chef.speed;
+            this.chef.body.velocity.x = this.chef.speedX;
             this.chef.body.velocity.y = 0;
-            this.chef.animations.play('left');
-            this.chef.scale.x = -1;
+            this.chef.animations.play('walk');
+            this.chef.scale.x = -2;
         }/*else{
             this.chef.body.velocity.x = 0;
             this.chef.body.velocity.y = 0;
             //this.chef.frame = 1;
         }*/
         else if(this.cursors.up.isDown){
-            this.chef.body.velocity.y = -this.chef.speed;
+            this.chef.body.velocity.y = -this.chef.speedY;
             this.chef.body.velocity.x = 0;
             this.chef.animations.play('up');
         }/*else{
@@ -89,7 +96,7 @@ burgertime.level1 ={
             //this.chef.frame = 7;
         }*/
         else if(this.cursors.down.isDown){
-            this.chef.body.velocity.y = this.chef.speed;
+            this.chef.body.velocity.y = this.chef.speedY;
             this.chef.body.velocity.x = 0;
             this.chef.animations.play('down');
         }else{
@@ -108,27 +115,34 @@ burgertime.level1 ={
         }
                 
         if(this.chef.lives <= 0){
-            this.chef.animations.play('death');
+            /*this.chef.animations.play('death');
             this.music.pause();
-            this.death.play();
+            this.death.play();*/
+            this.dead = true;
         }
         
-        //hacer doble/triple salto
-        //if(this.cursors.up.isDown && this.cursors.up.downDuration(1)){
-        //efecto canguro
-        //if(this.cursors.up.isDown && this.hero.body.blocked.down){
-        //if(this.cursors.up.isDown && this.hero.body.blocked.down&&this.cursors.up.downDuration(1)){
-          //  this.hero.body.velocity.y = -gameOptions.heroJump;
-        //}
-        //if(!this.hero.body.blocked.down){
-          //  this.hero.frame=6;
-        //}
+        if(this.chef.points >= 1500){
+            this.levelCompleted = true;
+        }
         
-    },
-    /*playDeath:function(_chef){
-        _chef.animations.play('death');
-        this.death.play();
-    }*/
+        if(this.dead){
+            //this.chef.animations.play('death');
+            this.music.pause();
+            this.death.play();
+            this.chef.lives = 3;
+            this.dead = false;
+            //restart level
+        }
+        
+        if(this.levelCompleted){
+            this.music.pause();
+            this.complete.play();
+            this.chef.points = 0;
+            this.levelCompleted = false;
+            //next level
+        }
+        
+    }
 };
 
 
