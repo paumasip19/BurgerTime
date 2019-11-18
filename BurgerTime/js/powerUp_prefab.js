@@ -12,8 +12,8 @@ burgertime.powerUp_prefab = function(_game,_x,_y, _chef){
     
     this.isActive = false;
     
-    this.scale.setTo(0);
-    this.anchor.setTo(0);
+    this.scale.setTo(3);
+    this.anchor.setTo(.5);
     
     this.game.add.existing(this);
     this.game.physics.arcade.enable(this);
@@ -22,25 +22,27 @@ burgertime.powerUp_prefab = function(_game,_x,_y, _chef){
 burgertime.powerUp_prefab.prototype = Object.create(Phaser.Sprite.prototype);
 burgertime.powerUp_prefab.prototype.constructor = burgertime.powerUp_prefab;
 
-burgertime.powerUp_prefab.prototype.update = function(){
+/*burgertime.powerUp_prefab.prototype.update = function(){
     if(this.isActive == true){
-        this.game.time.events.add(Phaser.Timer.SECOND*3,deactivate,this); 
+        this.game.time.events.add(Phaser.Timer.SECOND*3,this.deactivate,this); 
     }
     else{
-        this.game.time.events.add(Phaser.Timer.SECOND*3,activate,this);  
+        this.game.time.events.add(Phaser.Timer.SECOND*3,this.activate,this);  
     } 
-},
- activate = function(){
+};*/
+ /*burgertime.powerUp_prefab.prototype.activate = function(){
     this.scale.setTo(3);
     this.anchor.setTo(.5);
     this.isActive = true;
-},
- deactivate = function(){
+};
+ burgertime.powerUp_prefab.prototype.deactivate = function(){
     this.scale.setTo(0);
     this.anchor.setTo(0);
     this.isActive = false;
-},
- addPoints = function(){
+};
+ burgertime.powerUp_prefab.prototype.addPoints = function(){
     this.chef.points += this.powerPoints;
-    deactivate();
-}
+    /*this.scale.setTo(0);
+    this.anchor.setTo(0);
+    this.isActive = false;*/
+//};

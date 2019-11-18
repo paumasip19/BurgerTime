@@ -56,12 +56,12 @@ burgertime.level1 ={
         this.chef = new burgertime.chef_prefab(this.game,this.game.world.centerX,this.game.world.centerY,90,55,this);
         console.log('1');
         
-        this.powerUp = new burgertime.powerUp_prefab(this.game, 400, 400, this.chef);
-        
         this.game.physics.arcade.enable(this.chef);
         this.espacio = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         
         this.chef.frame = 7;
+        
+        this.isPowerUp = false;
         
         this.music = this.game.add.audio('mainTheme');
         this.start = this.game.add.audio('start');
@@ -69,22 +69,34 @@ burgertime.level1 ={
         this.death = this.game.add.audio('death');
         
         
-        this.start.play();
+        //this.start.play();
         
         this.dead = false;
         this.startLevel = true;
         this.levelCompleted = false;
         
         this.changeMusic = this.game.time.events.add(Phaser.Timer.SECOND*3,this.musicChange,this);
+        
+        if(this.isPowerUp == true){
+            this.timer = this.game.time.events.loop(Phaser.Timer.SECOND*2,this.deactivatePowerUp,this); 
+        }
+        else{
+            this.timer = this.game.time.events.loop(Phaser.Timer.SECOND*2,this.activatePowerUp,this);  
+        } 
     },
     musicChange:function(){
-        this.music.play();
+        //this.music.play();
     },
-    update:function(){
-        //this.game.physics.arcade.collide(this.hero,this.entry);
-        //this.game.physics.arcade.collide(this.hero,this.walls);
-            
-       console.log(this.chef.points); this.game.physics.arcade.collide(this.chef,this.powerUp,this.powerUp.addPoints,null,this);
+    update:function(){            
+       console.log(this.chef.points); this.game.physics.arcade.overlap(this.chef,this.powerUp,this.addPointsPowerUp,null,this);
+    
+        if(this.isPowerUp == false){
+           
+            this.timer = this.game.time.events.loop(Phaser.Timer.SECOND*2,this.activatePowerUp,this);  
+        } 
+        
+        
+        console.log(this.isPowerUp);
         
         if(this.cursors.left.isDown){
             this.chef.body.velocity.x = -this.chef.speedX;
@@ -143,9 +155,9 @@ burgertime.level1 ={
             this.dead = true;
         }
         
-        if(this.chef.points >= 1500){
+        /*if(this.chef.points >= 1500){
             this.levelCompleted = true;
-        }
+        }*/
         
         if(this.dead){
             //this.chef.animations.play('death');
@@ -164,6 +176,25 @@ burgertime.level1 ={
             //next level
         }
         
+    },
+    activatePowerUp:function(){
+        this.powerUp = new burgertime.powerUp_prefab(this.game, 400, 400, this.chef);
+        this.isPowerUp = true;
+    },
+    deactivatePowerUp:function(){
+        this.powerUp.destroy();
+        
+        this.isPowerUp = false;
+    },
+    addPointsPowerUp:function(){
+        this.chef.points += this.powerUp.powerPoints;
+        this.powerUp.destroy();
+        this.isPowerUp = false;
+    },
+    render:function(){
+        //this.powerUp.body.setSize(22, 28, 20, 16);
+        //this.game.debug.body(this.powerUp);
+        //this.game.debug.body(this.chef);
     }
 };
 
