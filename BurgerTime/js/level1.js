@@ -5,7 +5,7 @@ burgertime.level1 ={
         this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
         this.scale.pageAlignHorizontally = true;
         this.scale.pageAlignVertically = true;
-       this.game.physics.startSystem(Phaser.Physics.ARCADE);
+        this.game.physics.startSystem(Phaser.Physics.ARCADE);
         //this.game.physics.arcade.gravity.y = gameOptions.heroGravity;
         
         this.game.world.setBounds(0,0,gameOptions.level1Width,gameOptions.level1Height);
@@ -14,6 +14,12 @@ burgertime.level1 ={
     preload:function(){
         var ruta = 'assets/sprites/';
         this.load.spritesheet('chef', ruta+'ChefRamsay.png', 12, 25);
+        this.load.image('PowerUp1', ruta+'PowerUp1.png');
+        this.load.image('PowerUp2', ruta+'PowerUp2.png');
+        this.load.image('PowerUp3', ruta+'PowerUp3.png');
+        
+        this.load.image('Map', ruta+'SpritesheetMaps.png');    
+        this.load.tilemap('level1','assets/levels/Level1.json',null,Phaser.Tilemap.TILED_JSON);
         
         this.load.audio('mainTheme', 'assets/audio/main_theme.mp3');
         this.load.audio('start', 'assets/audio/game_start.mp3');
@@ -33,10 +39,25 @@ burgertime.level1 ={
         this.chef.animations.add('down',[4,5],10,false);
         this.chef.animations.add('up',[6,7],10,false);
         this.game.physics.arcade.enable(this.chef);*/
+        
+        this.map = this.game.add.tilemap('level1');
+        this.map.addTilesetImage('Map');
+        this.stairs = this.map.createLayer('Stairs');
+        this.stairs.scale.setTo(1.85);
+        //this.stairs.anchor.setTo(.5);
+        this.floor = this.map.createLayer('Floor');
+        this.floor.scale.setTo(1.85);
+        //this.floor.anchor.setTo(.5);
+        this.background = this.map.createLayer('Background');
+        this.background.scale.setTo(1.85);
+        
         this.cursors = this.game.input.keyboard.createCursorKeys();
         
         this.chef = new burgertime.chef_prefab(this.game,this.game.world.centerX,this.game.world.centerY,90,55,this);
         console.log('1');
+        
+        this.powerUp = new burgertime.powerUp_prefab(this.game, 400, 400, this.chef);
+        
         this.game.physics.arcade.enable(this.chef);
         this.espacio = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         
@@ -62,12 +83,13 @@ burgertime.level1 ={
     update:function(){
         //this.game.physics.arcade.collide(this.hero,this.entry);
         //this.game.physics.arcade.collide(this.hero,this.walls);
+            
+       console.log(this.chef.points); this.game.physics.arcade.collide(this.chef,this.powerUp,this.powerUp.addPoints,null,this);
         
         if(this.cursors.left.isDown){
             this.chef.body.velocity.x = -this.chef.speedX;
             this.chef.body.velocity.y = 0;
             this.chef.animations.play('walk');
-            console.log('2');
             //console.log(this.chef.body.velocity.x);
             //this.chef.scale.x = -1;
             this.chef.scale.x = 2;
