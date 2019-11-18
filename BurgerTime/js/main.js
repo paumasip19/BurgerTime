@@ -15,7 +15,7 @@ burgertime.game = new Phaser.Game(gameOptions.gameWidth,gameOptions.gameHeight,P
 burgertime.game.state.add('level1',burgertime.level1);
 burgertime.game.state.add('ranking',burgertime.ranking);
 burgertime.game.state.add('menu',burgertime.menu);
-burgertime.game.state.start('level1');
+burgertime.game.state.start('menu');
 
 //Veure levl1Trial per veure el mapa 1
 

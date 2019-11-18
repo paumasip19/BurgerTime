@@ -69,7 +69,7 @@ burgertime.level1 ={
         this.death = this.game.add.audio('death');
         
         
-        //this.start.play();
+        this.start.play();
         
         this.dead = false;
         this.startLevel = true;
@@ -77,24 +77,45 @@ burgertime.level1 ={
         
         this.changeMusic = this.game.time.events.add(Phaser.Timer.SECOND*3,this.musicChange,this);
         
-        if(this.isPowerUp == true){
-            this.timer = this.game.time.events.loop(Phaser.Timer.SECOND*2,this.deactivatePowerUp,this); 
-        }
-        else{
-            this.timer = this.game.time.events.loop(Phaser.Timer.SECOND*2,this.activatePowerUp,this);  
-        } 
+        /*this.timer1 = this.game.time.events.loop(Phaser.Timer.SECOND*2,this.activatePowerUp,this);
+        
+        this.timer2 = this.game.time.events.loop(Phaser.Timer.SECOND*3,this.deactivatePowerUp,this);*/
+        
+        this.timeElapsedActivate = 0;
+        this.timeElapsedDeactivate = 0;
+        
+        
     },
     musicChange:function(){
-        //this.music.play();
+        this.music.play();
     },
     update:function(){            
-       console.log(this.chef.points); this.game.physics.arcade.overlap(this.chef,this.powerUp,this.addPointsPowerUp,null,this);
-    
-        if(this.isPowerUp == false){
-           
-            this.timer = this.game.time.events.loop(Phaser.Timer.SECOND*2,this.activatePowerUp,this);  
-        } 
+       console.log(this.chef.points);
         
+        if(this.isPowerUp == false){
+            if(this.timeElapsedActivate > 3){
+                this.activatePowerUp();
+                this.timeElapsedDeactivate = 0;
+            }
+            else {
+                this.timeElapsedActivate += this.game.time.physicsElapsed;
+            }
+        }else{
+            if(this.timeElapsedDeactivate > 3){
+                this.deactivatePowerUp();
+                this.timeElapsedActivate = 0;
+            }
+            else {
+                this.timeElapsedDeactivate += this.game.time.physicsElapsed;
+                if(this.game.physics.arcade.overlap(this.chef,this.powerUp,this.addPointsPowerUp,null,this)) {
+                    this.timeElapsedActivate = 0;
+                } 
+            }
+        }
+            
+        
+       
+        //this.activatePowerUp();
         
         console.log(this.isPowerUp);
         
@@ -143,9 +164,9 @@ burgertime.level1 ={
             this.chef.points += 100;
             this.chef.lives -= 1;
             this.chef.pepper += 1;
-            console.log(this.chef.points);
+            /*console.log(this.chef.points);
             console.log(this.chef.lives);
-            console.log(this.chef.pepper);
+            console.log(this.chef.pepper);*/
         }
                 
         if(this.chef.lives <= 0){
@@ -182,8 +203,7 @@ burgertime.level1 ={
         this.isPowerUp = true;
     },
     deactivatePowerUp:function(){
-        this.powerUp.destroy();
-        
+        this.powerUp.kill();
         this.isPowerUp = false;
     },
     addPointsPowerUp:function(){
