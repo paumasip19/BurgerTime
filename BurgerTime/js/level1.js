@@ -25,6 +25,15 @@ burgertime.level1 ={
         this.load.audio('start', 'assets/audio/game_start.mp3');
         this.load.audio('levelComplete', 'assets/audio/stage_complete.mp3');
         this.load.audio('death', 'assets/audio/death_theme.mp3');
+        this.load.audio('bonus_earned','assets/audio/bonus_earned.mp3');
+        this.load.audio('bonus_pause', 'assets/audio/bonus_pause.mp3');
+        this.load.audio('enemy_crushed', 'assets/audio/enemy_crushed.mp3');
+        this.load.audio('enemy_fall_ingredient', 'assets/audio/enemy_fall_crushed.mp3');
+        this.load.audio('ingredient_ingredient', 'assets/audio/ingredient_ingredient.mp3');
+        this.load.audio('resume', 'assets/audio/resume.mp3');
+        this.load.audio('salt_fail', 'assets/audio/salt_fail.mp3');
+        this.load.audio('salt_success', 'assets/audio/salt_success.mp3');
+        this.load.audio('walk_ingredient', 'assets/audio/walk_ingredient.mp3');
     },
     create:function(){
         //this.game.physics.arcade.enable(this.entry);
@@ -67,7 +76,15 @@ burgertime.level1 ={
         this.start = this.game.add.audio('start');
         this.complete = this.game.add.audio('levelComplete');
         this.death = this.game.add.audio('death');
-        
+        this.bonusEarned = this.game.add.audio('bonus_earned');
+        this.bonusPause = this.game.add.audio('bonus_pause');
+        this.audio.enemyCrushed = this.game.add.audio('enemy_crushed');
+        this.enemyFallIngredient = this.game.add.audio('enemy_fall_ingredient');
+        this.ingredientIngredient = this.game.add.audio('ingredient_ingredient');
+        this.resume = this.game.add.audio('resume');
+        this.saltFail = this.game.add.audio('salt_fail');
+        this.saltSuccess = this.game.add.audio('salt_success');
+        this.walkIngredient = this.game.add.audio('walk_ingredient');
         
         this.start.play();
         
@@ -95,6 +112,9 @@ burgertime.level1 ={
         if(this.isPowerUp == false){
             if(this.timeElapsedActivate > 3){
                 this.activatePowerUp();
+                /*if(!this.bonusPause.isPlaying()){
+                    this.bonusPause.play();
+                }*/
                 this.timeElapsedDeactivate = 0;
             }
             else {
@@ -108,6 +128,9 @@ burgertime.level1 ={
             else {
                 this.timeElapsedDeactivate += this.game.time.physicsElapsed;
                 if(this.game.physics.arcade.overlap(this.chef,this.powerUp,this.addPointsPowerUp,null,this)) {
+                    /*if(!this.bonusEarned.isPlaying()){
+                    this.bonusEarned.play();
+                    }*/
                     this.timeElapsedActivate = 0;
                 } 
             }
