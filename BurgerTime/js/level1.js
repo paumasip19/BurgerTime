@@ -52,6 +52,7 @@ burgertime.level1 ={
         this.map = this.game.add.tilemap('level1');
         this.map.addTilesetImage('Map');
         this.stairs = this.map.createLayer('Stairs');
+        
         this.stairs.scale.setTo(1.85);
         //this.stairs.anchor.setTo(.5);
         this.floor = this.map.createLayer('Floor');
@@ -62,7 +63,7 @@ burgertime.level1 ={
         
         this.cursors = this.game.input.keyboard.createCursorKeys();
         
-        this.chef = new burgertime.chef_prefab(this.game,this.game.world.centerX,this.game.world.centerY,90,55,this);
+        this.chef = new burgertime.chef_prefab(this.game,this.game.world.centerX,this.game.world.centerY,gameOptions.heroSpeed,gameOptions.heroSpeed,this);
         console.log('1');
         
         this.game.physics.arcade.enable(this.chef);
@@ -142,75 +143,76 @@ burgertime.level1 ={
         
         console.log(this.isPowerUp);
         
-        if(this.cursors.left.isDown){
+        if(this.cursors.left.isDown && this.chef.canMove == true){
             this.chef.body.velocity.x = -this.chef.speedX;
             this.chef.body.velocity.y = 0;
             this.chef.animations.play('walk');
-            //console.log(this.chef.body.velocity.x);
-            //this.chef.scale.x = -1;
-            this.chef.scale.x = 2;
-        }/*else{
-            this.chef.body.velocity.x = 0;
-            this.chef.body.velocity.y = 0;
-            //this.chef.frame = 3;
-        }*/
-        else if(this.cursors.right.isDown){
+            this.chef.scale.x = 3
+            this.chef.lastMove = 'L';
+            ;
+        }
+        else if(this.cursors.right.isDown && this.chef.canMove == true){
             this.chef.body.velocity.x = this.chef.speedX;
             this.chef.body.velocity.y = 0;
             this.chef.animations.play('walk');
-            this.chef.scale.x = -2;
-        }/*else{
-            this.chef.body.velocity.x = 0;
-            this.chef.body.velocity.y = 0;
-            //this.chef.frame = 1;
-        }*/
-        else if(this.cursors.up.isDown){
+            this.chef.scale.x = -3;
+            this.chef.lastMove = 'R';
+        }
+        else if(this.cursors.up.isDown && this.chef.canMove == true){
             this.chef.body.velocity.y = -this.chef.speedY;
             this.chef.body.velocity.x = 0;
             this.chef.animations.play('up');
-        }/*else{
-            this.chef.body.velocity.x = 0;
-            this.chef.body.velocity.y = 0;
-            //this.chef.frame = 7;
-        }*/
-        else if(this.cursors.down.isDown){
+            this.chef.lastMove = 'U';
+        }
+        else if(this.cursors.down.isDown && this.chef.canMove == true){
             this.chef.body.velocity.y = this.chef.speedY;
             this.chef.body.velocity.x = 0;
             this.chef.animations.play('down');
+            this.chef.lastMove = 'D';
+            
         }else{
             this.chef.body.velocity.x = 0;
             this.chef.body.velocity.y = 0;
-            //this.chef.frame = 5;
+            
         }
         
-        if(this.espacio.isDown){
-            this.chef.points += 100;
-            this.chef.lives -= 1;
-            this.chef.pepper += 1;
-            /*console.log(this.chef.points);
-            console.log(this.chef.lives);
-            console.log(this.chef.pepper);*/
-        }
+        if(this.espacio.downDuration(1)){        // Lanzamiento de Pimienta
+            
+          if(this.chef.pepper > 0) {
+                this.chef.canMove = false;
                 
-        if(this.chef.lives <= 0){
-            /*this.chef.animations.play('death');
-            this.music.pause();
-            this.death.play();*/
-            this.dead = true;
+                if(this.chef.lastMove == 'U') { 
+                    this.animacionA = this.chef.animations.play('pepperUp',5,false,false);
+                    this.animacionA.onComplete.add(function(){this.chef.canMove = true;},this);
+                }
+                else if(his.chef.lastMove == 'D') { 
+                    this.animacionB = this.chef.animations.play('pepperDown',5,false,false);
+                    this.animacionB.onComplete.add(function(){this.chef.canMove = true;},this);
+                }
+                else {
+                    this.animacionC = this.chef.animations.play('pepperSide',5,false,false);
+                    this.animacionC.onComplete.add(function(){this.chef.canMove = true;},this);
+                }
+               this.chef.pepper--;                 
+           }
         }
         
-        /*if(this.chef.points >= 1500){
-            this.levelCompleted = true;
-        }*/
+                
+        if(this.chef.lives <= 0){                // Si Chef Muere, la condicion es cuando colisiona con enemigo
+            this.music.pause();
+            this.death.play();
+            this.animacion = this.chef.animations.play('death',5,false,true);
+            this.animacion.onComplete.add(function(){this.dead = true;},this);
+        }
         
-        if(this.dead){
-            //this.chef.animations.play('death');
+        if(this.dead){                          //  PLayer Gasta Vida
             this.music.pause();
             this.death.play();
             this.chef.lives = 3;
             this.dead = false;
-            //restart level
+            this.state.start('level1');
         }
+        
         
         if(this.levelCompleted){
             this.music.pause();
