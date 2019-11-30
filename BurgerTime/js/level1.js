@@ -50,7 +50,6 @@ burgertime.level1 ={
         this.death = this.game.add.audio('death');
         this.bonusEarned = this.game.add.audio('bonus_earned');
         this.bonusPause = this.game.add.audio('bonus_pause');
-        this.audio.enemyCrushed = this.game.add.audio('enemy_crushed');
         this.enemyFallIngredient = this.game.add.audio('enemy_fall_ingredient');
         this.ingredientIngredient = this.game.add.audio('ingredient_ingredient');
         this.resume = this.game.add.audio('resume');
@@ -62,15 +61,17 @@ burgertime.level1 ={
         
         this.map = this.game.add.tilemap('level1');
         this.map.addTilesetImage('Map');
-        this.Map = this.map.createLayer('Floor');
-        this.Map.scale.setTo(1.85);
-        this.map.setCollisionBetween(1,3,true,'Floor');
-        this.stairs = this.map.createLayer('Stairs');
-        this.stairs.scale.setTo(1.85);
-        this.background = this.map.createLayer('Background');
-        this.background.scale.setTo(1.85);
         
-        this.chef = new burgertime.chef_prefab(this.game,this.game.world.centerX + 150,this.game.world.centerY + 100,gameOptions.heroSpeed,gameOptions.heroSpeed,this);
+        this.floor = this.map.createLayer('Floor');
+        this.map.setCollisionBetween(3,3,true,'Floor');
+        
+        this.stairs = this.map.createLayer('Stairs');
+        this.map.setCollisionBetween(4,5,true,'Stairs');
+        
+        this.background = this.map.createLayer('Background');
+        this.map.setCollisionBetween(6,6,true,'Background');
+        
+        this.chef = new burgertime.chef_prefab(this.game,this.game.world.centerX,this.game.world.centerY + 100,gameOptions.heroSpeed,gameOptions.heroSpeed,this);
         this.chef.frame = 7;
         
         this.isPowerUp = false;
@@ -79,6 +80,8 @@ burgertime.level1 ={
         this.levelCompleted = false;
         
         this.changeMusic = this.game.time.events.add(Phaser.Timer.SECOND*3,this.musicChange,this);
+        
+        this.collideStairs = this.game.time.events.add(Phaser.Timer.SECOND*2,this.activateStairs,this);
         
         /*this.timer1 = this.game.time.events.loop(Phaser.Timer.SECOND*2,this.activatePowerUp,this);
         this.timer2 = this.game.time.events.loop(Phaser.Timer.SECOND*3,this.deactivatePowerUp,this);*/
@@ -89,11 +92,13 @@ burgertime.level1 ={
         
     },
     musicChange:function(){
-        this.music.play();
+        //this.music.play();
     },
     update:function(){
-       
-        console.log(this.chef.points);
+        
+        this.game.physics.arcade.collide(this.chef,this.stairs,this.stairTouch, null, this);
+        this.game.physics.arcade.collide(this.chef,this.floor,this.platformTouch, null, this);
+        
         if(this.isPowerUp == false){
             if(this.timeElapsedActivate > 3){
                 this.activatePowerUp();
@@ -128,7 +133,7 @@ burgertime.level1 ={
             this.chef.body.velocity.x = -this.chef.speedX;
             this.chef.body.velocity.y = 0;
             this.chef.animations.play('walk');
-            this.chef.scale.x = 5
+            this.chef.scale.x = 2.5
             this.chef.lastMove = 'L';
             ;
         }
@@ -136,7 +141,7 @@ burgertime.level1 ={
             this.chef.body.velocity.x = this.chef.speedX;
             this.chef.body.velocity.y = 0;
             this.chef.animations.play('walk');
-            this.chef.scale.x = -5;
+            this.chef.scale.x = -2.5;
             this.chef.lastMove = 'R';
         }
         else if(this.cursors.up.isDown && this.chef.canMove == true){
@@ -215,11 +220,23 @@ burgertime.level1 ={
         this.powerUp.destroy();
         this.isPowerUp = false;
     },
+    platformTouch:function(){
+        if(this.chef.body.touching.down){
+            this.chef.y -= 5;   
+        }
+    },
+    stairTouch:function(_chef,_stairs){
+        _chef.body.allowGravity = false;
+        this.map.setCollisionBetween(4,5,false,'Stairs');
+    },
+    activateStairs:function(){
+        this.chef.body.allowGravity = true;
+        this.map.setCollisionBetween(4,5,true,'Stairs');
+    },
     render:function(){
         //this.powerUp.body.setSize(22, 28, 20, 16);
         //this.game.debug.body(this.powerUp);
         this.game.debug.body(this.chef);
-        this.game.debug.body(this.Map);
     }
 };
 

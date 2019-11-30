@@ -12,11 +12,13 @@ burgertime.powerUp_prefab = function(_game,_x,_y, _chef){
     
     this.isActive = false;
     
-    this.scale.setTo(3);
+    this.scale.setTo(1.5);
     this.anchor.setTo(.5);
     
     this.game.add.existing(this);
     this.game.physics.arcade.enable(this);
+    this.body.allowGravity = false;
+    this.body.immovable = true;
 };
 
 burgertime.powerUp_prefab.prototype = Object.create(Phaser.Sprite.prototype);
