@@ -6,20 +6,24 @@ burgertime.level1 ={
         this.scale.pageAlignHorizontally = true;
         this.scale.pageAlignVertically = true;
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
-        //this.game.physics.arcade.gravity.y = gameOptions.heroGravity;
+        this.game.physics.arcade.gravity.y = gameOptions.heroGravity;
+
         
         this.game.world.setBounds(0,0,gameOptions.level1Width,gameOptions.level1Height);
+        this.game.renderer.renderSession.roundPixels = true;
+        
         
     },
     preload:function(){
         var ruta = 'assets/sprites/';
+        
+        this.load.image('Map', ruta+'SpritesheetMaps.png');    
+        this.load.tilemap('level1','assets/levels/Level1.json',null,Phaser.Tilemap.TILED_JSON);
+        
         this.load.spritesheet('chef', ruta+'ChefRamsay.png', 12, 25);
         this.load.image('PowerUp1', ruta+'PowerUp1.png');
         this.load.image('PowerUp2', ruta+'PowerUp2.png');
         this.load.image('PowerUp3', ruta+'PowerUp3.png');
-        
-        this.load.image('Map', ruta+'SpritesheetMaps.png');    
-        this.load.tilemap('level1','assets/levels/Level1.json',null,Phaser.Tilemap.TILED_JSON);
         
         this.load.audio('mainTheme', 'assets/audio/main_theme.mp3');
         this.load.audio('start', 'assets/audio/game_start.mp3');
@@ -36,42 +40,9 @@ burgertime.level1 ={
         this.load.audio('walk_ingredient', 'assets/audio/walk_ingredient.mp3');
     },
     create:function(){
-        //this.game.physics.arcade.enable(this.entry);
-        //this.entry.body.allowGravity = false;
-        //this.entry.body.immovable = true;
         
-        /*this.chef = this.game.add.sprite(this.game.world.centerX,this.game.world.centerY,'chef');
-        this.chef.scale.setTo(2);
-        this.chef.anchor.setTo(.5);
-        this.chef.animations.add('right',[0,1],10,false);
-        this.chef.animations.add('left',[2,3],10,false);
-        this.chef.animations.add('down',[4,5],10,false);
-        this.chef.animations.add('up',[6,7],10,false);
-        this.game.physics.arcade.enable(this.chef);*/
-        
-        this.map = this.game.add.tilemap('level1');
-        this.map.addTilesetImage('Map');
-        this.stairs = this.map.createLayer('Stairs');
-        
-        this.stairs.scale.setTo(1.85);
-        //this.stairs.anchor.setTo(.5);
-        this.floor = this.map.createLayer('Floor');
-        this.floor.scale.setTo(1.85);
-        //this.floor.anchor.setTo(.5);
-        this.background = this.map.createLayer('Background');
-        this.background.scale.setTo(1.85);
-        
-        this.cursors = this.game.input.keyboard.createCursorKeys();
-        
-        this.chef = new burgertime.chef_prefab(this.game,this.game.world.centerX,this.game.world.centerY,gameOptions.heroSpeed,gameOptions.heroSpeed,this);
-        console.log('1');
-        
-        this.game.physics.arcade.enable(this.chef);
         this.espacio = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-        
-        this.chef.frame = 7;
-        
-        this.isPowerUp = false;
+        this.cursors = this.game.input.keyboard.createCursorKeys();
         
         this.music = this.game.add.audio('mainTheme');
         this.start = this.game.add.audio('start');
@@ -86,9 +57,23 @@ burgertime.level1 ={
         this.saltFail = this.game.add.audio('salt_fail');
         this.saltSuccess = this.game.add.audio('salt_success');
         this.walkIngredient = this.game.add.audio('walk_ingredient');
-        
         this.start.play();
         
+        
+        this.map = this.game.add.tilemap('level1');
+        this.map.addTilesetImage('Map');
+        this.Map = this.map.createLayer('Floor');
+        this.Map.scale.setTo(1.85);
+        this.map.setCollisionBetween(1,3,true,'Floor');
+        this.stairs = this.map.createLayer('Stairs');
+        this.stairs.scale.setTo(1.85);
+        this.background = this.map.createLayer('Background');
+        this.background.scale.setTo(1.85);
+        
+        this.chef = new burgertime.chef_prefab(this.game,this.game.world.centerX + 150,this.game.world.centerY + 100,gameOptions.heroSpeed,gameOptions.heroSpeed,this);
+        this.chef.frame = 7;
+        
+        this.isPowerUp = false;
         this.dead = false;
         this.startLevel = true;
         this.levelCompleted = false;
@@ -96,7 +81,6 @@ burgertime.level1 ={
         this.changeMusic = this.game.time.events.add(Phaser.Timer.SECOND*3,this.musicChange,this);
         
         /*this.timer1 = this.game.time.events.loop(Phaser.Timer.SECOND*2,this.activatePowerUp,this);
-        
         this.timer2 = this.game.time.events.loop(Phaser.Timer.SECOND*3,this.deactivatePowerUp,this);*/
         
         this.timeElapsedActivate = 0;
@@ -107,9 +91,9 @@ burgertime.level1 ={
     musicChange:function(){
         this.music.play();
     },
-    update:function(){            
-       console.log(this.chef.points);
-        
+    update:function(){
+       
+        console.log(this.chef.points);
         if(this.isPowerUp == false){
             if(this.timeElapsedActivate > 3){
                 this.activatePowerUp();
@@ -136,18 +120,15 @@ burgertime.level1 ={
                 } 
             }
         }
-            
-        
        
         //this.activatePowerUp();
-        
         console.log(this.isPowerUp);
         
         if(this.cursors.left.isDown && this.chef.canMove == true){
             this.chef.body.velocity.x = -this.chef.speedX;
             this.chef.body.velocity.y = 0;
             this.chef.animations.play('walk');
-            this.chef.scale.x = 3
+            this.chef.scale.x = 5
             this.chef.lastMove = 'L';
             ;
         }
@@ -155,7 +136,7 @@ burgertime.level1 ={
             this.chef.body.velocity.x = this.chef.speedX;
             this.chef.body.velocity.y = 0;
             this.chef.animations.play('walk');
-            this.chef.scale.x = -3;
+            this.chef.scale.x = -5;
             this.chef.lastMove = 'R';
         }
         else if(this.cursors.up.isDown && this.chef.canMove == true){
@@ -196,7 +177,6 @@ burgertime.level1 ={
                this.chef.pepper--;                 
            }
         }
-        
                 
         if(this.chef.lives <= 0){                // Si Chef Muere, la condicion es cuando colisiona con enemigo
             this.music.pause();
@@ -212,7 +192,6 @@ burgertime.level1 ={
             this.dead = false;
             this.state.start('level1');
         }
-        
         
         if(this.levelCompleted){
             this.music.pause();
@@ -239,7 +218,8 @@ burgertime.level1 ={
     render:function(){
         //this.powerUp.body.setSize(22, 28, 20, 16);
         //this.game.debug.body(this.powerUp);
-        //this.game.debug.body(this.chef);
+        this.game.debug.body(this.chef);
+        this.game.debug.body(this.Map);
     }
 };
 
