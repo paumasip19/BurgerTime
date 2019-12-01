@@ -89,12 +89,15 @@ burgertime.level1 ={
         this.timeElapsedActivate = 0;
         this.timeElapsedDeactivate = 0;
         
+        this.timerStairs = this.game.time.events.loop(Phaser.Timer.SECOND,this.activateStairs,this);
+        
         
     },
     musicChange:function(){
         //this.music.play();
     },
     update:function(){
+        
         
         this.game.physics.arcade.collide(this.chef,this.stairs,this.stairTouch, null, this);
         this.game.physics.arcade.collide(this.chef,this.floor,this.platformTouch, null, this);
