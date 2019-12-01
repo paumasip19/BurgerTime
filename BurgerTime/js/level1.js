@@ -24,6 +24,24 @@ burgertime.level1 ={
         this.load.image('PowerUp1', ruta+'PowerUp1.png');
         this.load.image('PowerUp2', ruta+'PowerUp2.png');
         this.load.image('PowerUp3', ruta+'PowerUp3.png');
+        this.load.image('BreadDown1', ruta+'DownBread1.png');
+        this.load.image('BreadDown2', ruta+'DownBread2.png');
+        this.load.image('BreadDown3', ruta+'DownBread3.png');
+        this.load.sprite('Cheese1', ruta+'Cheese1.png',30,30);
+        this.load.sprite('Cheese2', ruta+'Cheese2.png',30,30);
+        this.load.sprite('Cheese3', ruta+'Cheese3.png',30,30);
+        this.load.sprite('Lettuce1', ruta+'Lettuce1.png',30,30);
+        this.load.sprite('Lettuce2', ruta+'Lettuce2.png',30,30);
+        this.load.sprite('Lettuce3', ruta+'Lettuce3.png',30,30);
+        this.load.sprite('Meat1',ruta+'Meat1.png',30,30);
+        this.load.sprite('Meat2',ruta+'Meat2.png',30,30);
+        this.load.sprite('Meat3',ruta+'Meat3.png',30,30);
+        this.load.sprite('Tomatoe1',ruta+'Tomatoe1.png',30,30);
+        this.load.sprite('Tomatoe2',ruta+'Tomatoe2.png',30,30);
+        this.load.sprite('Tomatoe3',ruta+'Tomatoe3.png',30,30);
+        this.load.sprite('BreadUp1',ruta+'UpBread1.png',30,30);
+        this.load.sprite('BreadUp2',ruta+'UpBread2.png',30,30);
+        this.load.sprite('BreadUp3',ruta+'UpBread3.png',30,30);
         
         this.load.audio('mainTheme', 'assets/audio/main_theme.mp3');
         this.load.audio('start', 'assets/audio/game_start.mp3');
