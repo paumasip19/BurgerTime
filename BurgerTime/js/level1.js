@@ -111,13 +111,48 @@ burgertime.level1 ={
         
         this.timerStairs = this.game.time.events.loop(Phaser.Timer.SECOND,this.activateStairs,this);
         
+        this.bread1 = this.game.add.sprite(60,115,'BreadUp1',0);
+        this.bread2 = this.game.add.sprite(90,115,'BreadUp2',0);
+        this.bread3 = this.game.add.sprite(120,115,'BreadUp2',0);
+        this.bread4 = this.game.add.sprite(150,115,'BreadUp2',0);
+        this.bread5 = this.game.add.sprite(180,115,'BreadUp3',0);
+        
+        this.bread1.enableBody = true;
+        this.bread2.enableBody = true;
+        this.bread3.enableBody = true;
+        this.bread4.enableBody = true;
+        this.bread5.enableBody = true;
+        
+        this.game.physics.arcade.enable(this.bread1);
+        this.game.physics.arcade.enable(this.bread2);
+        this.game.physics.arcade.enable(this.bread3);
+        this.game.physics.arcade.enable(this.bread4);
+        this.game.physics.arcade.enable(this.bread5);
+        
+        this.bread1.body.immovable = true;
+        this.bread1.body.allowGravity = false;
+        this.bread2.body.immovable = true;
+        this.bread2.body.allowGravity = false;
+        this.bread3.body.immovable = true;
+        this.bread3.body.allowGravity = false;
+        this.bread4.body.immovable = true;
+        this.bread4.body.allowGravity = false;
+        this.bread5.body.immovable = true;
+        this.bread5.body.allowGravity = false;
+        
+        this.ingredient1 = new burgertime.ingredient_prefab(this.game,this.game.world.centerX,this.game.world.centerY,'BreadUp1', 'BreadUp2', 'BreadUp3');
+        
         
     },
     musicChange:function(){
         this.music.play();
     },
-    update:function(){
-        
+    update:function(){          
+        this.game.physics.arcade.collide(this.bread1,this.chef,this.collideBreadPlayer,null,this);
+        this.game.physics.arcade.collide(this.bread2,this.chef);
+        this.game.physics.arcade.collide(this.bread3,this.chef);
+        this.game.physics.arcade.collide(this.bread4,this.chef);
+        this.game.physics.arcade.collide(this.bread5,this.chef);
         
         this.game.physics.arcade.collide(this.chef,this.stairs,this.stairTouch, null, this);
         this.game.physics.arcade.collide(this.chef,this.floor,this.platformTouch, null, this);
@@ -230,6 +265,14 @@ burgertime.level1 ={
         }
         
     },
+    collideBreadPlayer:function(_bread,_player){
+        if(_bread.canBeHit)
+        {
+            _bread.position.y += 10;
+            _bread.canBeHit = false;
+        }
+        
+    },
     activatePowerUp:function(){
         this.powerUp = new burgertime.powerUp_prefab(this.game, 400, 400, this.chef);
         this.isPowerUp = true;
@@ -260,6 +303,8 @@ burgertime.level1 ={
         //this.powerUp.body.setSize(22, 28, 20, 16);
         //this.game.debug.body(this.powerUp);
         this.game.debug.body(this.chef);
+        //this.bread1.body.setSize(22, 28, 20, 16);
+        this.game.debug.body(this.bread1);
     }
 };
 
