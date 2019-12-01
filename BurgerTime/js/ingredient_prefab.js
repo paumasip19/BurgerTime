@@ -1,11 +1,9 @@
 var burgertime = burgertime || {};
 
-burgertime.ingredient_prefab = function(_game,_x,_y,,_level){
-    //Phaser.Sprite.call(this,_game,_x,_y,'chef');
-
+burgertime.ingredient_prefab = function(_game,_x,_y,,_level,_tag){
     this.level = _level;
+    Phaser.Sprite.call(this,_game,_x,_y,_tag);
     this.game.add.existing(this);
-
     this.game.physics.arcade.enable(this);
 };
 

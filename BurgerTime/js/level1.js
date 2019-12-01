@@ -50,7 +50,7 @@ burgertime.level1 ={
         this.load.audio('bonus_earned','assets/audio/bonus_earned.mp3');
         this.load.audio('bonus_pause', 'assets/audio/bonus_pause.mp3');
         this.load.audio('enemy_crushed', 'assets/audio/enemy_crushed.mp3');
-        this.load.audio('enemy_fall_ingredient', 'assets/audio/enemy_fall_crushed.mp3');
+        this.load.audio('enemy_fall_ingredient', 'assets/audio/enemy_crushed.mp3');
         this.load.audio('ingredient_ingredient', 'assets/audio/ingredient_ingredient.mp3');
         this.load.audio('resume', 'assets/audio/resume.mp3');
         this.load.audio('salt_fail', 'assets/audio/salt_fail.mp3');
@@ -92,6 +92,8 @@ burgertime.level1 ={
         this.chef = new burgertime.chef_prefab(this.game,this.game.world.centerX,this.game.world.centerY + 100,gameOptions.heroSpeed,gameOptions.heroSpeed,this);
         this.chef.frame = 7;
         
+        //this.breadUp = new burgertime.ingredient_prefab(this.game,100,100,this,'BreadUp1');
+        
         this.isPowerUp = false;
         this.dead = false;
         this.startLevel = true;
@@ -112,7 +114,7 @@ burgertime.level1 ={
         
     },
     musicChange:function(){
-        //this.music.play();
+        this.music.play();
     },
     update:function(){
         
@@ -192,7 +194,7 @@ burgertime.level1 ={
                     this.animacionA = this.chef.animations.play('pepperUp',5,false,false);
                     this.animacionA.onComplete.add(function(){this.chef.canMove = true;},this);
                 }
-                else if(his.chef.lastMove == 'D') { 
+                else if(this.chef.lastMove == 'D') { 
                     this.animacionB = this.chef.animations.play('pepperDown',5,false,false);
                     this.animacionB.onComplete.add(function(){this.chef.canMove = true;},this);
                 }
