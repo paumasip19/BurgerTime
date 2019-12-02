@@ -32,11 +32,7 @@ burgertime.ingredient_prefab.prototype.update = function(){
     
     if(this.allTouched == true)
     {
-        this.ingredient1.position.y += 1;
-        this.ingredient2.position.y += 1;
-        this.ingredient3.position.y += 1;
-        this.ingredient4.position.y += 1;
-        this.ingredient5.position.y += 1;
+        var i = this.fall();
     }
 };
 
@@ -47,11 +43,23 @@ burgertime.ingredient_prefab.prototype.fall = function(){
     {
         //GivePointsToChef
         //UpdateHUD
-    }
+    }*/
     if(touchesIngredient)
     {
-        //stopMoving
-    }*/
+        this.ingredient1.ingredientIsTouched = false;
+        this.ingredient2.ingredientIsTouched = false;
+        this.ingredient3.ingredientIsTouched = false;
+        this.ingredient4.ingredientIsTouched = false;
+        this.ingredient5.ingredientIsTouched = false;
+    }
+    else
+    {
+        this.ingredient1.position.y += 1;
+        this.ingredient2.position.y += 1;
+        this.ingredient3.position.y += 1;
+        this.ingredient4.position.y += 1;
+        this.ingredient5.position.y += 1;
+    }
 };
 
 
