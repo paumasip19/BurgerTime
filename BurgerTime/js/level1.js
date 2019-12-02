@@ -95,19 +95,14 @@ burgertime.level1 ={
         this.chef = new burgertime.chef_prefab(this.game,this.game.world.centerX+150,this.game.world.centerY + 100,gameOptions.heroSpeed,gameOptions.heroSpeed,this);
         this.chef.frame = 7;
         
-        //this.breadUp = new burgertime.ingredient_prefab(this.game,100,100,this,'BreadUp1');
-        
         this.isPowerUp = false;
         this.dead = false;
         this.startLevel = true;
         this.levelCompleted = false;
         
-        //this.changeMusic = this.game.time.events.add(Phaser.Timer.SECOND*3,this.musicChange,this);
+        this.changeMusic = this.game.time.events.add(Phaser.Timer.SECOND*3,this.musicChange,this);
         
         this.collideStairs = this.game.time.events.add(Phaser.Timer.SECOND*2,this.activateStairs,this);
-        
-        /*this.timer1 = this.game.time.events.loop(Phaser.Timer.SECOND*2,this.activatePowerUp,this);
-        this.timer2 = this.game.time.events.loop(Phaser.Timer.SECOND*3,this.deactivatePowerUp,this);*/
         
         this.timeElapsedActivate = 0;
         this.timeElapsedDeactivate = 0;
@@ -135,7 +130,7 @@ burgertime.level1 ={
         this.downBread4 = new burgertime.ingredient_prefab(this.game,800,360-5,'BreadDown1','BreadDown2','BreadDown3', this.chef);
     },
     musicChange:function(){
-        //this.music.play();
+        this.music.play();
     },
     update:function(){          
         
@@ -156,15 +151,15 @@ burgertime.level1 ={
             }
         }else{
             if(this.timeElapsedDeactivate > 3){
+                
                 this.deactivatePowerUp();
                 this.timeElapsedActivate = 0;
             }
             else {
                 this.timeElapsedDeactivate += this.game.time.physicsElapsed;
-                if(this.game.physics.arcade.overlap(this.chef,this.powerUp,this.addPointsPowerUp,null,this)) {
-                    /*if(!this.bonusEarned.isPlaying()){
+                if(this.game.physics.arcade.overlap(this.chef,this.powerUp,this.addPointsPowerUp,null,this)) 
+                {
                     this.bonusEarned.play();
-                    }*/
                     this.timeElapsedActivate = 0;
                 } 
             }
@@ -251,14 +246,6 @@ burgertime.level1 ={
         }
         
     },
-    collideBreadPlayer:function(_bread,_player){
-        if(_bread.canBeHit)
-        {
-            _bread.position.y += 10;
-            _bread.canBeHit = false;
-        }
-        
-    },
     activatePowerUp:function(){
         this.powerUp = new burgertime.powerUp_prefab(this.game, 400, 400, this.chef);
         this.isPowerUp = true;
@@ -271,6 +258,7 @@ burgertime.level1 ={
         this.chef.points += this.powerUp.powerPoints;
         this.powerUp.destroy();
         this.isPowerUp = false;
+        this.bonusPause.play();
     },
     platformTouch:function(){
         if(this.chef.body.touching.down){
