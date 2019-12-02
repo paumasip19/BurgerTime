@@ -87,7 +87,10 @@ burgertime.level1 ={
         this.map.setCollisionBetween(4,5,true,'Stairs');
         
         this.background = this.map.createLayer('Background');
-        this.map.setCollisionBetween(6,6,true,'Background');
+        //this.map.setCollisionBetween(6,6,true,'Background');*/
+        
+        this.collisionMap = this.map.createLayer('Collisions');
+        this.map.setCollisionBetween(6,6,true,'Collisions');
         
         this.chef = new burgertime.chef_prefab(this.game,this.game.world.centerX+150,this.game.world.centerY + 100,gameOptions.heroSpeed,gameOptions.heroSpeed,this);
         this.chef.frame = 7;
@@ -99,7 +102,7 @@ burgertime.level1 ={
         this.startLevel = true;
         this.levelCompleted = false;
         
-        this.changeMusic = this.game.time.events.add(Phaser.Timer.SECOND*3,this.musicChange,this);
+        //this.changeMusic = this.game.time.events.add(Phaser.Timer.SECOND*3,this.musicChange,this);
         
         this.collideStairs = this.game.time.events.add(Phaser.Timer.SECOND*2,this.activateStairs,this);
         
@@ -132,12 +135,13 @@ burgertime.level1 ={
         this.downBread4 = new burgertime.ingredient_prefab(this.game,800,360-5,'BreadDown1','BreadDown2','BreadDown3', this.chef);
     },
     musicChange:function(){
-        this.music.play();
+        //this.music.play();
     },
     update:function(){          
         
         this.game.physics.arcade.collide(this.chef,this.stairs,this.stairTouch, null, this);
         this.game.physics.arcade.collide(this.chef,this.floor,this.platformTouch, null, this);
+        this.game.physics.arcade.collide(this.chef, this.collisionMap);
         
         if(this.isPowerUp == false){
             if(this.timeElapsedActivate > 3){

@@ -27,7 +27,7 @@ burgertime.ingredientPart_prefab.prototype.update = function(){
    
     if(this.ingredientIsTouched == false)
         {
-            this.game.physics.arcade.collide(this,this.chef,this.touchBurger,null,this);
+           this.game.physics.arcade.collide(this,this.chef,this.touchBurger,null,this);
         }
     
 };
