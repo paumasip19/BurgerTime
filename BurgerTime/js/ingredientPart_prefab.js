@@ -1,8 +1,8 @@
 var burgertime = burgertime || {};
 
-burgertime.ingredientPart_prefab = function(_game,_x,_y,_tag1,_tag2,_tag3, _chef){
-    Phaser.Sprite.call(this,_game,_x,_y,_tag1);
-    //this.game.add.existing(this);
+burgertime.ingredientPart_prefab = function(_game,_x,_y,_tag,_chef){
+    Phaser.Sprite.call(this,_game,_x,_y,_tag);
+    this.game.add.existing(this);
     
     this.chef = _chef;
 
@@ -20,13 +20,25 @@ burgertime.ingredientPart_prefab = function(_game,_x,_y,_tag1,_tag2,_tag3, _chef
 };
 
 burgertime.ingredientPart_prefab.prototype = Object.create(Phaser.Sprite.prototype);
-burgertime.ingredientPart_prefab.prototype.constructor = burgertime.ingredient_prefab;
+burgertime.ingredientPart_prefab.prototype.constructor = burgertime.ingredientPart_prefab;
 
 //LLAMADA EN UPDATE DEL PREFAB EN CASO DE COLISION
-burgertime.ingredientPart_prefab.prototype.colisionIngredientPlayer = function(){
-    if(this.ingredientIsTouched)
+burgertime.ingredientPart_prefab.prototype.update = function(){
+   
+    if(this.ingredientIsTouched == false)
+        {
+            this.game.physics.arcade.collide(this,this.chef,this.touchBurger,null,this);
+        }
+    
+};
+
+
+
+burgertime.ingredientPart_prefab.prototype.touchBurger = function(){
+    if(this.ingredientIsTouched == false)
         {
             this.position.y += 10;
             this.ingredientIsTouched = true;
+            console.log("Yes");
         }
 };
