@@ -30,10 +30,22 @@ burgertime.ingredient_prefab.prototype.update = function(){
         this.allTouched = true;
     }
     
+    //this.game.physics.arcade.collide(this.ingredient1,this.in1.ingredient1,this.stopMoving, null, this);
+    //this.game.physics.arcade.collide(this.ingredient1,this.in2.ingredient1,this.stopMoving, null, this);
+    
     if(this.allTouched == true)
     {
-        var i = this.fall();
+        var i = this.fall();     
     }
+};
+
+burgertime.ingredient_prefab.prototype.stopMoving = function(){
+    this.ingredient1.ingredientIsTouched = false;
+        this.ingredient2.ingredientIsTouched = false;
+        this.ingredient3.ingredientIsTouched = false;
+        this.ingredient4.ingredientIsTouched = false;
+        this.ingredient5.ingredientIsTouched = false;
+        this.allTouched = false;
 };
 
 //LLAMAR SI TOCA UN INGREDIENTE
@@ -44,13 +56,15 @@ burgertime.ingredient_prefab.prototype.fall = function(){
         //GivePointsToChef
         //UpdateHUD
     }*/
-    if(touchesIngredient)
+    
+    this.ingredient1.position.y += 1;
+        this.ingredient2.position.y += 1;
+        this.ingredient3.position.y += 1;
+        this.ingredient4.position.y += 1;
+        this.ingredient5.position.y += 1;
+    /*if()
     {
-        this.ingredient1.ingredientIsTouched = false;
-        this.ingredient2.ingredientIsTouched = false;
-        this.ingredient3.ingredientIsTouched = false;
-        this.ingredient4.ingredientIsTouched = false;
-        this.ingredient5.ingredientIsTouched = false;
+        
     }
     else
     {
@@ -59,7 +73,7 @@ burgertime.ingredient_prefab.prototype.fall = function(){
         this.ingredient3.position.y += 1;
         this.ingredient4.position.y += 1;
         this.ingredient5.position.y += 1;
-    }
+    }*/
 };
 
 

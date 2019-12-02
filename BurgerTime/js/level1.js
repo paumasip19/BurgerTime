@@ -80,6 +80,9 @@ burgertime.level1 ={
         this.map = this.game.add.tilemap('level1');
         this.map.addTilesetImage('Map');
         
+        this.collisionMap = this.map.createLayer('Collisions');
+        this.map.setCollisionBetween(6,6,true,'Collisions');
+        
         this.floor = this.map.createLayer('Floor');
         this.map.setCollisionBetween(3,3,true,'Floor');
         
@@ -89,8 +92,7 @@ burgertime.level1 ={
         this.background = this.map.createLayer('Background');
         //this.map.setCollisionBetween(6,6,true,'Background');*/
         
-        this.collisionMap = this.map.createLayer('Collisions');
-        this.map.setCollisionBetween(6,6,true,'Collisions');
+        
         
         this.chef = new burgertime.chef_prefab(this.game,this.game.world.centerX+150,this.game.world.centerY + 100,gameOptions.heroSpeed,gameOptions.heroSpeed,this);
         this.chef.frame = 7;
@@ -109,25 +111,25 @@ burgertime.level1 ={
         
         this.timerStairs = this.game.time.events.loop(Phaser.Timer.SECOND,this.activateStairs,this);
         
-        this.upBread1 = new burgertime.ingredient_prefab(this.game,75, 120-5,'BreadUp1','BreadUp2','BreadUp3', this.chef);
-        this.upBread2 = new burgertime.ingredient_prefab(this.game,315,0-5,'BreadUp1','BreadUp2','BreadUp3', this.chef);
-        this.upBread3 = new burgertime.ingredient_prefab(this.game,555,0-5,'BreadUp1','BreadUp2','BreadUp3', this.chef);
-        this.upBread4 = new burgertime.ingredient_prefab(this.game,800,0-5,'BreadUp1','BreadUp2','BreadUp3', this.chef);
+        this.upBread1 = new burgertime.ingredient_prefab(this.game,75+60, 120-5,'BreadUp1','BreadUp2','BreadUp3', this.chef);
+        this.upBread2 = new burgertime.ingredient_prefab(this.game,315+60,0-5,'BreadUp1','BreadUp2','BreadUp3', this.chef);
+        this.upBread3 = new burgertime.ingredient_prefab(this.game,555+60,0-5,'BreadUp1','BreadUp2','BreadUp3', this.chef);
+        this.upBread4 = new burgertime.ingredient_prefab(this.game,800+60,0-5,'BreadUp1','BreadUp2','BreadUp3', this.chef);
         
-        this.lettuce1 = new burgertime.ingredient_prefab(this.game,75, 240-5,'Lettuce1','Lettuce2','Lettuce3', this.chef);
-        this.lettuce2 = new burgertime.ingredient_prefab(this.game,315,300-5,'Lettuce1','Lettuce2','Lettuce3', this.chef);
-        this.letuce3 = new burgertime.ingredient_prefab(this.game,555,120-5,'Lettuce1','Lettuce2','Lettuce3', this.chef);
-        this.lettuce4 = new burgertime.ingredient_prefab(this.game,800,120-5,'Lettuce1','Lettuce2','Lettuce3', this.chef);
+        this.lettuce1 = new burgertime.ingredient_prefab(this.game,75+60, 240-5,'Lettuce1','Lettuce2','Lettuce3', this.chef);
+        this.lettuce2 = new burgertime.ingredient_prefab(this.game,315+60,300-5,'Lettuce1','Lettuce2','Lettuce3', this.chef);
+        this.letuce3 = new burgertime.ingredient_prefab(this.game,555+60,120-5,'Lettuce1','Lettuce2','Lettuce3', this.chef);
+        this.lettuce4 = new burgertime.ingredient_prefab(this.game,800+60,120-5,'Lettuce1','Lettuce2','Lettuce3', this.chef);
         
-        this.burger1 = new burgertime.ingredient_prefab(this.game,75, 420-5,'Meat1','Meat2','Meat3', this.chef);
-        this.burger2 = new burgertime.ingredient_prefab(this.game,315,420-5,'Meat1','Meat2','Meat3', this.chef);
-        this.burger3 = new burgertime.ingredient_prefab(this.game,555,300-5,'Meat1','Meat2','Meat3', this.chef);
-        this.burger4 = new burgertime.ingredient_prefab(this.game,800,240-5,'Meat1','Meat2','Meat3', this.chef);
+        this.burger1 = new burgertime.ingredient_prefab(this.game,75+60, 420-5,'Meat1','Meat2','Meat3', this.chef);
+        this.burger2 = new burgertime.ingredient_prefab(this.game,315+60,420-5,'Meat1','Meat2','Meat3', this.chef);
+        this.burger3 = new burgertime.ingredient_prefab(this.game,555+60,300-5,'Meat1','Meat2','Meat3', this.chef);
+        this.burger4 = new burgertime.ingredient_prefab(this.game,800+60,240-5,'Meat1','Meat2','Meat3', this.chef);
         
-        this.downBread1 = new burgertime.ingredient_prefab(this.game,75, 540-5,'BreadDown1','BreadDown2','BreadDown3', this.chef);
-        this.downBread2 = new burgertime.ingredient_prefab(this.game,315,540-5,'BreadDown1','BreadDown2','BreadDown3', this.chef);
-        this.downBread3 = new burgertime.ingredient_prefab(this.game,555,540-5,'BreadDown1','BreadDown2','BreadDown3', this.chef);
-        this.downBread4 = new burgertime.ingredient_prefab(this.game,800,360-5,'BreadDown1','BreadDown2','BreadDown3', this.chef);
+        this.downBread1 = new burgertime.ingredient_prefab(this.game,75+60, 540-5,'BreadDown1','BreadDown2','BreadDown3', this.chef);
+        this.downBread2 = new burgertime.ingredient_prefab(this.game,315+60,540-5,'BreadDown1','BreadDown2','BreadDown3', this.chef);
+        this.downBread3 = new burgertime.ingredient_prefab(this.game,555+60,540-5,'BreadDown1','BreadDown2','BreadDown3', this.chef);
+        this.downBread4 = new burgertime.ingredient_prefab(this.game,800+60,360-5,'BreadDown1','BreadDown2','BreadDown3', this.chef);
     },
     musicChange:function(){
         this.music.play();
@@ -137,6 +139,9 @@ burgertime.level1 ={
         this.game.physics.arcade.collide(this.chef,this.stairs,this.stairTouch, null, this);
         this.game.physics.arcade.collide(this.chef,this.floor,this.platformTouch, null, this);
         this.game.physics.arcade.collide(this.chef, this.collisionMap);
+        
+     //this.game.physics.arcade.collide(this.upBread1.ingredient1,this.lettuce1.ingredient1, this.stopMoving(this.upBread1), null, this);
+     
         
         if(this.isPowerUp == false){
             if(this.timeElapsedActivate > 3){
@@ -172,9 +177,8 @@ burgertime.level1 ={
             this.chef.body.velocity.x = -this.chef.speedX;
             this.chef.body.velocity.y = 0;
             this.chef.animations.play('walk');
-            this.chef.scale.x = 2.5
+            this.chef.scale.x = 2.5;
             this.chef.lastMove = 'L';
-            ;
         }
         else if(this.cursors.right.isDown && this.chef.canMove == true){
             this.chef.body.velocity.x = this.chef.speedX;
@@ -245,6 +249,15 @@ burgertime.level1 ={
             //next level
         }
         
+    },
+    stopMoving:function(_in1){
+        _in1.ingredient1.ingredientIsTouched = false;
+        _in1.ingredient2.ingredientIsTouched = false;
+        _in1.ingredient3.ingredientIsTouched = false;
+        _in1.ingredient4.ingredientIsTouched = false;
+        _in1.ingredient5.ingredientIsTouched = false;
+        _in1.allTouched = false;
+        console.log("Hey");
     },
     activatePowerUp:function(){
         this.powerUp = new burgertime.powerUp_prefab(this.game, 400, 400, this.chef);
