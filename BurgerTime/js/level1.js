@@ -110,13 +110,39 @@ burgertime.level1 ={
         this.timeElapsedDeactivate = 0;
         
         this.timerStairs = this.game.time.events.loop(Phaser.Timer.SECOND,this.activateStairs,this);
+
+        //this.bUp = this.add.group();
         
-        this.upBread1 = new burgertime.ingredient_prefab(this.game,75+60, 120-5,'BreadUp1','BreadUp2','BreadUp3', this.chef);
+        this.ingredient1 = new burgertime.ingredientPart_prefab(this.game,75+60,-5,'BreadUp1',this.chef);
+        //this.game.add.existing(this.ingredient1);
+        
+        this.ingredient2 = new burgertime.ingredientPart_prefab(this.game,75+60+30,-5,'BreadUp2',this.chef);
+        //this.game.add.existing(this.ingredient2);
+        
+        this.ingredient3 = new burgertime.ingredientPart_prefab(this.game,75+60+60,-5,'BreadUp2',this.chef);
+        //this.game.add.existing(this.ingredient3);
+        
+        this.ingredient4 = new burgertime.ingredientPart_prefab(this.game,75+60+90,-5,'BreadUp2',this.chef);
+        //this.game.add.existing(this.ingredient4);
+        
+        this.ingredient5 = new burgertime.ingredientPart_prefab(this.game,75+60+120,-5,'BreadUp3',this.chef);
+        this.allTouched = false;
+        //this.game.add.existing(this.ingredient5);
+        
+        /*this.bUp.add(this.ingredient1);
+        this.bUp.add(this.ingredient2);
+        this.bUp.add(this.ingredient3);
+        this.bUp.add(this.ingredient4);
+        this.bUp.add(this.ingredient5);*/
+        
+        this.lettuce1Ing = new burgertime.ingredientPart_prefab(this.game,75+60,-5+120,'Lettuce1',this.chef)
+        
+        //this.upBread1 = new burgertime.ingredient_prefab(this.game,75+60, 120-5,'BreadUp1','BreadUp2','BreadUp3', this.chef);
         this.upBread2 = new burgertime.ingredient_prefab(this.game,315+60,0-5,'BreadUp1','BreadUp2','BreadUp3', this.chef);
         this.upBread3 = new burgertime.ingredient_prefab(this.game,555+60,0-5,'BreadUp1','BreadUp2','BreadUp3', this.chef);
         this.upBread4 = new burgertime.ingredient_prefab(this.game,800+60,0-5,'BreadUp1','BreadUp2','BreadUp3', this.chef);
         
-        this.lettuce1 = new burgertime.ingredient_prefab(this.game,75+60, 240-5,'Lettuce1','Lettuce2','Lettuce3', this.chef);
+        //this.lettuce1 = new burgertime.ingredient_prefab(this.game,75+60, 240-5,'Lettuce1','Lettuce2','Lettuce3', this.chef);
         this.lettuce2 = new burgertime.ingredient_prefab(this.game,315+60,300-5,'Lettuce1','Lettuce2','Lettuce3', this.chef);
         this.letuce3 = new burgertime.ingredient_prefab(this.game,555+60,120-5,'Lettuce1','Lettuce2','Lettuce3', this.chef);
         this.lettuce4 = new burgertime.ingredient_prefab(this.game,800+60,120-5,'Lettuce1','Lettuce2','Lettuce3', this.chef);
@@ -140,9 +166,15 @@ burgertime.level1 ={
         this.game.physics.arcade.collide(this.chef,this.floor,this.platformTouch, null, this);
         this.game.physics.arcade.collide(this.chef, this.collisionMap);
         
-     //this.game.physics.arcade.collide(this.upBread1.ingredient1,this.lettuce1.ingredient1, this.stopMoving(this.upBread1), null, this);
-     
+        var trial = this.goDown(this.ingredient1,
+                               this.ingredient2,
+                               this.ingredient3,
+                               this.ingredient4,
+                               this.ingredient5,
+                               this.allTouched);
         
+        this.game.physics.arcade.collide(this.ingredient1,this.lettuce1Ing, this.stopMoving(this.ingredient1, this.ingredient2, this.ingredient3, this.ingredient4, this.ingredient5, this.allTouched), null, this);
+     
         if(this.isPowerUp == false){
             if(this.timeElapsedActivate > 3){
                 this.activatePowerUp();
@@ -250,14 +282,33 @@ burgertime.level1 ={
         }
         
     },
-    stopMoving:function(_in1){
-        _in1.ingredient1.ingredientIsTouched = false;
-        _in1.ingredient2.ingredientIsTouched = false;
-        _in1.ingredient3.ingredientIsTouched = false;
-        _in1.ingredient4.ingredientIsTouched = false;
-        _in1.ingredient5.ingredientIsTouched = false;
-        _in1.allTouched = false;
-        console.log("Hey");
+    stopMoving:function(_i1,_i2,_i3,_i4,_i5,_done){
+        _i1.ingredientIsTouched = false;
+        _i2.ingredientIsTouched = false;
+        _i3.ingredientIsTouched = false;
+        _i4.ingredientIsTouched = false;
+        _i5.ingredientIsTouched = false;
+        _done = false;
+    },
+    goDown:function(_i1,_i2,_i3,_i4,_i5,_done)
+    {
+        if(_i1.ingredientIsTouched &&
+          _i2.ingredientIsTouched &&
+          _i3.ingredientIsTouched &&
+          _i4.ingredientIsTouched &&
+          _i5.ingredientIsTouched){
+            
+            _done = true;
+        }
+        
+        if(_done == true)
+        {
+            _i1.y += 0.5;
+            _i2.y += 0.5;
+            _i3.y += 0.5;
+            _i4.y += 0.5;
+            _i5.y += 0.5;
+        }
     },
     activatePowerUp:function(){
         this.powerUp = new burgertime.powerUp_prefab(this.game, 400, 400, this.chef);
@@ -290,6 +341,8 @@ burgertime.level1 ={
         //this.powerUp.body.setSize(22, 28, 20, 16);
         //this.game.debug.body(this.powerUp);
         this.game.debug.body(this.chef);
+        //this.game.debug.body(this.upBread1.ingredient1);
+        //this.game.debug.body(this.lettuce1.ingredient1);
     }
 };
 
