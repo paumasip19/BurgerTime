@@ -21,6 +21,7 @@ burgertime.level1 ={
         this.load.tilemap('level1','assets/levels/Level1.json',null,Phaser.Tilemap.TILED_JSON);
         
         this.load.spritesheet('chef', ruta+'ChefRamsay.png', 12, 25);
+        this.load.spritesheet('salchicha', ruta+'Salchicha.png',14, 25);
         this.load.image('PowerUp1', ruta+'PowerUp1.png');
         this.load.image('PowerUp2', ruta+'PowerUp2.png');
         this.load.image('PowerUp3', ruta+'PowerUp3.png');
@@ -96,6 +97,9 @@ burgertime.level1 ={
         
         this.chef = new burgertime.chef_prefab(this.game,this.game.world.centerX+150,this.game.world.centerY + 100,gameOptions.heroSpeed,gameOptions.heroSpeed,this);
         this.chef.frame = 7;
+        
+        this.salchicha = new burgertime.enemy_prefab(this.game,this.game.world.centerX,this.game.world.centerY,gameOptions.heroSpeed-50,gameOptions.heroSpeed-50,this);
+        this.salchicha.body.allowGravity = false;
         
         this.isPowerUp = false;
         this.dead = false;
@@ -341,6 +345,7 @@ burgertime.level1 ={
         //this.powerUp.body.setSize(22, 28, 20, 16);
         //this.game.debug.body(this.powerUp);
         this.game.debug.body(this.chef);
+        this.game.debug.body(this.salchicha);
         //this.game.debug.body(this.upBread1.ingredient1);
         //this.game.debug.body(this.lettuce1.ingredient1);
     }
