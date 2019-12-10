@@ -10,7 +10,9 @@ burgertime.ingredient_prefab = function(_game,_x,_y,_tag1,_tag2,_tag3, _chef){
     this.ingredient3 = new burgertime.ingredientPart_prefab(_game,_x+60,_y,_tag2,_chef);
     this.ingredient4 = new burgertime.ingredientPart_prefab(_game,_x+90,_y,_tag2,_chef);
     this.ingredient5 = new burgertime.ingredientPart_prefab(_game,_x+120,_y,_tag3,_chef);
-    //this.allTouched = false;
+    this.allTouched = false;
+    this.tempPos = 0;
+    this.lastTempPos = 0;
     this.game.add.existing(this);
     
     
@@ -41,11 +43,11 @@ burgertime.ingredient_prefab.prototype.update = function(){
 
 burgertime.ingredient_prefab.prototype.stopMoving = function(){
     this.ingredient1.ingredientIsTouched = false;
-        this.ingredient2.ingredientIsTouched = false;
-        this.ingredient3.ingredientIsTouched = false;
-        this.ingredient4.ingredientIsTouched = false;
-        this.ingredient5.ingredientIsTouched = false;
-        this.allTouched = false;
+    this.ingredient2.ingredientIsTouched = false;
+    this.ingredient3.ingredientIsTouched = false;
+    this.ingredient4.ingredientIsTouched = false;
+    this.ingredient5.ingredientIsTouched = false;
+    this.allTouched = false;
 };
 
 //LLAMAR SI TOCA UN INGREDIENTE
@@ -74,6 +76,15 @@ burgertime.ingredient_prefab.prototype.fall = function(){
         this.ingredient4.position.y += 1;
         this.ingredient5.position.y += 1;
     }*/
+};
+
+burgertime.ingredient_prefab.prototype.updateTempPos = function(_yPos){
+    
+    if(this.tempPos != _yPos)
+    {
+        this.tempPos = _yPos;
+        console.log("Hola");
+    }
 };
 
 
