@@ -5,6 +5,10 @@ burgertime.level1 ={
         this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
         this.scale.pageAlignHorizontally = true;
         this.scale.pageAlignVertically = true;
+        
+        this.scale.setGameSize(gameOptions.level1Width,gameOptions.level1Height);
+        
+        
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
         this.game.physics.arcade.gravity.y = gameOptions.heroGravity;
 
@@ -22,6 +26,7 @@ burgertime.level1 ={
         
         this.load.spritesheet('chef', ruta+'ChefRamsay.png', 12, 25);
         this.load.spritesheet('salchicha', ruta+'Salchicha.png',14, 25);
+        this.load.image('PimientaTirada', ruta+'PimientaTirada.png',13, 25);
         this.load.image('PowerUp1', ruta+'PowerUp1.png');
         this.load.image('PowerUp2', ruta+'PowerUp2.png');
         this.load.image('PowerUp3', ruta+'PowerUp3.png');
@@ -43,6 +48,7 @@ burgertime.level1 ={
         this.load.image('BreadUp1',ruta+'UpBread1.png');
         this.load.image('BreadUp2',ruta+'UpBread2.png');
         this.load.image('BreadUp3',ruta+'UpBread3.png');
+        
         
         this.load.audio('mainTheme', 'assets/audio/main_theme.mp3');
         this.load.audio('start', 'assets/audio/game_start.mp3');
@@ -77,6 +83,7 @@ burgertime.level1 ={
         this.walkIngredient = this.game.add.audio('walk_ingredient');
         this.start.play();
         
+        this.loadPeppers();
         
         this.map = this.game.add.tilemap('level1');
         this.map.addTilesetImage('Map');
@@ -137,6 +144,10 @@ burgertime.level1 ={
     },
     musicChange:function(){
         this.music.play();
+    },
+    loadPeppers:function(){
+        this.peppers = this.add.group();
+        this.peppers.enableBody = true;
     },
     update:function(){          
         
@@ -293,19 +304,62 @@ burgertime.level1 ={
             
           if(this.chef.pepper > 0) {
                 this.chef.canMove = false;
-                
+                var _pepper = this.peppers.getFirstExists(false);  
+              
                 if(this.chef.lastMove == 'U') { 
                     this.animacionA = this.chef.animations.play('pepperUp',5,false,false);
                     this.animacionA.onComplete.add(function(){this.chef.canMove = true;},this);
+                    
+                    //if(!_pepper){
+                    //    console.log('pepper created');
+                    //    _pepper = new burgertime.pepper_prefab(this.game,this.chef.x,this.chef.top,this.chef.lastMove);
+                    //    this.peppers.add(_pepper);
+                    //}
+                    //else{
+                    //    _pepper.reset(this.chef.x,this.chef.top);
+                    //}
+                    
                 }
                 else if(this.chef.lastMove == 'D') { 
                     this.animacionB = this.chef.animations.play('pepperDown',5,false,false);
                     this.animacionB.onComplete.add(function(){this.chef.canMove = true;},this);
+                    
+                    //if(!_pepper){
+                    //    console.log('pepper created');
+                    //    _pepper = new burgertime.pepper_prefab(this.game,this.chef.x,this.chef.bottom,this.chef.lastMove);
+                    //    this.peppers.add(_pepper);
+                    //}
+                    //else{
+                    //    _pepper.reset(this.chef.x,this.chef.top);
+                    //}
+                    
+                    
                 }
                 else {
                     this.animacionC = this.chef.animations.play('pepperSide',5,false,false);
                     this.animacionC.onComplete.add(function(){this.chef.canMove = true;},this);
-                }
+                    
+                    //if(this.chef.lastMove == 'R') { 
+                    //    if(!_pepper){
+                    //    console.log('pepper created');
+                    //    _pepper = new burgertime.pepper_prefab(this.game,this.chef.x,this.chef.right,this.chef.lastMove);
+                    //    this.peppers.add(_pepper);
+                    //    }
+                    //    else{
+                    //        _pepper.reset(this.chef.x,this.chef.top);
+                    //    }
+                    //}
+                    //else{
+                    //    if(!_pepper){
+                    //    console.log('pepper created');
+                    //    _pepper = new burgertime.pepper_prefab(this.game,this.chef.x,this.chef.left,this.chef.lastMove);
+                    //    this.peppers.add(_pepper);
+                    //    }
+                    //    else{
+                    //        _pepper.reset(this.chef.x,this.chef.top);
+                    //    }
+                    }
+                
                this.chef.pepper--;                 
            }
         }
