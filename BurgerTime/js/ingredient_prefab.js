@@ -12,7 +12,7 @@ burgertime.ingredient_prefab = function(_game,_x,_y,_tag1,_tag2,_tag3, _chef){
     this.ingredient5 = new burgertime.ingredientPart_prefab(_game,_x+120,_y,_tag3,_chef);
     this.allTouched = false;
     this.tempPos = 0;
-    this.lastTempPos = 0;
+    this.tempUpdated = false;
     this.game.add.existing(this);
     
     
@@ -48,6 +48,7 @@ burgertime.ingredient_prefab.prototype.stopMoving = function(){
     this.ingredient4.ingredientIsTouched = false;
     this.ingredient5.ingredientIsTouched = false;
     this.allTouched = false;
+    this.tempUpdated = false;
 };
 
 //LLAMAR SI TOCA UN INGREDIENTE
@@ -80,10 +81,10 @@ burgertime.ingredient_prefab.prototype.fall = function(){
 
 burgertime.ingredient_prefab.prototype.updateTempPos = function(_yPos){
     
-    if(this.tempPos != _yPos)
+    if(this.tempUpdated == false)
     {
         this.tempPos = _yPos;
-        console.log("Hola");
+        this.tempUpdated = true;
     }
 };
 
