@@ -3,8 +3,12 @@ var burgertime = burgertime || {};
 var gameOptions={
     gameWidth:1920,
     gameHeight:1080,
-    level1Width:1280,
+    level1Width:1140,
     level1Height:800,
+    level2Width:1140,
+    level2Height:800,
+    level3Width:1140,
+    level3Height:800,
     heroGravity:10000,
     heroSpeed:200,
     heroJump:450
@@ -18,4 +22,4 @@ burgertime.game.state.add('level3',burgertime.level3);
 burgertime.game.state.add('ranking',burgertime.ranking);
 burgertime.game.state.add('menu',burgertime.menu);
 burgertime.game.state.add('access_screen',burgertime.access_screen);
-burgertime.game.state.start('menu');
+burgertime.game.state.start('level1');

@@ -9,7 +9,7 @@ burgertime.level3 ={
         this.game.physics.arcade.gravity.y = gameOptions.heroGravity;
 
         
-        this.game.world.setBounds(0,0,gameOptions.level1Width,gameOptions.level1Height);
+        this.game.world.setBounds(0,0,gameOptions.level3Width,gameOptions.level3Height);
         this.game.renderer.renderSession.roundPixels = true;
         
         

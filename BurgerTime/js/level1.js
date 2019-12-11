@@ -21,7 +21,7 @@ burgertime.level1 ={
     preload:function(){
         var ruta = 'assets/sprites/';
         
-        this.load.image('Map', ruta+'SpritesheetMaps.png');    
+        this.load.image('Map', ruta+'SpritesheetMaps.png'); 
         this.load.tilemap('level1','assets/levels/Level1.json',null,Phaser.Tilemap.TILED_JSON);
         
         this.load.spritesheet('chef', ruta+'ChefRamsay.png', 12, 25);
@@ -98,8 +98,7 @@ burgertime.level1 ={
         this.map.setCollisionBetween(4,5,true,'Stairs');
         
         this.background = this.map.createLayer('Background');
-        //this.map.setCollisionBetween(6,6,true,'Background');*/
-        
+        //this.map.setCollisionBetween(6,6,true,'Background');*/        
         
         
         this.chef = new burgertime.chef_prefab(this.game,this.game.world.centerX+150,this.game.world.centerY + 100,gameOptions.heroSpeed,gameOptions.heroSpeed,this);
@@ -122,25 +121,25 @@ burgertime.level1 ={
         
         this.timerStairs = this.game.time.events.loop(Phaser.Timer.SECOND,this.activateStairs,this);
         
-        this.upBread1 = new burgertime.ingredient_prefab(this.game,75+60, 120-5,'BreadUp1','BreadUp2','BreadUp3', this.chef);
-        this.upBread2 = new burgertime.ingredient_prefab(this.game,315+60,0-5,'BreadUp1','BreadUp2','BreadUp3', this.chef);
-        this.upBread3 = new burgertime.ingredient_prefab(this.game,555+60,0-5,'BreadUp1','BreadUp2','BreadUp3', this.chef);
-        this.upBread4 = new burgertime.ingredient_prefab(this.game,800+60,0-5,'BreadUp1','BreadUp2','BreadUp3', this.chef);
+        this.upBread1 = new burgertime.ingredient_prefab(this.game,75+60, 120+145,'BreadUp1','BreadUp2','BreadUp3', this.chef);
+        this.upBread2 = new burgertime.ingredient_prefab(this.game,315+60,0+145,'BreadUp1','BreadUp2','BreadUp3', this.chef);
+        this.upBread3 = new burgertime.ingredient_prefab(this.game,555+60,0+145,'BreadUp1','BreadUp2','BreadUp3', this.chef);
+        this.upBread4 = new burgertime.ingredient_prefab(this.game,800+60,0+145,'BreadUp1','BreadUp2','BreadUp3', this.chef);
         
-        this.lettuce1 = new burgertime.ingredient_prefab(this.game,75+60, 240-5,'Lettuce1','Lettuce2','Lettuce3', this.chef);
-        this.lettuce2 = new burgertime.ingredient_prefab(this.game,315+60,300-5,'Lettuce1','Lettuce2','Lettuce3', this.chef);
-        this.lettuce3 = new burgertime.ingredient_prefab(this.game,555+60,120-5,'Lettuce1','Lettuce2','Lettuce3', this.chef);
-        this.lettuce4 = new burgertime.ingredient_prefab(this.game,800+60,120-5,'Lettuce1','Lettuce2','Lettuce3', this.chef);
+        this.lettuce1 = new burgertime.ingredient_prefab(this.game,75+60, 240+145,'Lettuce1','Lettuce2','Lettuce3', this.chef);
+        this.lettuce2 = new burgertime.ingredient_prefab(this.game,315+60,300+145,'Lettuce1','Lettuce2','Lettuce3', this.chef);
+        this.lettuce3 = new burgertime.ingredient_prefab(this.game,555+60,120+145,'Lettuce1','Lettuce2','Lettuce3', this.chef);
+        this.lettuce4 = new burgertime.ingredient_prefab(this.game,800+60,120+145,'Lettuce1','Lettuce2','Lettuce3', this.chef);
         
-        this.burger1 = new burgertime.ingredient_prefab(this.game,75+60, 420-5,'Meat1','Meat2','Meat3', this.chef);
-        this.burger2 = new burgertime.ingredient_prefab(this.game,315+60,420-5,'Meat1','Meat2','Meat3', this.chef);
-        this.burger3 = new burgertime.ingredient_prefab(this.game,555+60,300-5,'Meat1','Meat2','Meat3', this.chef);
-        this.burger4 = new burgertime.ingredient_prefab(this.game,800+60,240-5,'Meat1','Meat2','Meat3', this.chef);
+        this.burger1 = new burgertime.ingredient_prefab(this.game,75+60, 420+145,'Meat1','Meat2','Meat3', this.chef);
+        this.burger2 = new burgertime.ingredient_prefab(this.game,315+60,420+145,'Meat1','Meat2','Meat3', this.chef);
+        this.burger3 = new burgertime.ingredient_prefab(this.game,555+60,300+145,'Meat1','Meat2','Meat3', this.chef);
+        this.burger4 = new burgertime.ingredient_prefab(this.game,800+60,240+145,'Meat1','Meat2','Meat3', this.chef);
         
-        this.downBread1 = new burgertime.ingredient_prefab(this.game,75+60, 540-5,'BreadDown1','BreadDown2','BreadDown3', this.chef);
-        this.downBread2 = new burgertime.ingredient_prefab(this.game,315+60,540-5,'BreadDown1','BreadDown2','BreadDown3', this.chef);
-        this.downBread3 = new burgertime.ingredient_prefab(this.game,555+60,540-5,'BreadDown1','BreadDown2','BreadDown3', this.chef);
-        this.downBread4 = new burgertime.ingredient_prefab(this.game,800+60,360-5,'BreadDown1','BreadDown2','BreadDown3', this.chef);
+        this.downBread1 = new burgertime.ingredient_prefab(this.game,75+60, 540+145,'BreadDown1','BreadDown2','BreadDown3', this.chef);
+        this.downBread2 = new burgertime.ingredient_prefab(this.game,315+60,540+145,'BreadDown1','BreadDown2','BreadDown3', this.chef);
+        this.downBread3 = new burgertime.ingredient_prefab(this.game,555+60,540+145,'BreadDown1','BreadDown2','BreadDown3', this.chef);
+        this.downBread4 = new burgertime.ingredient_prefab(this.game,800+60,360+145,'BreadDown1','BreadDown2','BreadDown3', this.chef);
     },
     musicChange:function(){
         this.music.play();
@@ -237,7 +236,7 @@ burgertime.level1 ={
                     this.burger4.stopMoving();
                }},null, this);
         
-     
+     //Power Up
         if(this.isPowerUp == false){
             if(this.timeElapsedActivate > 3){
                 this.activatePowerUp();
@@ -310,28 +309,28 @@ burgertime.level1 ={
                     this.animacionA = this.chef.animations.play('pepperUp',5,false,false);
                     this.animacionA.onComplete.add(function(){this.chef.canMove = true;},this);
                     
-                    //if(!_pepper){
-                    //    console.log('pepper created');
-                    //    _pepper = new burgertime.pepper_prefab(this.game,this.chef.x,this.chef.top,this.chef.lastMove);
-                    //    this.peppers.add(_pepper);
-                    //}
-                    //else{
-                    //    _pepper.reset(this.chef.x,this.chef.top);
-                    //}
+                    if(!_pepper){
+                        console.log('pepper created');
+                        _pepper = new burgertime.pepper_prefab(this.game,this.chef.x,this.chef.top,this.chef.lastMove);
+                        this.peppers.add(_pepper);
+                    }
+                    else{
+                        _pepper.reset(this.chef.x,this.chef.top);
+                    }
                     
                 }
                 else if(this.chef.lastMove == 'D') { 
                     this.animacionB = this.chef.animations.play('pepperDown',5,false,false);
                     this.animacionB.onComplete.add(function(){this.chef.canMove = true;},this);
                     
-                    //if(!_pepper){
-                    //    console.log('pepper created');
-                    //    _pepper = new burgertime.pepper_prefab(this.game,this.chef.x,this.chef.bottom,this.chef.lastMove);
-                    //    this.peppers.add(_pepper);
-                    //}
-                    //else{
-                    //    _pepper.reset(this.chef.x,this.chef.top);
-                    //}
+                    if(!_pepper){
+                        console.log('pepper created');
+                        _pepper = new burgertime.pepper_prefab(this.game,this.chef.x,this.chef.bottom,this.chef.lastMove);
+                        this.peppers.add(_pepper);
+                    }
+                    else{
+                        _pepper.reset(this.chef.x,this.chef.top);
+                    }
                     
                     
                 }
@@ -339,25 +338,25 @@ burgertime.level1 ={
                     this.animacionC = this.chef.animations.play('pepperSide',5,false,false);
                     this.animacionC.onComplete.add(function(){this.chef.canMove = true;},this);
                     
-                    //if(this.chef.lastMove == 'R') { 
-                    //    if(!_pepper){
-                    //    console.log('pepper created');
-                    //    _pepper = new burgertime.pepper_prefab(this.game,this.chef.x,this.chef.right,this.chef.lastMove);
-                    //    this.peppers.add(_pepper);
-                    //    }
-                    //    else{
-                    //        _pepper.reset(this.chef.x,this.chef.top);
-                    //    }
-                    //}
-                    //else{
-                    //    if(!_pepper){
-                    //    console.log('pepper created');
-                    //    _pepper = new burgertime.pepper_prefab(this.game,this.chef.x,this.chef.left,this.chef.lastMove);
-                    //    this.peppers.add(_pepper);
-                    //    }
-                    //    else{
-                    //        _pepper.reset(this.chef.x,this.chef.top);
-                    //    }
+                    if(this.chef.lastMove == 'R') { 
+                        if(!_pepper){
+                        console.log('pepper created');
+                        _pepper = new burgertime.pepper_prefab(this.game,this.chef.x,this.chef.right,this.chef.lastMove);
+                        this.peppers.add(_pepper);
+                        }
+                        else{
+                            _pepper.reset(this.chef.x,this.chef.top);
+                        }
+                    }
+                    else{
+                        if(!_pepper){
+                        console.log('pepper created');
+                        _pepper = new burgertime.pepper_prefab(this.game,this.chef.x,this.chef.left,this.chef.lastMove);
+                        this.peppers.add(_pepper);
+                        }
+                        else{
+                            _pepper.reset(this.chef.x,this.chef.top);
+                        }
                     }
                 
                this.chef.pepper--;                 
@@ -386,7 +385,7 @@ burgertime.level1 ={
             this.levelCompleted = false;
             //next level
         }
-        
+    }
     },
     stopMoving:function(_ingredient){
         _ingredient.ingredientIsTouched = false;
