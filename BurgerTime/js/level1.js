@@ -153,8 +153,6 @@ burgertime.level1 ={
         this.game.physics.arcade.collide(this.chef,this.stairs,this.stairTouch, null, this);
         this.game.physics.arcade.collide(this.chef,this.floor,this.platformTouch, null, this);
         this.game.physics.arcade.collide(this.chef, this.collisionMap);
-        
-        console.log(this.upBread1.y + "  Upbread 1.y   " + this.upBread1.tempPos + "  Upbread temp");
 
         //Columna 1
         this.game.physics.arcade.collide(this.upBread1.ingredient1,this.lettuce1.ingredient1, function(){

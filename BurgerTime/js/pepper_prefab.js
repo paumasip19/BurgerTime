@@ -17,24 +17,20 @@ burgertime.pepper_prefab = function(_game,_x,_y,_direc){
     this.game.physics.arcade.enable(this);
     this.body.allowGravity = false;
     this.body.immovable = true;
+    this.aliveTimer = 1;
 };
 
 burgertime.pepper_prefab.prototype = Object.create(Phaser.Sprite.prototype);
 burgertime.pepper_prefab.prototype.constructor = burgertime.pepper_prefab;
 
 burgertime.pepper_prefab.prototype.update = function(){
-
-    this.killYourself = this.game.time.events.add(Phaser.Timer.SECOND*1,this.kill(),this);
     
     //TIMER OKAY
-    /*if(this.timeElapsedActivate > 3){
-                this.activatePowerUp();
-                /*if(!this.bonusPause.isPlaying()){
-                    this.bonusPause.play();
-                }*/
-                /*this.timeElapsedDeactivate = 0;
-            }
-            else {
-                this.timeElapsedActivate += this.game.time.physicsElapsed;
-            }*/
+    if(this.aliveTimer < 0){
+        this.kill();
+    }
+    else 
+    {
+        this.aliveTimer += this.game.time.physicsElapsed;
+    }
 }
