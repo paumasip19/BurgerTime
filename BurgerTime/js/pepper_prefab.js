@@ -1,10 +1,11 @@
 var burgertime = burgertime || {};
 
-burgertime.pepper_prefab = function(_game,_x,_y,_direc){
-    Phaser.Sprite.call(this,_game,_x,_y,'PimientaTirada');
+burgertime.pepper_prefab = function(_game,_x,_y,_direc,_tag){
+    Phaser.Sprite.call(this,_game,_x,_y,_tag);
     
     this.scale.setTo(1);
     this.anchor.setTo(.5);
+    this.game = _game;
     this.direc = _direc;
     
     if(this.direc=='R'||this.direc=='L')
@@ -12,6 +13,7 @@ burgertime.pepper_prefab = function(_game,_x,_y,_direc){
         this.rotation = 90;    
     }
     
+    this.game.add.existing(this);
     this.checkWorldBounds = true;
     this.outOfBoundsKill = true;
     this.game.physics.arcade.enable(this);
@@ -31,6 +33,6 @@ burgertime.pepper_prefab.prototype.update = function(){
     }
     else 
     {
-        this.aliveTimer += this.game.time.physicsElapsed;
+        this.aliveTimer -= this.game.time.physicsElapsed;
     }
 }
