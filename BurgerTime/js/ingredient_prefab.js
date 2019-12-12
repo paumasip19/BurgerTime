@@ -13,6 +13,7 @@ burgertime.ingredient_prefab = function(_game,_x,_y,_tag1,_tag2,_tag3, _chef){
     this.allTouched = false;
     this.tempPos = 0;
     this.tempUpdated = false;
+    this.isDone = false;
     this.game.add.existing(this);
     
     
@@ -35,7 +36,7 @@ burgertime.ingredient_prefab.prototype.update = function(){
     //this.game.physics.arcade.collide(this.ingredient1,this.in1.ingredient1,this.stopMoving, null, this);
     //this.game.physics.arcade.collide(this.ingredient1,this.in2.ingredient1,this.stopMoving, null, this);
     
-    if(this.allTouched == true)
+    if(this.allTouched == true && this.isDone == false)
     {
         var i = this.fall();     
     }
@@ -65,18 +66,6 @@ burgertime.ingredient_prefab.prototype.fall = function(){
         this.ingredient3.position.y += 1;
         this.ingredient4.position.y += 1;
         this.ingredient5.position.y += 1;
-    /*if()
-    {
-        
-    }
-    else
-    {
-        this.ingredient1.position.y += 1;
-        this.ingredient2.position.y += 1;
-        this.ingredient3.position.y += 1;
-        this.ingredient4.position.y += 1;
-        this.ingredient5.position.y += 1;
-    }*/
 };
 
 burgertime.ingredient_prefab.prototype.updateTempPos = function(_yPos){
@@ -86,6 +75,11 @@ burgertime.ingredient_prefab.prototype.updateTempPos = function(_yPos){
         this.tempPos = _yPos;
         this.tempUpdated = true;
     }
+};
+
+burgertime.ingredient_prefab.prototype.ingredientDone = function(){
+    var a = this.stopMoving();
+    this.isDone = true;
 };
 
 

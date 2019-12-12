@@ -48,6 +48,7 @@ burgertime.level1 ={
         this.load.image('BreadUp1',ruta+'UpBread1.png');
         this.load.image('BreadUp2',ruta+'UpBread2.png');
         this.load.image('BreadUp3',ruta+'UpBread3.png');
+        this.load.image('Bandeja', ruta+"Recolector.png");
         
         
         this.load.audio('mainTheme', 'assets/audio/main_theme.mp3');
@@ -140,6 +141,26 @@ burgertime.level1 ={
         this.downBread2 = new burgertime.ingredient_prefab(this.game,315+60,540+145,'BreadDown1','BreadDown2','BreadDown3', this.chef);
         this.downBread3 = new burgertime.ingredient_prefab(this.game,555+60,540+145,'BreadDown1','BreadDown2','BreadDown3', this.chef);
         this.downBread4 = new burgertime.ingredient_prefab(this.game,800+60,360+145,'BreadDown1','BreadDown2','BreadDown3', this.chef);
+        
+        this.bandeja1 = this.game.add.sprite(125,900,'Bandeja',0);
+        this.game.physics.arcade.enable(this.bandeja1);
+        this.bandeja1.body.allowGravity = false;
+        this.bandeja1.body.immovable = true;
+        
+        this.bandeja2 = this.game.add.sprite(365,900,'Bandeja',0);
+        this.game.physics.arcade.enable(this.bandeja2);
+        this.bandeja2.body.allowGravity = false;
+        this.bandeja2.body.immovable = true;
+        
+        this.bandeja3 = this.game.add.sprite(605,900,'Bandeja',0);
+        this.game.physics.arcade.enable(this.bandeja3);
+        this.bandeja3.body.allowGravity = false;
+        this.bandeja3.body.immovable = true;
+        
+        this.bandeja4 = this.game.add.sprite(845,900,'Bandeja',0);
+        this.game.physics.arcade.enable(this.bandeja4);
+        this.bandeja4.body.allowGravity = false;
+        this.bandeja4.body.immovable = true;
     },
     musicChange:function(){
         this.music.play();
@@ -154,85 +175,200 @@ burgertime.level1 ={
         this.game.physics.arcade.collide(this.chef,this.floor,this.platformTouch, null, this);
         this.game.physics.arcade.collide(this.chef, this.collisionMap);
 
+        this.game.physics.arcade.collide(this.downBread1.ingredient1, this.bandeja1, function(){this.downBread1.ingredientDone();}, null, this);
+        this.game.physics.arcade.collide(this.downBread2.ingredient1, this.bandeja2, function(){this.downBread2.ingredientDone();}, null, this);
+        this.game.physics.arcade.collide(this.downBread3.ingredient1, this.bandeja3, function(){this.downBread3.ingredientDone();}, null, this);
+        this.game.physics.arcade.collide(this.downBread4.ingredient1, this.bandeja4, function(){this.downBread4.ingredientDone();}, null, this);
+        
+
         //Columna 1
         this.game.physics.arcade.collide(this.upBread1.ingredient1,this.lettuce1.ingredient1, function(){
-            var f = this.upBread1.updateTempPos(this.lettuce1.ingredient1.y); 
-            this.lettuce1.allTouched = true;
-            if(this.upBread1.ingredient1.y == this.upBread1.tempPos){
-                    this.upBread1.stopMoving();
-               }},null, this);
+            if(this.lettuce1.isDone == true)
+            {
+                var f = this.upBread1.updateTempPos(this.lettuce1.ingredient1.y); 
+                this.lettuce1.allTouched = true;
+                if(this.upBread1.ingredient1.y == this.upBread1.tempPos){
+                        this.upBread1.stopMoving();
+                }
+            }
+            else
+            {
+                this.upBread1.stopMoving();
+                this.upBread1.isDone = true;
+            }
+               },null, this);
         this.game.physics.arcade.collide(this.lettuce1.ingredient1,this.burger1.ingredient1, function(){
-            var f = this.lettuce1.updateTempPos(this.burger1.ingredient1.y); 
-            this.burger1.allTouched = true;
-            if(this.lettuce1.ingredient1.y == this.lettuce1.tempPos){
-                    this.lettuce1.stopMoving();
-               }},null, this);
+            if(this.burger1.isDone == true)
+            {
+                var f = this.lettuce1.updateTempPos(this.burger1.ingredient1.y); 
+                this.burger1.allTouched = true;
+                if(this.lettuce1.ingredient1.y == this.lettuce1.tempPos){
+                        this.lettuce1.stopMoving();
+                }
+            }
+            else
+            {
+                this.lettuce1.stopMoving();
+                this.lettuce1.isDone = true;
+            }
+               },null, this);
         this.game.physics.arcade.collide(this.burger1.ingredient1,this.downBread1.ingredient1, function(){
-            var f = this.burger1.updateTempPos(this.downBread1.ingredient1.y); 
-            this.downBread1.allTouched = true;
-            if(this.burger1.ingredient1.y == this.burger1.tempPos){
+            if(this.downBread1.isDone == true)
+            {
+                var f = this.burger1.updateTempPos(this.downBread1.ingredient1.y); 
+                this.downBread1.allTouched = true;
+                if(this.burger1.ingredient1.y == this.burger1.tempPos){
                     this.burger1.stopMoving();
-               }},null, this);
+                }
+            }
+            else
+            {
+                this.burger1.stopMoving();
+                this.burger1.isDone = true;
+            }
+            
+               },null, this);
         
         //Columna 2
         this.game.physics.arcade.collide(this.upBread2.ingredient1,this.lettuce2.ingredient1, function(){
-            var f = this.upBread2.updateTempPos(this.lettuce2.ingredient1.y); 
-            this.lettuce2.allTouched = true;
-            if(this.upBread2.ingredient1.y == this.upBread2.tempPos){
-                    this.upBread2.stopMoving();
-               }},null, this);
+            if(this.lettuce2.isDone == true)
+            {
+                var f = this.upBread2.updateTempPos(this.lettuce2.ingredient1.y); 
+                this.lettuce2.allTouched = true;
+                if(this.upBread2.ingredient1.y == this.upBread2.tempPos){
+                        this.upBread2.stopMoving();
+                }
+            }
+            else
+            {
+                this.upBread2.stopMoving();
+                this.upBread2.isDone = true;
+            }
+               },null, this);
         this.game.physics.arcade.collide(this.lettuce2.ingredient1,this.burger2.ingredient1, function(){
-            var f = this.lettuce2.updateTempPos(this.burger2.ingredient1.y); 
-            this.burger2.allTouched = true;
-            if(this.lettuce2.ingredient1.y == this.lettuce2.tempPos){
-                    this.lettuce2.stopMoving();
-               }},null, this);
+            if(this.burger2.isDone == true)
+            {
+                var f = this.lettuce2.updateTempPos(this.burger2.ingredient1.y); 
+                this.burger2.allTouched = true;
+                if(this.lettuce2.ingredient1.y == this.lettuce2.tempPos){
+                        this.lettuce2.stopMoving();
+                }
+            }
+            else
+            {
+                this.lettuce2.stopMoving();
+                this.lettuce2.isDone = true;
+            }
+               },null, this);
         this.game.physics.arcade.collide(this.burger2.ingredient1,this.downBread2.ingredient1, function(){
-            var f = this.burger2.updateTempPos(this.downBread2.ingredient1.y); 
-            this.downBread2.allTouched = true;
-            if(this.burger2.ingredient1.y == this.burger2.tempPos){
-                    this.burger2.stopMoving();
-               }},null, this);
+            if(this.downBread2.isDone == true)
+            {
+                var f = this.burger2.updateTempPos(this.downBread2.ingredient1.y); 
+                this.downBread2.allTouched = true;
+                if(this.burger2.ingredient1.y == this.burger2.tempPos){
+                        this.burger2.stopMoving();
+                }
+            }
+            else
+            {
+                this.burger2.stopMoving();
+                this.burger2.isDone = true;
+            }
+               },null, this);
         
         //Columna 3
         this.game.physics.arcade.collide(this.upBread3.ingredient1,this.lettuce3.ingredient1, function(){
-            var f = this.upBread3.updateTempPos(this.lettuce3.ingredient1.y); 
-            this.lettuce3.allTouched = true;
-            if(this.upBread3.ingredient1.y == this.upBread3.tempPos){
-                    this.upBread3.stopMoving();
-               }},null, this);
+            if(this.lettuce3.isDone == true)
+            {
+                var f = this.upBread3.updateTempPos(this.lettuce3.ingredient1.y); 
+                this.lettuce3.allTouched = true;
+                if(this.upBread3.ingredient1.y == this.upBread3.tempPos){
+                        this.upBread3.stopMoving();
+                }
+            }
+            else
+            {
+                this.upBread3.stopMoving();
+                this.upBread3.isDone = true;
+            }
+               },null, this);
         this.game.physics.arcade.collide(this.lettuce3.ingredient1,this.burger3.ingredient1, function(){
-            var f = this.lettuce3.updateTempPos(this.burger3.ingredient1.y); 
-            this.burger3.allTouched = true;
-            if(this.lettuce3.ingredient1.y == this.lettuce3.tempPos){
-                    this.lettuce3.stopMoving();
-               }},null, this);
+            if(this.burger3.isDone == true)
+            {
+                var f = this.lettuce3.updateTempPos(this.burger3.ingredient1.y); 
+                this.burger3.allTouched = true;
+                if(this.lettuce3.ingredient1.y == this.lettuce3.tempPos){
+                        this.lettuce3.stopMoving();
+                }
+            }
+            else
+            {
+                this.lettuce3.stopMoving();
+                this.lettuce3.isDone = true;
+            }
+               },null, this);
         this.game.physics.arcade.collide(this.burger3.ingredient1,this.downBread3.ingredient1, function(){
-            var f = this.burger3.updateTempPos(this.downBread3.ingredient1.y); 
-            this.downBread3.allTouched = true;
-            if(this.burger3.ingredient1.y == this.burger3.tempPos){
-                    this.burger3.stopMoving();
-               }},null, this);
+            if(this.downBread3.isDone == true)
+            {
+                var f = this.burger3.updateTempPos(this.downBread3.ingredient1.y); 
+                this.downBread3.allTouched = true;
+                if(this.burger3.ingredient1.y == this.burger3.tempPos){
+                        this.burger3.stopMoving();
+                }
+            }
+            else
+            {
+                this.burger3.stopMoving();
+                this.burger3.isDone = true;
+            }
+               },null, this);
         
         //Columna 4
         this.game.physics.arcade.collide(this.upBread4.ingredient1,this.lettuce4.ingredient1, function(){
-            var f = this.upBread4.updateTempPos(this.lettuce4.ingredient1.y); 
-            this.lettuce4.allTouched = true;
-            if(this.upBread4.ingredient1.y == this.upBread4.tempPos){
-                    this.upBread4.stopMoving();
-               }},null, this);
+            if(this.lettuce4.isDone == true)
+            {
+                var f = this.upBread4.updateTempPos(this.lettuce4.ingredient1.y); 
+                this.lettuce4.allTouched = true;
+                if(this.upBread4.ingredient1.y == this.upBread4.tempPos){
+                        this.upBread4.stopMoving();
+                }
+            }
+            else
+            {
+                this.upBread4.stopMoving();
+                this.upBread4.isDone = true;
+            }
+               },null, this);
         this.game.physics.arcade.collide(this.lettuce4.ingredient1,this.burger4.ingredient1, function(){
-            var f = this.lettuce4.updateTempPos(this.burger4.ingredient1.y); 
-            this.burger4.allTouched = true;
-            if(this.lettuce4.ingredient1.y == this.lettuce4.tempPos){
-                    this.lettuce4.stopMoving();
-               }},null, this);
+            if(this.burger4.isDone == true)
+            {
+                var f = this.lettuce4.updateTempPos(this.burger4.ingredient1.y); 
+                this.burger4.allTouched = true;
+                if(this.lettuce4.ingredient1.y == this.lettuce4.tempPos){
+                        this.lettuce4.stopMoving();
+                }
+            }
+            else
+            {
+                this.lettuce4.stopMoving();
+                this.lettuce4.isDone = true;
+            }
+               },null, this);
         this.game.physics.arcade.collide(this.burger4.ingredient1,this.downBread4.ingredient1, function(){
-            var f = this.burger4.updateTempPos(this.downBread4.ingredient1.y); 
-            this.downBread4.allTouched = true;
-            if(this.burger4.ingredient1.y == this.burger4.tempPos){
-                    this.burger4.stopMoving();
-               }},null, this);
+            if(this.downBread4.isDone == true)
+            {
+                var f = this.burger4.updateTempPos(this.downBread4.ingredient1.y); 
+                this.downBread4.allTouched = true;
+                if(this.burger4.ingredient1.y == this.burger4.tempPos){
+                        this.burger4.stopMoving();
+                }
+            }
+            else
+            {
+                this.burger4.stopMoving();
+                this.burger4.isDone = true;
+            }
+               },null, this);
         
      //Power Up
         if(this.isPowerUp == false){

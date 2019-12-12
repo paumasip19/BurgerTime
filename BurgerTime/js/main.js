@@ -4,7 +4,7 @@ var gameOptions={
     gameWidth:1920,
     gameHeight:1080,
     level1Width:1140,
-    level1Height:800,
+    level1Height:1000,
     level2Width:1140,
     level2Height:800,
     level3Width:1140,
