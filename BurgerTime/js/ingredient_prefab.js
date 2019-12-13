@@ -11,7 +11,7 @@ burgertime.ingredient_prefab = function(_game,_x,_y,_tag1,_tag2,_tag3, _chef){
     this.ingredient4 = new burgertime.ingredientPart_prefab(_game,_x+90,_y,_tag2,_chef);
     this.ingredient5 = new burgertime.ingredientPart_prefab(_game,_x+120,_y,_tag3,_chef);
     this.allTouched = false;
-    this.tempPos = 0;
+    this.tempPos = _y;
     this.tempUpdated = false;
     this.isDone = false;
     this.game.add.existing(this);
@@ -29,15 +29,27 @@ burgertime.ingredient_prefab.prototype.update = function(){
       this.ingredient2.ingredientIsTouched == true &&
       this.ingredient3.ingredientIsTouched == true &&
       this.ingredient4.ingredientIsTouched == true &&
-      this.ingredient5.ingredientIsTouched == true){
+      this.ingredient5.ingredientIsTouched == true &&
+      this.allTouched == false){
         this.allTouched = true;
+        this.chef.points += 50;
     }
-    
-    //this.game.physics.arcade.collide(this.ingredient1,this.in1.ingredient1,this.stopMoving, null, this);
-    //this.game.physics.arcade.collide(this.ingredient1,this.in2.ingredient1,this.stopMoving, null, this);
     
     if(this.allTouched == true && this.isDone == false)
     {
+        var bigger = 1000;
+        if(this.ingredient1.y < bigger) bigger = this.ingredient1.y;
+        if(this.ingredient2.y < bigger) bigger = this.ingredient2.y;
+        if(this.ingredient3.y < bigger) bigger = this.ingredient3.y;
+        if(this.ingredient4.y < bigger) bigger = this.ingredient4.y;
+        if(this.ingredient5.y < bigger) bigger = this.ingredient5.y;
+        
+        this.ingredient1.y = bigger;
+        this.ingredient2.y = bigger;
+        this.ingredient3.y = bigger;
+        this.ingredient4.y = bigger;
+        this.ingredient5.y = bigger;
+        
         var i = this.fall();     
     }
 };
@@ -62,16 +74,17 @@ burgertime.ingredient_prefab.prototype.fall = function(){
     }*/
     
     this.ingredient1.position.y += 1;
-        this.ingredient2.position.y += 1;
-        this.ingredient3.position.y += 1;
-        this.ingredient4.position.y += 1;
-        this.ingredient5.position.y += 1;
+    this.ingredient2.position.y += 1;
+    this.ingredient3.position.y += 1;
+    this.ingredient4.position.y += 1;
+    this.ingredient5.position.y += 1;
 };
 
 burgertime.ingredient_prefab.prototype.updateTempPos = function(_yPos){
     
     if(this.tempUpdated == false)
     {
+        this.chef.points += 50;
         this.tempPos = _yPos;
         this.tempUpdated = true;
     }
