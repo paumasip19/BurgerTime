@@ -1,9 +1,10 @@
 var burgertime = burgertime || {};
 
-burgertime.ingredient_prefab = function(_game,_x,_y,_tag1,_tag2,_tag3, _chef){
+burgertime.ingredient_prefab = function(_game,_x,_y,_tag1,_tag2,_tag3, _chef,_level){
     Phaser.Sprite.call(this,_game,_x+10000,_y,_tag1);
     
     this.chef = _chef;
+    this.level = _level;
     
     this.ingredient1 = new burgertime.ingredientPart_prefab(_game,_x,_y,_tag1,_chef);
     this.ingredient2 = new burgertime.ingredientPart_prefab(_game,_x+30,_y,_tag2,_chef);
@@ -15,7 +16,7 @@ burgertime.ingredient_prefab = function(_game,_x,_y,_tag1,_tag2,_tag3, _chef){
     this.tempUpdated = false;
     this.isDone = false;
     this.game.add.existing(this);
-    
+    this.killSal = false;
     
     //HACER HERENCIA DE CADA TROZO PARA HACERLO GENERICO
     //SOBRETODO PARA LLAMADA DE SPRITES
@@ -66,12 +67,11 @@ burgertime.ingredient_prefab.prototype.stopMoving = function(){
 
 //LLAMAR SI TOCA UN INGREDIENTE
 burgertime.ingredient_prefab.prototype.fall = function(){
-    
-    /*if(touchesEnemy)
-    {
-        //GivePointsToChef
-        //UpdateHUD
-    }*/
+    this.game.physics.arcade.collide(this.ingredient1, this.level.salchicha, this.killEnemy1, null, this);
+    this.game.physics.arcade.collide(this.ingredient2, this.level.salchicha, this.killEnemy1, null, this);
+    this.game.physics.arcade.collide(this.ingredient3, this.level.salchicha, this.killEnemy1, null, this);
+    this.game.physics.arcade.collide(this.ingredient4, this.level.salchicha, this.killEnemy1, null, this);
+    this.game.physics.arcade.collide(this.ingredient5, this.level.salchicha, this.killEnemy1, null, this);
     
     this.ingredient1.position.y += 1;
     this.ingredient2.position.y += 1;
@@ -93,6 +93,15 @@ burgertime.ingredient_prefab.prototype.updateTempPos = function(_yPos){
 burgertime.ingredient_prefab.prototype.ingredientDone = function(){
     var a = this.stopMoving();
     this.isDone = true;
+};
+burgertime.ingredient_prefab.prototype.killEnemy1 = function(){
+    if(this.level.salchicha.body.enable){
+        this.level.salchicha.body.enable = false;
+    }
+    if(!this.level.salchicha.oneTime){
+        this.level.salchicha.dead = true;
+        this.level.salchicha.oneTime = true;
+    }
 };
 
 

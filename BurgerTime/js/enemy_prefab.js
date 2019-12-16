@@ -27,6 +27,7 @@ burgertime.enemy_prefab = function(_game,_x,_y,_speedX,_speedY,_level){
     this.stunned = false;
     this.dead = false;
     this.alreadyDead = false;
+    this.oneTime = false;
     //this.level.stairs.setCollisionBetween(4,5,true,'Stairs');
     
     this.firstDir()
@@ -40,7 +41,7 @@ burgertime.enemy_prefab.prototype.update = function(){
     this.game.physics.arcade.collide(this, this.level.floor, this.enableGravity, null, this);
     this.game.physics.arcade.collide(this, this.level.collisionMap);
     this.game.physics.arcade.collide(this, this.level.stairs, this.goStairs, null, this);
-    this.game.physics.arcade.collide(this, this.level.pepperThrow, this.stunEnemy,null);
+    this.game.physics.arcade.collide(this, this.level.pepperThrow, this.stunEnemy,null, this);
     //console.log(this.direction);
     /*if(this.level.chef.body.position.x > this.body.position.x){
     this.body.velocity.x = this.speedX;
@@ -50,59 +51,56 @@ burgertime.enemy_prefab.prototype.update = function(){
         this.body.velocity.x = -this.speedX;
         this.scale.x = 2;
     }*/
-    if(this.direction == 'R'){
-        this.body.velocity.x = this.speedX;
-        this.animations.play('walk');
-        this.scale.x = -2;
+    if(!this.dead && !this.alreadyDead && !this.stunned){
+        if(this.direction == 'R'){
+            this.body.velocity.x = this.speedX;
+            this.animations.play('walk');
+            this.scale.x = -2;
+        }
+        if(this.direction == 'L'){
+            this.body.velocity.x = -this.speedX;
+            this.animations.play('wlak');
+            this.scale.x = 2;
+        }
+        if(this.direction == 'U'){
+            this.body.velocity.y = -this.speedY;
+            this.animations.play('up');
+        }
+        if(this.direction == 'D'){
+            this.body.velocity.y = this.speedY;
+            this.animations.play('down');
+        }
     }
-    if(this.direction == 'L'){
-        this.body.velocity.x = -this.speedX;
-        this.animations.play('wlak');
-        this.scale.x = 2;
-    }
-    if(this.direction == 'U'){
-        this.body.velocity.y = -this.speedY;
-        this.animations.play('up');
-    }
-    if(this.direction == 'D'){
-        this.body.velocity.y = this.speedY;
-        this.animations.play('down');
-    }
+    
     if(this.stunned){
         this.body.velocity.x = 0;
         this.body.velocity.y = 0;
-        this.animations.stop('walk');
-        this.animations.stop('up');
-        this.animations.stop('down');
         this.animations.play('stunned');
         if(this.timeStunned <= 0){
-        this.stunned = false;
-        this.timeStunned = 5;
+            //this.animations.stop('stunned');
+            this.stunned = false;
+            this.timeStunned = 5;
+            this.body.enable = true;
         }
         else{
             this.timeStunned -= this.game.time.physicsElapsed;
+            this.body.enable = false;
         }
     }
     
     if(this.dead){
-        this.animations.play('dead');
-        //this.anim.onComplete.add(function(){this.alreadyDead = true;},this);
-        this.alreadyDead = true;
-        //this.alreadyDead = true;
-        this.dead = false;
+        this.anim = this.animations.play('dead', 10, false, true);
+        this.anim.onComplete.add(function(){this.alreadyDead = true;},this);
     }
     
     if(this.alreadyDead){
-        console.log('caca');
-        
         this.level.chef.points += 100;
-        //this.animations.play('dead');
+        this.level.enemies--;
         this.level.salchicha.kill();
         this.alreadyDead = false;
     }
-    console.log(this.dead);
     //console.log(this.timeStunned);
-    //console.log(this.stunned);
+    console.log(this.stunned);
 };
 burgertime.enemy_prefab.prototype.firstDir = function(){
     if(this.level.chef.body.position.x > this.body.position.x){
@@ -114,12 +112,12 @@ burgertime.enemy_prefab.prototype.firstDir = function(){
 };
 burgertime.enemy_prefab.prototype.enableGravity = function(){
     this.body.allowGravity = true;
-    if(this.level.chef.body.position.x > this.body.position.x){
+    /*if(this.level.chef.body.position.x > this.body.position.x){
         this.direction = 'R';
     }
     else if(this.level.chef.body.position.x < this.body.position.x){
         this.direction = 'L';
-    }
+    }*/
     //this.level.stairs.setCollisionBetween(4,5,true,'Stairs');
 };
 burgertime.enemy_prefab.prototype.stunEnemy = function(){

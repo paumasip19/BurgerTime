@@ -112,6 +112,8 @@ burgertime.level1 ={
         
         this.background = this.map.createLayer('Background');
         
+        this.enemies = 3;
+        
         
         this.chef = new burgertime.chef_prefab(this.game,this.game.world.centerX+150,this.game.world.centerY + 100,gameOptions.heroSpeed,gameOptions.heroSpeed,this);
         this.chef.frame = 7;
@@ -157,25 +159,25 @@ burgertime.level1 ={
         this.stair10 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*17,gameOptions.level1Height/35*5,gameOptions.level1Height/35*9,'TileTransparente');
         this.stair11 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*17,gameOptions.level1Height/35*17.5,gameOptions.level1Height/35*7.5,'TileTransparente');
         
-        this.upBread1 = new burgertime.ingredient_prefab(this.game,75+60, 120+145,'BreadUp1','BreadUp2','BreadUp3', this.chef);
-        this.upBread2 = new burgertime.ingredient_prefab(this.game,315+60,0+145,'BreadUp1','BreadUp2','BreadUp3', this.chef);
-        this.upBread3 = new burgertime.ingredient_prefab(this.game,555+60,0+145,'BreadUp1','BreadUp2','BreadUp3', this.chef);
-        this.upBread4 = new burgertime.ingredient_prefab(this.game,800+60,0+145,'BreadUp1','BreadUp2','BreadUp3', this.chef);
+        this.upBread1 = new burgertime.ingredient_prefab(this.game,75+60, 120+145,'BreadUp1','BreadUp2','BreadUp3', this.chef,this);
+        this.upBread2 = new burgertime.ingredient_prefab(this.game,315+60,0+145,'BreadUp1','BreadUp2','BreadUp3', this.chef,this);
+        this.upBread3 = new burgertime.ingredient_prefab(this.game,555+60,0+145,'BreadUp1','BreadUp2','BreadUp3', this.chef,this);
+        this.upBread4 = new burgertime.ingredient_prefab(this.game,800+60,0+145,'BreadUp1','BreadUp2','BreadUp3', this.chef,this);
         
-        this.lettuce1 = new burgertime.ingredient_prefab(this.game,75+60, 240+145,'Lettuce1','Lettuce2','Lettuce3', this.chef);
-        this.lettuce2 = new burgertime.ingredient_prefab(this.game,315+60,300+145,'Lettuce1','Lettuce2','Lettuce3', this.chef);
-        this.lettuce3 = new burgertime.ingredient_prefab(this.game,555+60,120+145,'Lettuce1','Lettuce2','Lettuce3', this.chef);
-        this.lettuce4 = new burgertime.ingredient_prefab(this.game,800+60,120+145,'Lettuce1','Lettuce2','Lettuce3', this.chef);
+        this.lettuce1 = new burgertime.ingredient_prefab(this.game,75+60, 240+145,'Lettuce1','Lettuce2','Lettuce3', this.chef,this);
+        this.lettuce2 = new burgertime.ingredient_prefab(this.game,315+60,300+145,'Lettuce1','Lettuce2','Lettuce3', this.chef,this);
+        this.lettuce3 = new burgertime.ingredient_prefab(this.game,555+60,120+145,'Lettuce1','Lettuce2','Lettuce3', this.chef,this);
+        this.lettuce4 = new burgertime.ingredient_prefab(this.game,800+60,120+145,'Lettuce1','Lettuce2','Lettuce3', this.chef,this);
         
-        this.burger1 = new burgertime.ingredient_prefab(this.game,75+60, 420+145,'Meat1','Meat2','Meat3', this.chef);
-        this.burger2 = new burgertime.ingredient_prefab(this.game,315+60,420+145,'Meat1','Meat2','Meat3', this.chef);
-        this.burger3 = new burgertime.ingredient_prefab(this.game,555+60,300+145,'Meat1','Meat2','Meat3', this.chef);
-        this.burger4 = new burgertime.ingredient_prefab(this.game,800+60,240+145,'Meat1','Meat2','Meat3', this.chef);
+        this.burger1 = new burgertime.ingredient_prefab(this.game,75+60, 420+145,'Meat1','Meat2','Meat3', this.chef,this);
+        this.burger2 = new burgertime.ingredient_prefab(this.game,315+60,420+145,'Meat1','Meat2','Meat3', this.chef,this);
+        this.burger3 = new burgertime.ingredient_prefab(this.game,555+60,300+145,'Meat1','Meat2','Meat3', this.chef,this);
+        this.burger4 = new burgertime.ingredient_prefab(this.game,800+60,240+145,'Meat1','Meat2','Meat3', this.chef,this);
         
-        this.downBread1 = new burgertime.ingredient_prefab(this.game,75+60, 540+145,'BreadDown1','BreadDown2','BreadDown3', this.chef);
-        this.downBread2 = new burgertime.ingredient_prefab(this.game,315+60,540+145,'BreadDown1','BreadDown2','BreadDown3', this.chef);
-        this.downBread3 = new burgertime.ingredient_prefab(this.game,555+60,540+145,'BreadDown1','BreadDown2','BreadDown3', this.chef);
-        this.downBread4 = new burgertime.ingredient_prefab(this.game,800+60,360+145,'BreadDown1','BreadDown2','BreadDown3', this.chef);
+        this.downBread1 = new burgertime.ingredient_prefab(this.game,75+60, 540+145,'BreadDown1','BreadDown2','BreadDown3', this.chef,this);
+        this.downBread2 = new burgertime.ingredient_prefab(this.game,315+60,540+145,'BreadDown1','BreadDown2','BreadDown3', this.chef,this);
+        this.downBread3 = new burgertime.ingredient_prefab(this.game,555+60,540+145,'BreadDown1','BreadDown2','BreadDown3', this.chef,this);
+        this.downBread4 = new burgertime.ingredient_prefab(this.game,800+60,360+145,'BreadDown1','BreadDown2','BreadDown3', this.chef,this);
         
         this.bandeja1 = this.game.add.sprite(125,900,'Bandeja',0);
         this.game.physics.arcade.enable(this.bandeja1);
@@ -274,65 +276,6 @@ burgertime.level1 ={
         }
         
         //this.game.physics.arcade.collide(this.chef, this.burgerColisions);
-        //Colisiones ingredientes
-        this.game.physics.arcade.collide(this.salchicha, this.lettuce2.ingredient1, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha, this.lettuce2.ingredient2, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha, this.lettuce2.ingredient3, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha, this.lettuce2.ingredient4, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha, this.lettuce2.ingredient5, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha, this.lettuce1.ingredient1, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha, this.lettuce1.ingredient2, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha, this.lettuce1.ingredient3, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha, this.lettuce1.ingredient4, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha, this.lettuce1.ingredient5, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha, this.lettuce3.ingredient1, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha, this.lettuce3.ingredient2, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha, this.lettuce3.ingredient3, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha, this.lettuce3.ingredient4, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha, this.lettuce3.ingredient5, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha, this.lettuce4.ingredient1, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha, this.lettuce4.ingredient2, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha, this.lettuce4.ingredient3, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha, this.lettuce4.ingredient4, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha, this.lettuce4.ingredient5, this.killEnemy,null,this);this.game.physics.arcade.collide(this.salchicha, this.lettuce2.ingredient1, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha3, this.lettuce2.ingredient2, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha3, this.lettuce2.ingredient3, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha3, this.lettuce2.ingredient4, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha3, this.lettuce2.ingredient5, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha3, this.lettuce1.ingredient1, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha3, this.lettuce1.ingredient2, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha3, this.lettuce1.ingredient3, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha3, this.lettuce1.ingredient4, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha3, this.lettuce1.ingredient5, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha3, this.lettuce3.ingredient1, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha3, this.lettuce3.ingredient2, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha3, this.lettuce3.ingredient3, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha3, this.lettuce3.ingredient4, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha3, this.lettuce3.ingredient5, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha3, this.lettuce4.ingredient1, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha3, this.lettuce4.ingredient2, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha3, this.lettuce4.ingredient3, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha3, this.lettuce4.ingredient4, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha1, this.lettuce4.ingredient5, this.killEnemy,null,this);this.game.physics.arcade.collide(this.salchicha, this.lettuce2.ingredient1, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha2, this.lettuce2.ingredient2, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha2, this.lettuce2.ingredient3, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha2, this.lettuce2.ingredient4, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha2, this.lettuce2.ingredient5, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha2, this.lettuce1.ingredient1, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha2, this.lettuce1.ingredient2, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha2, this.lettuce1.ingredient3, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha2, this.lettuce1.ingredient4, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha2, this.lettuce1.ingredient5, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha2, this.lettuce3.ingredient1, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha2, this.lettuce3.ingredient2, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha2, this.lettuce3.ingredient3, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha2, this.lettuce3.ingredient4, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha2, this.lettuce3.ingredient5, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha2, this.lettuce4.ingredient1, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha2, this.lettuce4.ingredient2, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha2, this.lettuce4.ingredient3, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha2, this.lettuce4.ingredient4, this.killEnemy,null,this);
-        this.game.physics.arcade.collide(this.salchicha2, this.lettuce4.ingredient5, this.killEnemy,null,this);
         this.game.physics.arcade.collide(this.chef,this.salchicha,this.killChef,null,this); this.game.physics.arcade.collide(this.chef,this.salchicha2,this.killChef,null,this); this.game.physics.arcade.collide(this.chef,this.salchicha3,this.killChef,null,this);
         
         this.score.text=this.chef.points;
@@ -422,7 +365,6 @@ burgertime.level1 ={
                     this.chef.pepper--; 
                     this.pepperThrow = new burgertime.pepper_prefab(this.game,this.chef.x,this.chef.bottom,this.chef.lastMove,'PimientaTirada');
                     
-                    
                 }
                 else {
                     this.animacionC = this.chef.animations.play('pepperSide',5,false,false);
@@ -436,7 +378,8 @@ burgertime.level1 ={
                         this.chef.pepper--; 
                         this.pepperThrow = new burgertime.pepper_prefab(this.game,this.chef.left,this.chef.y,this.chef.lastMove,'PimientaTirada');
                     }                 
-           }
+                }
+            }
         }
                 
         if(this.chef.lives <= 0){                // Si Chef Muere, la condicion es cuando colisiona con enemigo
@@ -447,7 +390,7 @@ burgertime.level1 ={
         }
         
         if(this.dead){ 
-            tthis.chef.lives -= 1;//  PLayer Gasta Vida
+            this.chef.lives -= 1;//  PLayer Gasta Vida
             this.music.pause();
             this.death.play();
             //this.chef.lives = 3;
@@ -462,7 +405,12 @@ burgertime.level1 ={
             this.levelCompleted = false;
             //next level
         }
-    }
+        
+        if(this.enemies != 3){
+            this.spawnEnemy1();
+            this.enemies++;
+        }
+    
     },
     spawnEnemy1:function(){
         this.salchicha2 = new burgertime.enemy_prefab(this.game,50,146,gameOptions.heroSpeed-50,gameOptions.heroSpeed-50,this);
@@ -711,10 +659,6 @@ burgertime.level1 ={
         this.chef.body.allowGravity = true;
         this.map.setCollisionBetween(4,5,true,'Stairs');
     },
-    killEnemy:function(){
-        //console.log('SOX');
-        this.salchicha.dead = true;
-    },
     saveData:function(){
         if(parseInt(this.scoreHI.text) < parseInt(this.score.text))
         {
@@ -741,6 +685,7 @@ burgertime.level1 ={
         //this.game.debug.body(this.powerUp);
         this.game.debug.body(this.chef);
         this.game.debug.body(this.salchicha);
+        //this.game.debug.body(this.pepperThrow);
         
         //this.game.debug.body(this.upBread1.ingredient1);
         this.game.debug.body(this.lettuce2.ingredient1);

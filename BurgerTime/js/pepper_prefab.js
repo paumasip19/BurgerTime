@@ -26,7 +26,6 @@ burgertime.pepper_prefab.prototype = Object.create(Phaser.Sprite.prototype);
 burgertime.pepper_prefab.prototype.constructor = burgertime.pepper_prefab;
 
 burgertime.pepper_prefab.prototype.update = function(){
-    
     //TIMER OKAY
     if(this.aliveTimer < 0){
         this.kill();
@@ -35,4 +34,4 @@ burgertime.pepper_prefab.prototype.update = function(){
     {
         this.aliveTimer -= this.game.time.physicsElapsed;
     }
-}
+};
