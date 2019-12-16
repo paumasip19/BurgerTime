@@ -6,7 +6,7 @@ burgertime.menu ={
         this.scale.pageAlignHorizontally = true;
         this.scale.pageAlignVertically = true;
         
-    this.game.world.setBounds(0,0,gameOptions.level1Width,gameOptions.level1Height);
+    this.game.world.setBounds(0,0,gameOptions.menuWidth,gameOptions.menuHeight);
     },
     preload:function(){
         var ruta = 'assets/sprites/';
@@ -24,6 +24,7 @@ burgertime.menu ={
         
         this.bg3 = this.game.add.sprite(270,-2000,'bg3',0);
         this.bg3.scale.setTo(3.5);
+        console.log("Set");
         this.bg2 = this.game.add.sprite(270,-2000,'bg2',0);
         this.bg2.scale.setTo(3.5);
         this.bg1 = this.game.add.sprite(270,-2000,'bg1',0);

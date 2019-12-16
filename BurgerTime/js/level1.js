@@ -101,9 +101,6 @@ burgertime.level1 ={
         this.map = this.game.add.tilemap('level1');
         this.map.addTilesetImage('Map');
         
-        this.burgerColisions = this.map.createLayer('BurgerCol');
-        this.map.setCollisionBetween(6,6,true,'BurgerCol');
-        
         this.collisionMap = this.map.createLayer('Collisions');
         this.map.setCollisionBetween(6,6,true,'Collisions');
         
