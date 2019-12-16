@@ -25,6 +25,10 @@ burgertime.chef_prefab = function(_game,_x,_y,_speedX,_speedY,_level){
     this.pepper = 3;
     this.lastMove = 'D';
     this.canMove = true;
+    this.dead = false;
+    this.initPosX = _x;
+    this.initPosY = _y;
+    this.doOnce = false;
     this.body.setSize(12, 15, 0, 0);
 };
 
