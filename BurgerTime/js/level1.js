@@ -77,6 +77,8 @@ burgertime.level1 ={
         this.oneButton.onDown.add(this.saveData, this);
         this.twoButton = this.game.input.keyboard.addKey(Phaser.Keyboard.TWO);
         this.twoButton.onDown.add(this.loadData, this);
+        this.threeButton = this.game.input.keyboard.addKey(Phaser.Keyboard.THREE);
+        this.threeButton.onDown.add(this.lessLive, this);
         
         this.music = this.game.add.audio('mainTheme');
         this.start = this.game.add.audio('start');
@@ -196,7 +198,7 @@ burgertime.level1 ={
         this.hiText.fill='#FFFFFF';
         this.hiText.fontSize=40;
 
-        this.scoreHI=this.game.add.text(this.game.width/32+50,this.game.height/20,'0');
+        this.scoreHI=this.game.add.text(650,this.game.height/20,'0');
         this.scoreHI.anchor.setTo(1,0);
         this.scoreHI.font = 'arcade';
         this.scoreHI.fill='#FFFFFF';
@@ -208,7 +210,7 @@ burgertime.level1 ={
         this.peppersText.fill='#FFFFFF';
         this.peppersText.fontSize=40;
 
-        this.lifesText=this.game.add.text(this.game.width-50,this.game.height/20,'0');
+        this.lifesText=this.game.add.text(100,this.game.height/20,'0');
         this.lifesText.anchor.setTo(1,0);
         this.lifesText.font = 'arcade';
         this.lifesText.fill='#FFFFFF';
@@ -225,6 +227,14 @@ burgertime.level1 ={
         this.peppers.enableBody = true;
     },
     update:function(){   
+        
+        if(this.chef.lives == 0)
+        {
+            var h = this.saveData();
+            this.state.start('menu');
+        }
+        
+        
         
         this.game.physics.arcade.collide(this.chef,this.stairs,this.stairTouch, null, this);
         this.game.physics.arcade.collide(this.chef,this.floor,this.platformTouch, null, this);
@@ -673,19 +683,25 @@ burgertime.level1 ={
         this.salchicha.dead = true;
     },
     saveData:function(){
+        if(parseInt(this.scoreHI.text) < parseInt(this.score.text))
+        {
+            var t = JSON.parse(localStorage.getItem('actualUser'));
+            t.highScore = this.score.text;
+            console.log(t.highScore);
+            localStorage.setItem('actualUser', JSON.stringify(t));
         
-        var t = JSON.parse(localStorage.getItem('actualUser'));
-        t.highScore = this.score.text;
-        console.log(t.highScore);
-        localStorage.setItem('actualUser', JSON.stringify(t));
+            localStorage.setItem('user' + t.username, JSON.stringify(t));
+        }
         
-        localStorage.setItem('user' + t.username, JSON.stringify(t));
     },
     loadData:function(){
         
         var t = JSON.parse(localStorage.getItem('actualUser'));
         console.log(t.highScore);
         this.scoreHI.text = t.highScore;
+    },
+    lessLive:function(){
+        this.chef.lives--;
     },
     render:function(){
         //this.powerUp.body.setSize(22, 28, 20, 16);
