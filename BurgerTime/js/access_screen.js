@@ -31,11 +31,17 @@ burgertime.access_screen ={
         
         this.goBackButton = this.game.add.button(-500, -170, 'ButtonUIGoBack', this.return, this, 2, 1, 0);
         
-        this.user = this.game.add.inputField(100, 0, {
-        font: '40px Arial',
+        this.errorText=this.game.add.text(950,1000,'');
+        this.errorText.anchor.setTo(0.5,0);
+        this.errorText.font = 'arcade';
+        this.errorText.fill='#FFFFFF';
+        this.errorText.fontSize=40;
+        
+        this.user = this.game.add.inputField(100, 300, {
+        font: '50px Arial',
         fill: '#212121',
         fontWeight: 'bold',
-        width: 300,
+        width: 400,
         height: 100,
         padding: 8,
         borderWidth: 1,
@@ -47,11 +53,11 @@ burgertime.access_screen ={
         zoom: true,
         });
         
-        this.password = this.game.add.inputField(100, 300, {
-        font: '40px Arial',
+        this.password = this.game.add.inputField(100, 500, {
+        font: '50px Arial',
         fill: '#212121',
         fontWeight: 'bold',
-        width: 300,
+        width: 400,
         height: 100,
         padding: 8,
         borderWidth: 1,
@@ -72,6 +78,7 @@ burgertime.access_screen ={
             this.registerUser.x = 2000;
             this.checkLogin.x = 2000;
             this.goBackButton.x = 2000;
+            this.errorText.x = 3000;
             
             this.user.value = "";
             this.password.value = "";
@@ -80,29 +87,33 @@ burgertime.access_screen ={
         {
             this.register.x = 2000;
             this.login.x = 2000;
-            this.user.x = 800;
-            this.password.x = 800;
+            this.user.x = 740;
+            this.password.x = 740;
             this.registerUser.x = 670;
             this.goBackButton.x = 0;
+            this.errorText.x = 950;
         }
         else if(this.sceneState == 2) //Login
         {
             this.register.x = 2000;
             this.login.x = 2000;
-            this.user.x = 800;
-            this.password.x = 800;
+            this.user.x = 740;
+            this.password.x = 740;
             this.checkLogin.x = 670;
             this.goBackButton.x = 0;
+            this.errorText.x = 950;
             
             
         }
     },
     registerScreen:function(){
         console.log("Register");
+        this.errorText.text = "";
         this.sceneState = 1;
     },
     loginScreen:function(){
         console.log("Login");
+        this.errorText.text = "";
         this.sceneState = 2;
     },
     return:function(){
@@ -112,34 +123,34 @@ burgertime.access_screen ={
         var t = JSON.parse(localStorage.getItem('user' + this.user.value));
         if(t == null)
         {
-            console.log("not exist");
+            this.errorText.text = "The user doesn't exist";
         }
         else if(this.user.value == t.username)
         {
             if(this.password.value == t.password)
             {
-                console.log("good password");
+                this.errorText.text = "Login successful";
                 this.state.start('menu');
             }
             else
             {
+                this.errorText.text = "The password is not correct";
                 console.log("bad password");
             }
         }
-
     },
     registerFunc:function(){
         var t = JSON.parse(localStorage.getItem('user' + this.user.value));
         if(t == null)
         {
-            console.log("isNull");
+            this.errorText.text = "Register successful";
             var test = { 'username': this.user.value, 'password': this.password.value};
             localStorage.setItem('user' + this.user.value, JSON.stringify(test));
             this.sceneState = 0;
         }
         else
         {
-            console.log("Already exists");
+            this.errorText.text = "The user already exists";
         }
         
     }
