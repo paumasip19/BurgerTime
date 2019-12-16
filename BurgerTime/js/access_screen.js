@@ -19,13 +19,13 @@ burgertime.access_screen ={
         this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
         this.scale.pageAlignHorizontally = true;    
         
-        this.state = 0;
+        this.sceneState = 0;
         
         this.register = this.game.add.button(this.game.world.centerX, 400, 'ButtonUIRegister', this.registerScreen, this);
         
         this.login = this.game.add.button(this.game.world.centerX, 0, 'ButtonUILogin', this.loginScreen, this, 2, 1, 0);
         
-        this.checkLogin = this.game.add.button(this.game.world.centerX, 600, 'ButtonUILogin', this.loginScreen, this, 2, 1, 0);
+        this.checkLogin = this.game.add.button(this.game.world.centerX, 600, 'ButtonUILogin', this.loginFunc, this, 2, 1, 0);
         
         this.registerUser = this.game.add.button(this.game.world.centerX, 600, 'ButtonUIRegister', this.registerFunc, this, 2, 1, 0);
         
@@ -63,7 +63,7 @@ burgertime.access_screen ={
 
     },
     update:function(){
-        if(this.state == 0)
+        if(this.sceneState == 0)
         {
             this.register.x = 670;
             this.login.x = 670;
@@ -76,7 +76,7 @@ burgertime.access_screen ={
             this.user.value = "";
             this.password.value = "";
         }
-        else if(this.state == 1) //Register
+        else if(this.sceneState == 1) //Register
         {
             this.register.x = 2000;
             this.login.x = 2000;
@@ -85,7 +85,7 @@ burgertime.access_screen ={
             this.registerUser.x = 670;
             this.goBackButton.x = 0;
         }
-        else if(this.state == 2) //Login
+        else if(this.sceneState == 2) //Login
         {
             this.register.x = 2000;
             this.login.x = 2000;
@@ -99,23 +99,48 @@ burgertime.access_screen ={
     },
     registerScreen:function(){
         console.log("Register");
-        this.state = 1;
+        this.sceneState = 1;
     },
     loginScreen:function(){
         console.log("Login");
-        this.state = 2;
+        this.sceneState = 2;
     },
     return:function(){
-        this.state = 0;
+        this.sceneState = 0;
     },
     loginFunc:function(){
-        var t = JSON.parse(localStorage.getItem('user'));
-        console.log(t);
-        this.scoreHI.text = t.highScore;
+        var t = JSON.parse(localStorage.getItem('user' + this.user.value));
+        if(t == null)
+        {
+            console.log("not exist");
+        }
+        else if(this.user.value == t.username)
+        {
+            if(this.password.value == t.password)
+            {
+                console.log("good password");
+                this.state.start('menu');
+            }
+            else
+            {
+                console.log("bad password");
+            }
+        }
+
     },
     registerFunc:function(){
-        var test = { 'username': this.user.value, 'password': this.password.value};
-        console.log(this.user.value);
-        localStorage.setItem('user', JSON.stringify(test));
+        var t = JSON.parse(localStorage.getItem('user' + this.user.value));
+        if(t == null)
+        {
+            console.log("isNull");
+            var test = { 'username': this.user.value, 'password': this.password.value};
+            localStorage.setItem('user' + this.user.value, JSON.stringify(test));
+            this.sceneState = 0;
+        }
+        else
+        {
+            console.log("Already exists");
+        }
+        
     }
 };
