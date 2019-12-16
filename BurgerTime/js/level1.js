@@ -52,6 +52,8 @@ burgertime.level1 ={
         this.load.image('BreadUp3',ruta+'UpBread3.png');
         this.load.image('Bandeja', ruta+"Recolector.png");
         
+        this.load.image('TileBlanca', ruta+"Imagen127.png");
+        this.load.image('TileTransparente', ruta+"Imagen128.png");
         
         this.load.audio('mainTheme', 'assets/audio/main_theme.mp3');
         this.load.audio('start', 'assets/audio/game_start.mp3');
@@ -125,7 +127,7 @@ burgertime.level1 ={
         this.startLevel = true;
         this.levelCompleted = false;
         
-        this.peppersIcon = this.game.add.tileSprite(this.game.width/65-25,this.game.height/20,30,30, 'PimientaIcon');
+        this.peppersIcon = this.game.add.tileSprite(this.game.width/6*5-25,this.game.height/20,30,30, 'PimientaIcon');
         this.peppersIcon.anchor.setTo(1,0);
         this.peppersIcon.scale.setTo(1.5);
 
@@ -144,6 +146,19 @@ burgertime.level1 ={
         
         this.spawnSalchicha1 = this.game.time.events.add(Phaser.Timer.SECOND*2,this.spawnEnemy1,this);
         this.spawnSalchicha1 = this.game.time.events.add(Phaser.Timer.SECOND*3,this.spawnEnemy2,this);
+        
+        
+        this.stair1 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*1,gameOptions.level1Height/35*5,gameOptions.level1Height/35*5,'TileTransparente');
+        this.stair2 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*1,gameOptions.level1Height/35*13.5,gameOptions.level1Height/35*11,'TileTransparente');
+        this.stair3 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*5,gameOptions.level1Height/35*5,gameOptions.level1Height/35*20,'TileTransparente');
+        this.stair4 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*9,gameOptions.level1Height/35*5,gameOptions.level1Height/35*20,'TileTransparente');
+        this.stair5 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*13,gameOptions.level1Height/35*5,gameOptions.level1Height/35*20,'TileTransparente');
+        this.stair6 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*3,gameOptions.level1Height/35*9,gameOptions.level1Height/35*11,'TileTransparente');
+        this.stair7 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*7,gameOptions.level1Height/35*5,gameOptions.level1Height/35*7,'TileTransparente');
+        this.stair8 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*11,gameOptions.level1Height/35*9,gameOptions.level1Height/35*7,'TileTransparente');
+        this.stair9 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*15,gameOptions.level1Height/35*13.5,gameOptions.level1Height/35*11.5,'TileTransparente');
+        this.stair10 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*17,gameOptions.level1Height/35*5,gameOptions.level1Height/35*9,'TileTransparente');
+        this.stair11 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*17,gameOptions.level1Height/35*17.5,gameOptions.level1Height/35*7.5,'TileTransparente');
         
         this.upBread1 = new burgertime.ingredient_prefab(this.game,75+60, 120+145,'BreadUp1','BreadUp2','BreadUp3', this.chef);
         this.upBread2 = new burgertime.ingredient_prefab(this.game,315+60,0+145,'BreadUp1','BreadUp2','BreadUp3', this.chef);
@@ -198,19 +213,19 @@ burgertime.level1 ={
         this.hiText.fill='#FFFFFF';
         this.hiText.fontSize=40;
 
-        this.scoreHI=this.game.add.text(650,this.game.height/20,'0');
+        this.scoreHI=this.game.add.text(this.game.width/3*2+50,this.game.height/20,'0');
         this.scoreHI.anchor.setTo(1,0);
         this.scoreHI.font = 'arcade';
         this.scoreHI.fill='#FFFFFF';
         this.scoreHI.fontSize=40;
 
-        this.peppersText=this.game.add.text(this.game.width/65,this.game.height/20,'0');
+        this.peppersText=this.game.add.text(this.game.width/6*5,this.game.height/20,'0');
         this.peppersText.anchor.setTo(1,0);
         this.peppersText.font = 'arcade';
         this.peppersText.fill='#FFFFFF';
         this.peppersText.fontSize=40;
 
-        this.lifesText=this.game.add.text(100,this.game.height/20,'0');
+        this.lifesText=this.game.add.text(this.game.width-50,this.game.height/20,'0');
         this.lifesText.anchor.setTo(1,0);
         this.lifesText.font = 'arcade';
         this.lifesText.fill='#FFFFFF';
@@ -236,10 +251,31 @@ burgertime.level1 ={
         
         
         
-        this.game.physics.arcade.collide(this.chef,this.stairs,this.stairTouch, null, this);
+        //this.game.physics.arcade.collide(this.chef,this.stairs,this.stairTouch, null, this);
         this.game.physics.arcade.collide(this.chef,this.floor,this.platformTouch, null, this);
         this.game.physics.arcade.collide(this.chef,this.floor,this.platformTouch, null, this);
         this.game.physics.arcade.collide(this.chef, this.collisionMap);
+        
+        
+        if(this.game.physics.arcade.overlap(this.chef, this.stair1)  || 
+           this.game.physics.arcade.overlap(this.chef, this.stair2)  ||
+           this.game.physics.arcade.overlap(this.chef, this.stair3)  ||
+           this.game.physics.arcade.overlap(this.chef, this.stair4)  ||
+           this.game.physics.arcade.overlap(this.chef, this.stair5)  ||
+           this.game.physics.arcade.overlap(this.chef, this.stair6)  ||
+           this.game.physics.arcade.overlap(this.chef, this.stair7)  ||
+           this.game.physics.arcade.overlap(this.chef, this.stair8)  ||
+           this.game.physics.arcade.overlap(this.chef, this.stair9)  ||
+           this.game.physics.arcade.overlap(this.chef, this.stair10) ||
+           this.game.physics.arcade.overlap(this.chef, this.stair11))
+        {
+              this.chef.body.allowGravity = false;
+        }
+        else
+        {
+              this.chef.body.allowGravity = true;
+        }
+        
         //this.game.physics.arcade.collide(this.chef, this.burgerColisions);
         //Colisiones ingredientes
         this.game.physics.arcade.collide(this.salchicha, this.lettuce2.ingredient1, this.killEnemy,null,this);
@@ -397,7 +433,7 @@ burgertime.level1 ={
                     
                     if(this.chef.lastMove == 'R') {
                         this.chef.pepper--; 
-                        this.pepperThrow = new burgertime.pepper_prefab(this.game,this.chef.right,this.chef.y,this.chef.lastMove,'PimientaTirada');
+                        this.pepperThrow = new burgertime.pepper_prefab(this.game,this.chef.left,this.chef.y,this.chef.lastMove,'PimientaTirada');
                     }
                     else{
                         this.chef.pepper--; 

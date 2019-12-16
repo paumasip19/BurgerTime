@@ -3,8 +3,8 @@ var burgertime = burgertime || {};
 burgertime.pepper_prefab = function(_game,_x,_y,_direc,_tag){
     Phaser.Sprite.call(this,_game,_x,_y,_tag);
     
-    this.scale.setTo(1);
-    this.anchor.setTo(.5);
+    this.scale.setTo(1.5);
+    this.anchor.setTo(0.5);
     this.game = _game;
     this.direc = _direc;
     
