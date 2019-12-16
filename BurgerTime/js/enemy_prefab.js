@@ -41,7 +41,7 @@ burgertime.enemy_prefab.prototype.update = function(){
     this.game.physics.arcade.collide(this, this.level.collisionMap);
     this.game.physics.arcade.collide(this, this.level.stairs, this.goStairs, null, this);
     this.game.physics.arcade.collide(this, this.level.pepperThrow, this.stunEnemy,null);
-    console.log(this.direction);
+    //console.log(this.direction);
     /*if(this.level.chef.body.position.x > this.body.position.x){
     this.body.velocity.x = this.speedX;
         this.animations.play('walk');
@@ -126,7 +126,7 @@ burgertime.enemy_prefab.prototype.stunEnemy = function(){
     this.stunned = true;
 };
 burgertime.enemy_prefab.prototype.goStairs = function(){
-    console.log('holi');
+    //console.log('holi');
     //this.level.stairs.setCollisionBetween(4,5,false,'Stairs');
     this.body.allowGravity = false;
     if(this.level.chef.body.position.y > this.body.position.y){

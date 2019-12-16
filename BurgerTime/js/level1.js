@@ -72,6 +72,12 @@ burgertime.level1 ={
         this.espacio = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         this.cursors = this.game.input.keyboard.createCursorKeys();
         
+        //Trial HighScore
+        this.oneButton = this.game.input.keyboard.addKey(Phaser.Keyboard.ONE);
+        this.oneButton.onDown.add(this.saveData, this);
+        this.twoButton = this.game.input.keyboard.addKey(Phaser.Keyboard.TWO);
+        this.twoButton.onDown.add(this.loadData, this);
+        
         this.music = this.game.add.audio('mainTheme');
         this.start = this.game.add.audio('start');
         this.complete = this.game.add.audio('levelComplete');
@@ -216,7 +222,6 @@ burgertime.level1 ={
         this.peppers.enableBody = true;
     },
     update:function(){          
-        console.log(this.chef.points);
         this.game.physics.arcade.collide(this.chef,this.stairs,this.stairTouch, null, this);
         this.game.physics.arcade.collide(this.chef,this.floor,this.platformTouch, null, this);
         this.game.physics.arcade.collide(this.chef,this.floor,this.platformTouch, null, this);
@@ -626,10 +631,9 @@ burgertime.level1 ={
     },
     ingredientFloorColisions:function(){
         this.game.physics.arcade.collide(this.upBread1.ingredient1, this.burgerColisions, function(){this.upBread1.x += 1;}, null, this);
-        console.log("afasfsafasf");
     },
     killChef:function(){
-        console.log('les go');
+        //console.log('les go');
         this.chef.body.enable = false;
         this.dead = true;
     },
@@ -661,8 +665,20 @@ burgertime.level1 ={
         this.map.setCollisionBetween(4,5,true,'Stairs');
     },
     killEnemy:function(){
-        console.log('SOX');
+        //console.log('SOX');
         this.salchicha.dead = true;
+    },
+    saveData:function(){
+        
+        var test = { 'highScore': this.score.text};
+        console.log(test.highScore);
+        localStorage.setItem('highS', JSON.stringify(test));
+    },
+    loadData:function(){
+        
+        var t = JSON.parse(localStorage.getItem('highS'));
+        console.log(t.highScore);
+        this.scoreHI.text = t.highScore;
     },
     render:function(){
         //this.powerUp.body.setSize(22, 28, 20, 16);
