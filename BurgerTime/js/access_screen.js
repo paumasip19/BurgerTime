@@ -130,6 +130,8 @@ burgertime.access_screen ={
             if(this.password.value == t.password)
             {
                 this.errorText.text = "Login successful";
+                var test = { 'username': t.username, 'password': t.password, 'highScore': t.highScore };
+                localStorage.setItem('actualUser', JSON.stringify(test));
                 this.state.start('menu');
             }
             else
@@ -144,7 +146,8 @@ burgertime.access_screen ={
         if(t == null)
         {
             this.errorText.text = "Register successful";
-            var test = { 'username': this.user.value, 'password': this.password.value};
+            var test = { 'username': this.user.value, 'password': this.password.value, 'highScore': 0 };
+            console.log(test.highScore);
             localStorage.setItem('user' + this.user.value, JSON.stringify(test));
             this.sceneState = 0;
         }
