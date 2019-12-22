@@ -73,6 +73,7 @@ burgertime.level1 ={
         
         this.espacio = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         this.cursors = this.game.input.keyboard.createCursorKeys();
+        this.pButton = this.game.input.keyboard.addKey(Phaser.Keyboard.P);
         
         //Trial HighScore
         this.oneButton = this.game.input.keyboard.addKey(Phaser.Keyboard.ONE);
@@ -349,7 +350,6 @@ burgertime.level1 ={
             }
         }
         
-        
         if(this.espacio.downDuration(1)){        // Lanzamiento de Pimienta
             
           if(this.chef.pepper > 0) {
@@ -383,7 +383,7 @@ burgertime.level1 ={
                 }
             }
         }
-        console.log(this.chef.lives);
+        //console.log(this.chef.lives);
         if(this.chef.dead && !this.chef.doOnce){                // Si Chef Muere, la condicion es cuando colisiona con enemigo
             this.chef.doOnce = true;
             this.music.pause();
@@ -411,7 +411,7 @@ burgertime.level1 ={
             //  PLayer Gasta Vida
             //this.chef.lives = 3;
             this.dead = false;
-            this.state.start('level2');
+            //this.state.start('level2');
         }
         
         if(this.levelCompleted){
@@ -419,7 +419,10 @@ burgertime.level1 ={
             this.complete.play();
             this.chef.points = 0;
             this.levelCompleted = false;
+            var s = this.setScore(); //Guarda score para siguiente nivel
             //next level
+            this.state.start('level2');
+            
         }
         
         if(this.enemies != 3){
@@ -680,7 +683,7 @@ burgertime.level1 ={
         {
             var t = JSON.parse(localStorage.getItem('actualUser'));
             t.highScore = this.score.text;
-            console.log(t.highScore);
+            //console.log(t.highScore);
             localStorage.setItem('actualUser', JSON.stringify(t));
         
             localStorage.setItem('user' + t.username, JSON.stringify(t));
@@ -695,6 +698,60 @@ burgertime.level1 ={
     },
     lessLive:function(){
         this.chef.lives--;
+    },
+    updateHighScore:function(){
+        var test = JSON.parse(localStorage.getItem('ranking'));
+        
+        //Sort highScore
+        var players = [test.player1, test.player2, test.player3, test.player4, test.player5, JSON.parse(localStorage.getItem('actualUser')).username];
+        var p = [test.points1, test.points2, test.points3, test.points4, test.points5, this.chef.points];    
+        
+        console.log(players[0]);
+        
+        var swap;
+        var n = 5;
+        do {
+            swap = false;
+            for (var i=0; i < n; i++)
+            {
+                if (p[i] < p[i+1])
+                {
+                    var temp = p[i];
+                    console.log(temp + "HOLA");
+                    var temp1 = players[i];
+                    p[i] = p[i+1];
+                    players[i] = players[i+1];
+                    p[i+1] = temp;
+                    players[i+1] = temp1;
+                    swap = true;
+                }
+            }
+            n--;
+        } while (swap);
+        
+        var j = 0;
+        
+        test.player1 = players[j];
+        test.player2 = players[j+1];
+        test.player3 = players[j+2];
+        test.player4 = players[j+3];
+        test.player5 = players[j+4];
+        
+        test.points1 = p[j];
+        test.points2 = p[j+1];
+        test.points3 = p[j+2];
+        test.points4 = p[j+3];
+        test.points5 = p[j+4];
+        
+        localStorage.setItem('ranking', JSON.stringify(test));
+    },
+    getScore:function(){
+        var t = JSON.parse(localStorage.getItem('score'));
+        this.chef.points = t.s;
+    },
+    setScore:function(){
+        var test = { 's': this.chef.points };
+        localStorage.setItem('score', JSON.stringify(test));
     },
     render:function(){
         //this.powerUp.body.setSize(22, 28, 20, 16);

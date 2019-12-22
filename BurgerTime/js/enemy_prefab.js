@@ -100,7 +100,7 @@ burgertime.enemy_prefab.prototype.update = function(){
         this.alreadyDead = false;
     }
     //console.log(this.timeStunned);
-    console.log(this.stunned);
+    //console.log(this.stunned);
 };
 burgertime.enemy_prefab.prototype.firstDir = function(){
     if(this.level.chef.body.position.x > this.body.position.x){

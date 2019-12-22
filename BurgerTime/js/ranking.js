@@ -22,7 +22,7 @@ burgertime.ranking ={
         this.hiText.fill='#FFFFFF';
         this.hiText.fontSize=80;
         
-        this.goBackButton = this.game.add.button(730, 700, 'ButtonUIGoBack', this.getScores, this, 2, 1, 0);
+        this.goBackButton = this.game.add.button(730, 700, 'ButtonUIGoBack', this.return, this, 2, 1, 0);
         this.goBackButton.scale.setTo(0.8);
         
         var g = this.getScores();
@@ -95,7 +95,7 @@ burgertime.ranking ={
         this.points5.fontSize=60;
     },
     makeScores:function(){
-        var test = { 'player1': "Pau", 'player2': "Pau", 'player3': "Pau", 'player4': "Pau", 'player5': "Pau", 'points1': "100", 'points2': "100", 'points3': 100, 'points4': "100", 'points5': "100" };
+        var test = { 'player1': "Pau", 'player2': "Pau", 'player3': "Pau", 'player4': "Pau", 'player5': "Pau", 'points1': "100", 'points2': "200", 'points3': "100", 'points4': "100", 'points5': "100" };
         localStorage.setItem('ranking', JSON.stringify(test));
     }
 };
