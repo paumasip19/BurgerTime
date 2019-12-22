@@ -246,10 +246,16 @@ burgertime.level1 ={
         if(this.chef.lives == 0)
         {
             var h = this.saveData();
+            var s = this.updateHighScore();
             this.state.start('menu');
         }
         
-        
+        if(this.upBread1.isDone &&
+           this.upBread2.isDone &&
+           this.upBread3.isDone &&
+           this.upBread4.isDone) {
+            this.levelCompleted = true;
+        }
         
         //this.game.physics.arcade.collide(this.chef,this.stairs,this.stairTouch, null, this);
         this.game.physics.arcade.collide(this.chef,this.floor,this.platformTouch, null, this);
