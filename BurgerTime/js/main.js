@@ -25,4 +25,4 @@ burgertime.game.state.add('level3',burgertime.level3);
 burgertime.game.state.add('ranking',burgertime.ranking);
 burgertime.game.state.add('menu',burgertime.menu);
 burgertime.game.state.add('access_screen',burgertime.access_screen);
-burgertime.game.state.start('menu');
+burgertime.game.state.start('ranking');
