@@ -111,27 +111,27 @@ burgertime.level3 ={
         
         this.timerStairs = this.game.time.events.loop(Phaser.Timer.SECOND,this.activateStairs,this);
         
-        this.upBread1 = new burgertime.ingredient_prefab(this.game,75, 0-5,'BreadUp1','BreadUp2','BreadUp3', this.chef);
-        this.upBread2 = new burgertime.ingredient_prefab(this.game,315,0-5,'BreadUp1','BreadUp2','BreadUp3', this.chef);
-        this.upBread3 = new burgertime.ingredient_prefab(this.game,555,0-5,'BreadUp1','BreadUp2','BreadUp3', this.chef);
-        this.upBread4 = new burgertime.ingredient_prefab(this.game,800,0-5,'BreadUp1','BreadUp2','BreadUp3', this.chef);
-        this.upBread5 = new burgertime.ingredient_prefab(this.game,75,420-5,'BreadUp1','BreadUp2','BreadUp3', this.chef);
-        this.upBread6 = new burgertime.ingredient_prefab(this.game,800,420-5,'BreadUp1','BreadUp2','BreadUp3', this.chef);
+        this.upBread1 = new burgertime.ingredient_prefab(this.game,75, 0-5,'BreadUp1','BreadUp2','BreadUp3', this.chef, this);
+        this.upBread2 = new burgertime.ingredient_prefab(this.game,315,0-5,'BreadUp1','BreadUp2','BreadUp3', this.chef, this);
+        this.upBread3 = new burgertime.ingredient_prefab(this.game,555,0-5,'BreadUp1','BreadUp2','BreadUp3', this.chef, this);
+        this.upBread4 = new burgertime.ingredient_prefab(this.game,800,0-5,'BreadUp1','BreadUp2','BreadUp3', this.chef, this);
+        this.upBread5 = new burgertime.ingredient_prefab(this.game,75,420-5,'BreadUp1','BreadUp2','BreadUp3', this.chef, this);
+        this.upBread6 = new burgertime.ingredient_prefab(this.game,800,420-5,'BreadUp1','BreadUp2','BreadUp3', this.chef, this);
 
         
-        this.burger1 = new burgertime.ingredient_prefab(this.game,75, 120-5,'Meat1','Meat2','Meat3', this.chef);
-        this.cheese1 = new burgertime.ingredient_prefab(this.game,315,60-5,'Cheese1','Cheese2','Cheese3', this.chef);
-        this.burger2 = new burgertime.ingredient_prefab(this.game,555,60-5,'Meat1','Meat2','Meat3', this.chef);
-        this.cheese2 = new burgertime.ingredient_prefab(this.game,800,120-5,'Cheese1','Cheese2','Cheese3', this.chef);
-        this.cheese3 = new burgertime.ingredient_prefab(this.game,75,480-5,'Cheese1','Cheese2','Cheese3', this.chef);
-        this.burger3 = new burgertime.ingredient_prefab(this.game,800,480-5,'Meat1','Meat2','Meat3', this.chef);
+        this.burger1 = new burgertime.ingredient_prefab(this.game,75, 120-5,'Meat1','Meat2','Meat3', this.chef, this);
+        this.cheese1 = new burgertime.ingredient_prefab(this.game,315,60-5,'Cheese1','Cheese2','Cheese3', this.chef, this);
+        this.burger2 = new burgertime.ingredient_prefab(this.game,555,60-5,'Meat1','Meat2','Meat3', this.chef, this);
+        this.cheese2 = new burgertime.ingredient_prefab(this.game,800,120-5,'Cheese1','Cheese2','Cheese3', this.chef, this);
+        this.cheese3 = new burgertime.ingredient_prefab(this.game,75,480-5,'Cheese1','Cheese2','Cheese3', this.chef, this);
+        this.burger3 = new burgertime.ingredient_prefab(this.game,800,480-5,'Meat1','Meat2','Meat3', this.chef, this);
         
-        this.downBread1 = new burgertime.ingredient_prefab(this.game,75, 180-5,'BreadDown1','BreadDown2','BreadDown3', this.chef);
-        this.downBread2 = new burgertime.ingredient_prefab(this.game,315,180-5,'BreadDown1','BreadDown2','BreadDown3', this.chef);
-        this.downBread3 = new burgertime.ingredient_prefab(this.game,555,180-5,'BreadDown1','BreadDown2','BreadDown3', this.chef);
-        this.downBread4 = new burgertime.ingredient_prefab(this.game,800,180-5,'BreadDown1','BreadDown2','BreadDown3', this.chef);
-        this.downBread5 = new burgertime.ingredient_prefab(this.game,75,540-5,'BreadDown1','BreadDown2','BreadDown3', this.chef);
-        this.downBread6 = new burgertime.ingredient_prefab(this.game,800,540-5,'BreadDown1','BreadDown2','BreadDown3', this.chef);
+        this.downBread1 = new burgertime.ingredient_prefab(this.game,75, 180-5,'BreadDown1','BreadDown2','BreadDown3', this.chef, this);
+        this.downBread2 = new burgertime.ingredient_prefab(this.game,315,180-5,'BreadDown1','BreadDown2','BreadDown3', this.chef, this);
+        this.downBread3 = new burgertime.ingredient_prefab(this.game,555,180-5,'BreadDown1','BreadDown2','BreadDown3', this.chef, this);
+        this.downBread4 = new burgertime.ingredient_prefab(this.game,800,180-5,'BreadDown1','BreadDown2','BreadDown3', this.chef, this);
+        this.downBread5 = new burgertime.ingredient_prefab(this.game,75,540-5,'BreadDown1','BreadDown2','BreadDown3', this.chef, this);
+        this.downBread6 = new burgertime.ingredient_prefab(this.game,800,540-5,'BreadDown1','BreadDown2','BreadDown3', this.chef, this);
     },
     musicChange:function(){
         this.music.play();

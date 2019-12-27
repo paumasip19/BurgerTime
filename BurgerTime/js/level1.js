@@ -405,8 +405,8 @@ burgertime.level1 ={
                     //this.chef.body.position.y = this.chef.initPosY;
                     this.chef.frame = 3;
                     this.chef.body.enable = true;
-                    this.chef.body.position.x = this.chef.initPosX;
-                    this.chef.body.position.y = this.chef.initPosY;
+                    this.chef.body.position.x = this.game.world.centerX+150;
+                    this.chef.body.position.y = this.game.world.centerX+100;
                     this.chef.dead = false;
                     this.chef.doOnce = false;
                 }
@@ -462,6 +462,7 @@ burgertime.level1 ={
 
         //Columna 1
         this.game.physics.arcade.collide(this.upBread1.ingredient1,this.lettuce1.ingredient1, function(){
+            this.ingredientIngredient.play();
             if(this.lettuce1.isDone == false)
             {
                 var f = this.upBread1.updateTempPos(this.lettuce1.tempPos); 
@@ -477,6 +478,7 @@ burgertime.level1 ={
             }
                },null, this);
         this.game.physics.arcade.collide(this.lettuce1.ingredient1,this.burger1.ingredient1, function(){
+            this.ingredientIngredient.play();
             if(this.burger1.isDone == false)
             {
                 var f = this.lettuce1.updateTempPos(this.burger1.tempPos); 
@@ -492,6 +494,7 @@ burgertime.level1 ={
             }
                },null, this);
         this.game.physics.arcade.collide(this.burger1.ingredient1,this.downBread1.ingredient1, function(){
+            this.ingredientIngredient.play();
             if(this.downBread1.isDone == false)
             {
                 var f = this.burger1.updateTempPos(this.downBread1.tempPos); 
@@ -510,6 +513,7 @@ burgertime.level1 ={
         
         //Columna 2
         this.game.physics.arcade.collide(this.upBread2.ingredient1,this.lettuce2.ingredient1, function(){
+            this.ingredientIngredient.play();
             if(this.lettuce2.isDone == false)
             {
                 var f = this.upBread2.updateTempPos(this.lettuce2.tempPos); 
@@ -525,6 +529,7 @@ burgertime.level1 ={
             }
                },null, this);
         this.game.physics.arcade.collide(this.lettuce2.ingredient1,this.burger2.ingredient1, function(){
+            this.ingredientIngredient.play();
             if(this.burger2.isDone == false)
             {
                 var f = this.lettuce2.updateTempPos(this.burger2.tempPos); 
@@ -540,6 +545,7 @@ burgertime.level1 ={
             }
                },null, this);
         this.game.physics.arcade.collide(this.burger2.ingredient1,this.downBread2.ingredient1, function(){
+            this.ingredientIngredient.play();
             if(this.downBread2.isDone == false)
             {
                 var f = this.burger2.updateTempPos(this.downBread2.tempPos); 
@@ -557,6 +563,7 @@ burgertime.level1 ={
         
         //Columna 3
         this.game.physics.arcade.collide(this.upBread3.ingredient1,this.lettuce3.ingredient1, function(){
+            this.ingredientIngredient.play();
             if(this.lettuce3.isDone == false)
             {
                 var f = this.upBread3.updateTempPos(this.lettuce3.tempPos); 
@@ -572,6 +579,7 @@ burgertime.level1 ={
             }
                },null, this);
         this.game.physics.arcade.collide(this.lettuce3.ingredient1,this.burger3.ingredient1, function(){
+            this.ingredientIngredient.play();
             if(this.burger3.isDone == false)
             {
                 var f = this.lettuce3.updateTempPos(this.burger3.tempPos); 
@@ -587,6 +595,7 @@ burgertime.level1 ={
             }
                },null, this);
         this.game.physics.arcade.collide(this.burger3.ingredient1,this.downBread3.ingredient1, function(){
+            this.ingredientIngredient.play();
             if(this.downBread3.isDone == false)
             {
                 var f = this.burger3.updateTempPos(this.downBread3.tempPos); 
@@ -604,6 +613,7 @@ burgertime.level1 ={
         
         //Columna 4
         this.game.physics.arcade.collide(this.upBread4.ingredient1,this.lettuce4.ingredient1, function(){
+            this.ingredientIngredient.play();
             if(this.lettuce4.isDone == false)
             {
                 var f = this.upBread4.updateTempPos(this.lettuce4.tempPos); 
@@ -619,6 +629,7 @@ burgertime.level1 ={
             }
                },null, this);
         this.game.physics.arcade.collide(this.lettuce4.ingredient1,this.burger4.ingredient1, function(){
+            this.ingredientIngredient.play();
             if(this.burger4.isDone == false)
             {
                 var f = this.lettuce4.updateTempPos(this.burger4.tempPos); 
@@ -634,6 +645,7 @@ burgertime.level1 ={
             }
                },null, this);
         this.game.physics.arcade.collide(this.burger4.ingredient1,this.downBread4.ingredient1, function(){
+            this.ingredientIngredient.play();
             if(this.downBread4.isDone == false)
             {
                 var f = this.burger4.updateTempPos(this.downBread4.tempPos); 

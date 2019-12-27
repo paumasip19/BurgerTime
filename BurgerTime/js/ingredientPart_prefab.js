@@ -1,10 +1,11 @@
 var burgertime = burgertime || {};
 
-burgertime.ingredientPart_prefab = function(_game,_x,_y,_tag,_chef){
+burgertime.ingredientPart_prefab = function(_game,_x,_y,_tag,_chef,_level){
     Phaser.Sprite.call(this,_game,_x,_y,_tag);
     this.game.add.existing(this);
     
     this.chef = _chef;
+    this.level = _level;
 
     this.enableBody = true;
 
@@ -39,6 +40,7 @@ burgertime.ingredientPart_prefab.prototype.touchBurger = function(){
         {
             this.position.y += 10;
             this.ingredientIsTouched = true;
+            this.level.walkIngredient.play();
             console.log("Yes");
         }
 };

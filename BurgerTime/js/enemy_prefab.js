@@ -95,6 +95,7 @@ burgertime.enemy_prefab.prototype.update = function(){
     
     if(this.alreadyDead){
         this.level.chef.points += 100;
+        this.level.enemyFallIngredient.play();
         this.level.enemies--;
         this.level.salchicha.kill();
         this.alreadyDead = false;
@@ -122,6 +123,7 @@ burgertime.enemy_prefab.prototype.enableGravity = function(){
 };
 burgertime.enemy_prefab.prototype.stunEnemy = function(){
     this.stunned = true;
+    this.level.saltSuccess.play();
 };
 burgertime.enemy_prefab.prototype.goStairs = function(){
     //console.log('holi');

@@ -6,11 +6,11 @@ burgertime.ingredient_prefab = function(_game,_x,_y,_tag1,_tag2,_tag3, _chef,_le
     this.chef = _chef;
     this.level = _level;
     
-    this.ingredient1 = new burgertime.ingredientPart_prefab(_game,_x,_y,_tag1,_chef);
-    this.ingredient2 = new burgertime.ingredientPart_prefab(_game,_x+30,_y,_tag2,_chef);
-    this.ingredient3 = new burgertime.ingredientPart_prefab(_game,_x+60,_y,_tag2,_chef);
-    this.ingredient4 = new burgertime.ingredientPart_prefab(_game,_x+90,_y,_tag2,_chef);
-    this.ingredient5 = new burgertime.ingredientPart_prefab(_game,_x+120,_y,_tag3,_chef);
+    this.ingredient1 = new burgertime.ingredientPart_prefab(_game,_x,_y,_tag1,_chef,_level);
+    this.ingredient2 = new burgertime.ingredientPart_prefab(_game,_x+30,_y,_tag2,_chef,_level);
+    this.ingredient3 = new burgertime.ingredientPart_prefab(_game,_x+60,_y,_tag2,_chef,_level);
+    this.ingredient4 = new burgertime.ingredientPart_prefab(_game,_x+90,_y,_tag2,_chef,_level);
+    this.ingredient5 = new burgertime.ingredientPart_prefab(_game,_x+120,_y,_tag3,_chef,_level);
     this.allTouched = false;
     this.tempPos = _y;
     this.tempUpdated = false;
