@@ -1,5 +1,7 @@
 var burgertime = burgertime || {};
 
+
+
 burgertime.level1Multi1 ={
     init:function(){
         this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
@@ -115,7 +117,6 @@ burgertime.level1Multi1 ={
         
         this.enemies = 3;
         
-        
         this.chef = new burgertime.chef_prefab(this.game,this.game.world.centerX+150,this.game.world.centerY + 100,gameOptions.heroSpeed,gameOptions.heroSpeed,this);
         this.chef.frame = 7;
         
@@ -201,7 +202,7 @@ burgertime.level1Multi1 ={
         this.bandeja4.body.immovable = true;
         
         this.score=this.game.add.text(this.game.width/3+25,this.game.height/20,'0');
-        //this.score.puntos=100; 
+        this.score.puntos=0; 
         this.score.anchor.setTo(1,0);
         this.score.font = 'arcade';
         this.score.fill='#FFFFFF';
@@ -356,7 +357,6 @@ burgertime.level1Multi1 ={
         }
         
         if(this.espacio.downDuration(1)){        // Lanzamiento de Pimienta
-            
           if(this.chef.pepper > 0) {
                 this.chef.canMove = false;
               
@@ -709,10 +709,13 @@ burgertime.level1Multi1 ={
         }*/
         
         if(this.chef.lives <= 0){
-            t.score = 0;
+            t.score1 = 0;
+            t.lives1 = 3;
+            t.pepper1 = 3;
         }else{
-           t.score = this.score.text; 
-           t.lives = this.chef.lives;
+           t.score1 = this.score.text; 
+           t.lives1 = this.chef.lives;
+           t.pepper1 = this.chef.pepper;
         }
         localStorage.setItem('actualUser', JSON.stringify(t));
         
@@ -720,13 +723,19 @@ burgertime.level1Multi1 ={
         
     },
     loadData:function(){
-        
         var t = JSON.parse(localStorage.getItem('actualUser'));
         console.log(t.highScore);
-        //this.scoreHI.text = t.highScore;
-        this.score.text = t.score;
-        this.chef.points = t.score;
-        this.chef.lives = t.lives;
+        if(gameOptions.firstTime == 1){
+            this.chef.points = 0;
+            this.chef.lives = 3;
+            this.chef.pepper = 3;
+            gameOptions.firstTime++;
+        }else{
+           //this.scoreHI.text = t.highScore;
+            this.chef.points = t.score1;
+            this.chef.lives = t.lives1; 
+            this.chef.pepper = t.pepper1;
+        }
     },
     lessLive:function(){
         this.chef.lives--;
