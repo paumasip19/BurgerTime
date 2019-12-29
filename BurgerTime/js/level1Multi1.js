@@ -243,7 +243,6 @@ burgertime.level1Multi1 ={
         this.peppers.enableBody = true;
     },
     update:function(){   
-        
         if(this.chef.lives == 0)
         {
             var h = this.saveData();
@@ -713,7 +712,7 @@ burgertime.level1Multi1 ={
             t.lives1 = 3;
             t.pepper1 = 3;
         }else{
-           t.score1 = this.score.text; 
+           t.score1 = this.chef.points; 
            t.lives1 = this.chef.lives;
            t.pepper1 = this.chef.pepper;
         }
@@ -735,6 +734,7 @@ burgertime.level1Multi1 ={
             this.chef.points = t.score1;
             this.chef.lives = t.lives1; 
             this.chef.pepper = t.pepper1;
+            //this.score.text = this.chef.points;
         }
     },
     lessLive:function(){

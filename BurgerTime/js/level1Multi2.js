@@ -711,8 +711,9 @@ burgertime.level1Multi2 ={
         if(this.chef.lives <= 0){
             t.score2 = 0;
         }else{
-           t.score2 = this.score.text; 
+           t.score2 = this.chef.points; 
             t.lives2 = this.chef.lives;
+            t.pepper2 = this.chef.pepper;
         }
         localStorage.setItem('actualUser', JSON.stringify(t));
         
@@ -723,10 +724,18 @@ burgertime.level1Multi2 ={
         
         var t = JSON.parse(localStorage.getItem('actualUser'));
         console.log(t.highScore);
-        //this.scoreHI.text = t.highScore;
-        this.score.text = t.score2;
-        this.chef.points = t.score2;
-        this.chef.lives = t.lives2;
+        if(gameOptions.firstTime == 2){
+            this.chef.points = 0;
+            this.chef.lives = 3;
+            this.chef.pepper = 3;
+            gameOptions.firstTime++;
+        }else{
+           //this.scoreHI.text = t.highScore;
+            this.chef.points = t.score2;
+            this.chef.lives = t.lives2; 
+            this.chef.pepper = t.pepper2;
+            //this.score.text = this.chef.points;
+        }
     },
     lessLive:function(){
         this.chef.lives--;
