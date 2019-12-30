@@ -231,6 +231,12 @@ burgertime.level1Multi2 ={
         this.lifesText.fill='#FFFFFF';
         this.lifesText.fontSize=40;
         
+        this.player2Text = this.game.add.text(this.game.width/4 - 50, this.game.height/20,'PLAYER2');
+        this.player2Text.anchor.setTo(1,0);
+        this.player2Text.font = 'aracde';
+        this.player2Text.fill = '#FFFFFF';
+        this.player2Text.fontSize = 40;
+        
         var h = this.loadData();
         
     },
@@ -246,6 +252,7 @@ burgertime.level1Multi2 ={
         if(this.chef.lives == 0)
         {
             var h = this.saveData();
+            gameOptions.firstTime = 1;
             this.state.start('menu');
         }
         

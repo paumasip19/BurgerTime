@@ -232,6 +232,12 @@ burgertime.level1Multi1 ={
         this.lifesText.fill='#FFFFFF';
         this.lifesText.fontSize=40;
         
+        this.player1Text = this.game.add.text(this.game.width/4 - 50, this.game.height/20,'PLAYER1');
+        this.player1Text.anchor.setTo(1,0);
+        this.player1Text.font = 'aracde';
+        this.player1Text.fill = '#FFFFFF';
+        this.player1Text.fontSize = 40;
+        
         var h = this.loadData();
         
     },
@@ -243,10 +249,12 @@ burgertime.level1Multi1 ={
         this.peppers.enableBody = true;
     },
     update:function(){   
+        console.log(this.upBread1.ingredient1.position.y);
         if(this.chef.lives == 0)
         {
             var h = this.saveData();
-            this.state.start('menu');
+            this.state.start('level1Multi2');
+            //this.state.start('menu');
         }
         
         if(this.upBread1.isDone &&
@@ -715,6 +723,130 @@ burgertime.level1Multi1 ={
            t.score1 = this.chef.points; 
            t.lives1 = this.chef.lives;
            t.pepper1 = this.chef.pepper;
+            
+            //Save upBread
+           t.upBread11 = this.upBread1.ingredient1.body.position.y;
+           t.upBread12 = this.upBread1.ingredient2.body.position.y;
+           t.upBread13 = this.upBread1.ingredient3.body.position.y;
+           t.upBread14 = this.upBread1.ingredient4.body.position.y;
+           t.upBread15 = this.upBread1.ingredient5.body.position.y;
+           t.upBread11isTouched = this.upBread1.ingredient1.ingredientIsTouched;
+           t.upBread12isTouched = this.upBread1.ingredient2.ingredientIsTouched;
+           t.upBread13isTouched = this.upBread1.ingredient3.ingredientIsTouched;
+           t.upBread14isTouched = this.upBread1.ingredient4.ingredientIsTouched;
+           t.upBread15isTouched = this.upBread1.ingredient5.ingredientIsTouched;
+            
+            t.upBread21 = this.upBread2.ingredient1.body.position.y;
+           t.upBread22 = this.upBread2.ingredient2.body.position.y;
+           t.upBread23 = this.upBread2.ingredient3.body.position.y;
+           t.upBread24 = this.upBread2.ingredient4.body.position.y;
+           t.upBread25 = this.upBread2.ingredient5.body.position.y;
+           t.upBread21isTouched = this.upBread2.ingredient1.ingredientIsTouched;
+           t.upBread22isTouched = this.upBread2.ingredient2.ingredientIsTouched;
+           t.upBread23isTouched = this.upBread2.ingredient3.ingredientIsTouched;
+           t.upBread24isTouched = this.upBread2.ingredient4.ingredientIsTouched;
+           t.upBread25isTouched = this.upBread2.ingredient5.ingredientIsTouched;
+            
+            t.upBread31 = this.upBread3.ingredient1.body.position.y;
+           t.upBread32 = this.upBread3.ingredient2.body.position.y;
+           t.upBread33 = this.upBread3.ingredient3.body.position.y;
+           t.upBread34 = this.upBread3.ingredient4.body.position.y;
+           t.upBread35 = this.upBread3.ingredient5.body.position.y;
+           t.upBread31isTouched = this.upBread3.ingredient1.ingredientIsTouched;
+           t.upBread32isTouched = this.upBread3.ingredient2.ingredientIsTouched;
+           t.upBread33isTouched = this.upBread3.ingredient3.ingredientIsTouched;
+           t.upBread34isTouched = this.upBread3.ingredient4.ingredientIsTouched;
+           t.upBread35isTouched = this.upBread3.ingredient5.ingredientIsTouched;
+            
+            t.upBread41 = this.upBread4.ingredient1.body.position.y;
+           t.upBread42 = this.upBread4.ingredient2.body.position.y;
+           t.upBread43 = this.upBread4.ingredient3.body.position.y;
+           t.upBread44 = this.upBread4.ingredient4.body.position.y;
+           t.upBread45 = this.upBread4.ingredient5.body.position.y;
+           t.upBread41isTouched = this.upBread4.ingredient1.ingredientIsTouched;
+           t.upBread42isTouched = this.upBread4.ingredient2.ingredientIsTouched;
+           t.upBread43isTouched = this.upBread4.ingredient3.ingredientIsTouched;
+           t.upBread44isTouched = this.upBread4.ingredient4.ingredientIsTouched;
+           t.upBread45isTouched = this.upBread4.ingredient5.ingredientIsTouched;
+            
+            //Save lettuce
+            t.lettuce11 = this.lettuce1.ingredient1.position.y;
+            t.lettuce12 = this.lettuce1.ingredient2.position.y;
+            t.lettuce13 = this.lettuce1.ingredient3.position.y;
+            t.lettuce14 = this.lettuce1.ingredient4.position.y;
+            t.lettuce15 = this.lettuce1.ingredient5.position.y;
+            t.lettuce11isTouched = this.lettuce1.ingredient1.ingredientIsTouched;
+            t.lettuce12isTouched = this.lettuce1.ingredient2.ingredientIsTouched;
+            t.lettuce13isTouched = this.lettuce1.ingredient3.ingredientIsTouched;
+            t.lettuce14isTouched = this.lettuce1.ingredient4.ingredientIsTouched;
+            t.lettuce15isTouched = this.lettuce1.ingredient5.ingredientIsTouched;
+            
+            t.lettuce21 = this.lettuce2.ingredient1.position.y;
+            t.lettuce22 = this.lettuce2.ingredient2.position.y;
+            t.lettuce23 = this.lettuce2.ingredient3.position.y;
+            t.lettuce24 = this.lettuce2.ingredient4.position.y;
+            t.lettuce25 = this.lettuce2.ingredient5.position.y;
+            t.lettuce21isTouched = this.lettuce2.ingredient1.ingredientIsTouched;
+            t.lettuce22isTouched = this.lettuce2.ingredient2.ingredientIsTouched;
+            t.lettuce23isTouched = this.lettuce2.ingredient3.ingredientIsTouched;
+            t.lettuce24isTouched = this.lettuce2.ingredient4.ingredientIsTouched;
+            t.lettuce25isTouched = this.lettuce2.ingredient5.ingredientIsTouched;
+            
+            t.lettuce31 = this.lettuce3.ingredient1.position.y;
+            t.lettuce32 = this.lettuce3.ingredient2.position.y;
+            t.lettuce33 = this.lettuce3.ingredient3.position.y;
+            t.lettuce34 = this.lettuce3.ingredient4.position.y;
+            t.lettuce35 = this.lettuce3.ingredient5.position.y;
+            t.lettuce31isTouched = this.lettuce3.ingredient1.ingredientIsTouched;
+            t.lettuce32isTouched = this.lettuce3.ingredient2.ingredientIsTouched;
+            t.lettuce33isTouched = this.lettuce3.ingredient3.ingredientIsTouched;
+            t.lettuce34isTouched = this.lettuce3.ingredient4.ingredientIsTouched;
+            t.lettuce35isTouched = this.lettuce3.ingredient5.ingredientIsTouched;
+            
+            t.lettuce41 = this.lettuce4.ingredient1.position.y;
+            t.lettuce42 = this.lettuce4.ingredient2.position.y;
+            t.lettuce43 = this.lettuce4.ingredient3.position.y;
+            t.lettuce44 = this.lettuce4.ingredient4.position.y;
+            t.lettuce45 = this.lettuce4.ingredient5.position.y;
+            t.lettuce41isTouched = this.lettuce4.ingredient1.ingredientIsTouched;
+            t.lettuce42isTouched = this.lettuce4.ingredient2.ingredientIsTouched;
+            t.lettuce43isTouched = this.lettuce4.ingredient3.ingredientIsTouched;
+            t.lettuce44isTouched = this.lettuce4.ingredient4.ingredientIsTouched;
+            t.lettuce45isTouched = this.lettuce4.ingredient5.ingredientIsTouched;
+            
+            //Save burger
+            t.burger11 = this.burger1.ingredient1.position.y;
+            t.burger12 = this.burger1.ingredient2.position.y;
+            t.burger13 = this.burger1.ingredient3.position.y;
+            t.burger14 = this.burger1.ingredient4.position.y;
+            t.burger15 = this.burger1.ingredient5.position.y;
+            t.burger11isTouched = this.burger1.ingredient1.ingredientIsTouched;
+            t.burger12isTouched = this.burger1.ingredient2.ingredientIsTouched;
+            t.burger13isTouched = this.burger1.ingredient3.ingredientIsTouched;
+            t.burger14isTouched = this.burger1.ingredient4.ingredientIsTouched;
+            t.burger15isTouched = this.burger1.ingredient5.ingredientIsTouched;
+            
+            t.burger21 = this.burger2.ingredient1.position.y;
+            t.burger22 = this.burger2.ingredient2.position.y;
+            t.burger23 = this.burger2.ingredient3.position.y;
+            t.burger24 = this.burger2.ingredient4.position.y;
+            t.burger25 = this.burger2.ingredient5.position.y;
+            t.burger21isTouched = this.burger2.ingredient1.ingredientIsTouched;
+            t.burger22isTouched = this.burger2.ingredient2.ingredientIsTouched;
+            t.burger23isTouched = this.burger2.ingredient3.ingredientIsTouched;
+            t.burger24isTouched = this.burger2.ingredient4.ingredientIsTouched;
+            t.burger25isTouched = this.burger2.ingredient5.ingredientIsTouched;
+            
+            t.burger31 = this.burger3.ingredient1.position.y;
+            t.burger32 = this.burger3.ingredient2.position.y;
+            t.burger33 = this.burger3.ingredient3.position.y;
+            t.burger34 = this.burger3.ingredient4.position.y;
+            t.burger35 = this.burger3.ingredient5.position.y;
+            t.burger31isTouched = this.burger3.ingredient1.ingredientIsTouched;
+            t.burger32isTouched = this.burger3.ingredient2.ingredientIsTouched;
+            t.burger33isTouched = this.burger3.ingredient3.ingredientIsTouched;
+            t.burger34isTouched = this.burger3.ingredient4.ingredientIsTouched;
+            t.burger35isTouched = this.burger3.ingredient5.ingredientIsTouched;
         }
         localStorage.setItem('actualUser', JSON.stringify(t));
         
@@ -734,7 +866,131 @@ burgertime.level1Multi1 ={
             this.chef.points = t.score1;
             this.chef.lives = t.lives1; 
             this.chef.pepper = t.pepper1;
-            //this.score.text = this.chef.points;
+            
+            //Load upBread
+            this.upBread1.ingredient1.position.y = t.upBread11;
+            this.upBread1.ingredient2.position.y = t.upBread12;
+            this.upBread1.ingredient3.position.y = t.upBread13;
+            this.upBread1.ingredient4.position.y = t.upBread14;
+            this.upBread1.ingredient5.position.y = t.upBread15;
+            this.upBread1.ingredient1.ingredientIsTouched = t.upBread11isTouched;
+            this.upBread1.ingredient2.ingredientIsTouched = t.upBread12isTouched;
+            this.upBread1.ingredient3.ingredientIsTouched = t.upBread13isTouched;
+            this.upBread1.ingredient4.ingredientIsTouched = t.upBread14isTouched;
+            this.upBread1.ingredient5.ingredientIsTouched = t.upBread15isTouched;
+            
+            this.upBread2.ingredient1.position.y = t.upBread21;
+            this.upBread2.ingredient2.position.y = t.upBread22;
+            this.upBread2.ingredient3.position.y = t.upBread23;
+            this.upBread2.ingredient4.position.y = t.upBread24;
+            this.upBread2.ingredient5.position.y = t.upBread25;
+            this.upBread2.ingredient1.ingredientIsTouched = t.upBread21isTouched;
+            this.upBread2.ingredient2.ingredientIsTouched = t.upBread22isTouched;
+            this.upBread2.ingredient3.ingredientIsTouched = t.upBread23isTouched;
+            this.upBread2.ingredient4.ingredientIsTouched = t.upBread24isTouched;
+            this.upBread2.ingredient5.ingredientIsTouched = t.upBread25isTouched;
+            
+            this.upBread3.ingredient1.position.y = t.upBread31;
+            this.upBread3.ingredient2.position.y = t.upBread32;
+            this.upBread3.ingredient3.position.y = t.upBread33;
+            this.upBread3.ingredient4.position.y = t.upBread34;
+            this.upBread3.ingredient5.position.y = t.upBread35;
+            this.upBread3.ingredient1.ingredientIsTouched = t.upBread31isTouched;
+            this.upBread3.ingredient2.ingredientIsTouched = t.upBread32isTouched;
+            this.upBread3.ingredient3.ingredientIsTouched = t.upBread33isTouched;
+            this.upBread3.ingredient4.ingredientIsTouched = t.upBread34isTouched;
+            this.upBread3.ingredient5.ingredientIsTouched = t.upBread35isTouched;
+            
+            this.upBread4.ingredient1.position.y = t.upBread41;
+            this.upBread4.ingredient2.position.y = t.upBread42;
+            this.upBread4.ingredient3.position.y = t.upBread43;
+            this.upBread4.ingredient4.position.y = t.upBread44;
+            this.upBread4.ingredient5.position.y = t.upBread45;
+            this.upBread4.ingredient1.ingredientIsTouched = t.upBread41isTouched;
+            this.upBread4.ingredient2.ingredientIsTouched = t.upBread42isTouched;
+            this.upBread4.ingredient3.ingredientIsTouched = t.upBread43isTouched;
+            this.upBread4.ingredient4.ingredientIsTouched = t.upBread44isTouched;
+            this.upBread4.ingredient5.ingredientIsTouched = t.upBread45isTouched;
+            
+            //Load lettuce
+            this.lettuce1.ingredient1.position.y = t.lettuce11;
+            this.lettuce1.ingredient2.position.y = t.lettuce12;
+            this.lettuce1.ingredient3.position.y = t.lettuce13;
+            this.lettuce1.ingredient4.position.y = t.lettuce14;
+            this.lettuce1.ingredient5.position.y = t.lettuce15;
+            this.lettuce1.ingredient1.ingredientIsTouched = t.lettuce11isTouched;
+            this.lettuce1.ingredient2.ingredientIsTouched = t.lettuce12isTouched;
+            this.lettuce1.ingredient3.ingredientIsTouched = t.lettuce13isTouched;
+            this.lettuce1.ingredient4.ingredientIsTouched = t.lettuce14isTouched;
+            this.lettuce1.ingredient5.ingredientIsTouched = t.lettuce15isTouched;
+            
+            this.lettuce2.ingredient1.position.y = t.lettuce21;
+            this.lettuce2.ingredient2.position.y = t.lettuce22;
+            this.lettuce2.ingredient3.position.y = t.lettuce23;
+            this.lettuce2.ingredient4.position.y = t.lettuce24;
+            this.lettuce2.ingredient5.position.y = t.lettuce25;
+            this.lettuce2.ingredient1.ingredientIsTouched = t.lettuce21isTouched;
+            this.lettuce2.ingredient2.ingredientIsTouched = t.lettuce22isTouched;
+            this.lettuce2.ingredient3.ingredientIsTouched = t.lettuce23isTouched;
+            this.lettuce2.ingredient4.ingredientIsTouched = t.lettuce24isTouched;
+            this.lettuce2.ingredient5.ingredientIsTouched = t.lettuce25isTouched;
+            
+            this.lettuce3.ingredient1.position.y = t.lettuce31;
+            this.lettuce3.ingredient2.position.y = t.lettuce32;
+            this.lettuce3.ingredient3.position.y = t.lettuce33;
+            this.lettuce3.ingredient4.position.y = t.lettuce34;
+            this.lettuce3.ingredient5.position.y = t.lettuce35;
+            this.lettuce3.ingredient1.ingredientIsTouched = t.lettuce31isTouched;
+            this.lettuce3.ingredient2.ingredientIsTouched = t.lettuce32isTouched;
+            this.lettuce3.ingredient3.ingredientIsTouched = t.lettuce33isTouched;
+            this.lettuce3.ingredient4.ingredientIsTouched = t.lettuce34isTouched;
+            this.lettuce3.ingredient5.ingredientIsTouched = t.lettuce35isTouched;
+            
+            this.lettuce4.ingredient1.position.y = t.lettuce41;
+            this.lettuce4.ingredient2.position.y = t.lettuce42;
+            this.lettuce4.ingredient3.position.y = t.lettuce43;
+            this.lettuce4.ingredient4.position.y = t.lettuce44;
+            this.lettuce4.ingredient5.position.y = t.lettuce45;
+            this.lettuce4.ingredient1.ingredientIsTouched = t.lettuce41isTouched;
+            this.lettuce4.ingredient2.ingredientIsTouched = t.lettuce42isTouched;
+            this.lettuce4.ingredient3.ingredientIsTouched = t.lettuce43isTouched;
+            this.lettuce4.ingredient4.ingredientIsTouched = t.lettuce44isTouched;
+            this.lettuce4.ingredient5.ingredientIsTouched = t.lettuce45isTouched;
+            
+            //Load burger
+            this.burger1.ingredient1.position.y = t.burger11;
+            this.burger1.ingredient2.position.y = t.burger12;
+            this.burger1.ingredient3.position.y = t.burger13;
+            this.burger1.ingredient4.position.y = t.burger14;
+            this.burger1.ingredient5.position.y = t.burger15;
+            this.burger1.ingredient1.ingredientIsTouched = t.burger11isTouched;
+            this.burger1.ingredient2.ingredientIsTouched = t.burger12isTouched;
+            this.burger1.ingredient3.ingredientIsTouched = t.burger13isTouched;
+            this.burger1.ingredient4.ingredientIsTouched = t.burger14isTouched;
+            this.burger1.ingredient5.ingredientIsTouched = t.burger15isTouched;
+            
+            this.burger2.ingredient1.position.y = t.burger21;
+            this.burger2.ingredient2.position.y = t.burger22;
+            this.burger2.ingredient3.position.y = t.burger23;
+            this.burger2.ingredient4.position.y = t.burger24;
+            this.burger2.ingredient5.position.y = t.burger25;
+            this.burger2.ingredient1.ingredientIsTouched = t.burger21isTouched;
+            this.burger2.ingredient2.ingredientIsTouched = t.burger22isTouched;
+            this.burger2.ingredient3.ingredientIsTouched = t.burger23isTouched;
+            this.burger2.ingredient4.ingredientIsTouched = t.burger24isTouched;
+            this.burger2.ingredient5.ingredientIsTouched = t.burger25isTouched;
+            
+            this.burger3.ingredient1.position.y = t.burger31;
+            this.burger3.ingredient2.position.y = t.burger32;
+            this.burger3.ingredient3.position.y = t.burger33;
+            this.burger3.ingredient4.position.y = t.burger34;
+            this.burger3.ingredient5.position.y = t.burger35;
+            this.burger3.ingredient1.ingredientIsTouched = t.burger31isTouched;
+            this.burger3.ingredient2.ingredientIsTouched = t.burger32isTouched;
+            this.burger3.ingredient3.ingredientIsTouched = t.burger33isTouched;
+            this.burger3.ingredient4.ingredientIsTouched = t.burger34isTouched;
+            this.burger3.ingredient5.ingredientIsTouched = t.burger35isTouched;
+            
         }
     },
     lessLive:function(){
