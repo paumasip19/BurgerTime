@@ -405,8 +405,8 @@ burgertime.level1 ={
                     //this.chef.body.position.y = this.chef.initPosY;
                     this.chef.frame = 3;
                     this.chef.body.enable = true;
-                    this.chef.body.position.x = this.game.world.centerX+150;
-                    this.chef.body.position.y = this.game.world.centerX+100;
+                    this.chef.position.x = this.game.world.centerX+150;
+                    this.chef.position.y = this.game.world.centerX+100;
                     this.chef.dead = false;
                     this.chef.doOnce = false;
                 }
