@@ -5,6 +5,9 @@ burgertime.level2 ={
         this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
         this.scale.pageAlignHorizontally = true;
         this.scale.pageAlignVertically = true;
+        
+        this.scale.setGameSize(gameOptions.level2Width,gameOptions.level2Height);
+        
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
         this.game.physics.arcade.gravity.y = gameOptions.heroGravity;
 
@@ -42,6 +45,7 @@ burgertime.level2 ={
         this.load.image('BreadUp1',ruta+'UpBread1.png');
         this.load.image('BreadUp2',ruta+'UpBread2.png');
         this.load.image('BreadUp3',ruta+'UpBread3.png');
+        this.load.image('Bandeja', ruta+"Recolector.png");
         
         this.load.audio('mainTheme', 'assets/audio/main_theme.mp3');
         this.load.audio('start', 'assets/audio/game_start.mp3');
@@ -111,30 +115,66 @@ burgertime.level2 ={
         
         this.timerStairs = this.game.time.events.loop(Phaser.Timer.SECOND,this.activateStairs,this);
         
-        this.upBread1 = new burgertime.ingredient_prefab(this.game,75, 0-5,'BreadUp1','BreadUp2','BreadUp3', this.chef, this);
-        this.upBread2 = new burgertime.ingredient_prefab(this.game,315,0-5,'BreadUp1','BreadUp2','BreadUp3', this.chef, this);
-        this.upBread3 = new burgertime.ingredient_prefab(this.game,555,0-5,'BreadUp1','BreadUp2','BreadUp3', this.chef, this);
-        this.upBread4 = new burgertime.ingredient_prefab(this.game,800,0-5,'BreadUp1','BreadUp2','BreadUp3', this.chef, this);
+        this.upBread1 = new burgertime.ingredient_prefab(this.game,75, 145,'BreadUp1','BreadUp2','BreadUp3', this.chef,this);
+        this.upBread2 = new burgertime.ingredient_prefab(this.game,315,0+145,'BreadUp1','BreadUp2','BreadUp3', this.chef,this);
+        this.upBread3 = new burgertime.ingredient_prefab(this.game,555,0+145,'BreadUp1','BreadUp2','BreadUp3', this.chef,this);
+        this.upBread4 = new burgertime.ingredient_prefab(this.game,800,0+145,'BreadUp1','BreadUp2','BreadUp3', this.chef,this);
         
-        this.lettuce1 = new burgertime.ingredient_prefab(this.game,75, 55-5,'Lettuce1','Lettuce2','Lettuce3', this.chef, this);
-        this.lettuce2 = new burgertime.ingredient_prefab(this.game,315,180-5,'Lettuce1','Lettuce2','Lettuce3', this.chef, this);
-        this.letuce3 = new burgertime.ingredient_prefab(this.game,555,420-5,'Lettuce1','Lettuce2','Lettuce3', this.chef, this);
-        this.lettuce4 = new burgertime.ingredient_prefab(this.game,800,120-5,'Lettuce1','Lettuce2','Lettuce3', this.chef, this);
+        this.lettuce1 = new burgertime.ingredient_prefab(this.game,75, 60+145,'Lettuce1','Lettuce2','Lettuce3', this.chef,this);
+        this.lettuce2 = new burgertime.ingredient_prefab(this.game,315,60+145,'Lettuce1','Lettuce2','Lettuce3', this.chef,this);
+        this.lettuce3 = new burgertime.ingredient_prefab(this.game,555,300+145,'Lettuce1','Lettuce2','Lettuce3', this.chef,this);
+        this.lettuce4 = new burgertime.ingredient_prefab(this.game,800,120+145,'Lettuce1','Lettuce2','Lettuce3', this.chef,this);
         
-        this.burger1 = new burgertime.ingredient_prefab(this.game,75, 120-5,'Meat1','Meat2','Meat3', this.chef, this);
-        this.burger2 = new burgertime.ingredient_prefab(this.game,315,55-5,'Meat1','Meat2','Meat3', this.chef, this);
-        this.burger3 = new burgertime.ingredient_prefab(this.game,555,300-5,'Meat1','Meat2','Meat3', this.chef, this);
-        this.burger4 = new burgertime.ingredient_prefab(this.game,800,180-5,'Meat1','Meat2','Meat3', this.chef, this);
+        this.burger1 = new burgertime.ingredient_prefab(this.game,75, 120+145,'Cheese1','Cheese2','Cheese3', this.chef,this);
+        this.burger2 = new burgertime.ingredient_prefab(this.game,315,180+145,'Cheese1','Cheese2','Cheese3', this.chef,this);
+        this.burger3 = new burgertime.ingredient_prefab(this.game,555,420+145,'Cheese1','Cheese2','Cheese3', this.chef,this);
+        this.burger4 = new burgertime.ingredient_prefab(this.game,800,180+145,'Cheese1','Cheese2','Cheese3', this.chef,this);
         
-        this.downBread1 = new burgertime.ingredient_prefab(this.game,75, 240-5,'BreadDown1','BreadDown2','BreadDown3', this.chef, this);
-        this.downBread2 = new burgertime.ingredient_prefab(this.game,315,480-5,'BreadDown1','BreadDown2','BreadDown3', this.chef, this);
-        this.downBread3 = new burgertime.ingredient_prefab(this.game,555,480-5,'BreadDown1','BreadDown2','BreadDown3', this.chef, this);
-        this.downBread4 = new burgertime.ingredient_prefab(this.game,800,240-5,'BreadDown1','BreadDown2','BreadDown3', this.chef, this);
+        this.downBread1 = new burgertime.ingredient_prefab(this.game,75, 240+145,'BreadDown1','BreadDown2','BreadDown3', this.chef,this);
+        this.downBread2 = new burgertime.ingredient_prefab(this.game,315,480+145,'BreadDown1','BreadDown2','BreadDown3', this.chef,this);
+        this.downBread3 = new burgertime.ingredient_prefab(this.game,555,480+145,'BreadDown1','BreadDown2','BreadDown3', this.chef,this);
+        this.downBread4 = new burgertime.ingredient_prefab(this.game,800,240+145,'BreadDown1','BreadDown2','BreadDown3', this.chef,this);
+        
+        this.bandeja1 = this.game.add.sprite(125-60,900,'Bandeja',0);
+        this.game.physics.arcade.enable(this.bandeja1);
+        this.bandeja1.body.allowGravity = false;
+        this.bandeja1.body.immovable = true;
+        
+        this.bandeja2 = this.game.add.sprite(365-60,900,'Bandeja',0);
+        this.game.physics.arcade.enable(this.bandeja2);
+        this.bandeja2.body.allowGravity = false;
+        this.bandeja2.body.immovable = true;
+        
+        this.bandeja3 = this.game.add.sprite(605-60,900,'Bandeja',0);
+        this.game.physics.arcade.enable(this.bandeja3);
+        this.bandeja3.body.allowGravity = false;
+        this.bandeja3.body.immovable = true;
+        
+        this.bandeja4 = this.game.add.sprite(845-60,900,'Bandeja',0);
+        this.game.physics.arcade.enable(this.bandeja4);
+        this.bandeja4.body.allowGravity = false;
+        this.bandeja4.body.immovable = true;
     },
     musicChange:function(){
         this.music.play();
     },
-    update:function(){          
+    update:function(){  
+        
+        if(this.chef.lives == 0)
+        {
+            var h = this.saveData();
+            var s = this.updateHighScore();
+            this.state.start('menu');
+        }
+        
+        if(this.upBread1.isDone &&
+           this.upBread2.isDone &&
+           this.upBread3.isDone &&
+           this.upBread4.isDone) {
+            this.levelCompleted = true;
+        }
+        
+        var c = this.ingredientColisions();
         
         this.game.physics.arcade.collide(this.chef,this.stairs,this.stairTouch, null, this);
         this.game.physics.arcade.collide(this.chef,this.floor,this.platformTouch, null, this);
@@ -235,7 +275,7 @@ burgertime.level2 ={
             this.death.play();
             this.chef.lives = 3;
             this.dead = false;
-            this.state.start('level1');
+            this.state.start('level2');
         }
         
         if(this.levelCompleted){
@@ -243,7 +283,7 @@ burgertime.level2 ={
             this.complete.play();
             this.chef.points = 0;
             this.levelCompleted = false;
-            //next level
+            this.state.start('level3');
         }
         
     },
@@ -280,6 +320,300 @@ burgertime.level2 ={
     activateStairs:function(){
         this.chef.body.allowGravity = true;
         this.map.setCollisionBetween(4,5,true,'Stairs');
+    },
+     stopMoving:function(_ingredient){
+        _ingredient.ingredientIsTouched = false;
+        _ingredient.ingredientIsTouched = false;
+        _ingredient.ingredientIsTouched = false;
+        _ingredient.ingredientIsTouched = false;
+        _ingredient.ingredientIsTouched = false;
+        _ingredient.allTouched = false;
+    },
+    ingredientColisions:function(){
+        this.game.physics.arcade.collide(this.downBread1.ingredient1, this.bandeja1, function(){this.downBread1.ingredientDone();}, null, this);
+        this.game.physics.arcade.collide(this.downBread2.ingredient1, this.bandeja2, function(){this.downBread2.ingredientDone();}, null, this);
+        this.game.physics.arcade.collide(this.downBread3.ingredient1, this.bandeja3, function(){this.downBread3.ingredientDone();}, null, this);
+        this.game.physics.arcade.collide(this.downBread4.ingredient1, this.bandeja4, function(){this.downBread4.ingredientDone();}, null, this);
+        
+
+        //Columna 1
+        this.game.physics.arcade.collide(this.upBread1.ingredient1,this.lettuce1.ingredient1, function(){
+            this.ingredientIngredient.play();
+            if(this.lettuce1.isDone == false)
+            {
+                var f = this.upBread1.updateTempPos(this.lettuce1.tempPos); 
+                this.lettuce1.allTouched = true;
+                if(this.upBread1.ingredient1.y == this.upBread1.tempPos){
+                        this.upBread1.stopMoving();
+                }
+            }
+            else
+            {
+                this.upBread1.stopMoving();
+                this.upBread1.isDone = true;
+            }
+               },null, this);
+        this.game.physics.arcade.collide(this.lettuce1.ingredient1,this.burger1.ingredient1, function(){
+            this.ingredientIngredient.play();
+            if(this.burger1.isDone == false)
+            {
+                var f = this.lettuce1.updateTempPos(this.burger1.tempPos); 
+                this.burger1.allTouched = true;
+                if(this.lettuce1.ingredient1.y == this.lettuce1.tempPos){
+                        this.lettuce1.stopMoving();
+                }
+            }
+            else
+            {
+                this.lettuce1.stopMoving();
+                this.lettuce1.isDone = true;
+            }
+               },null, this);
+        this.game.physics.arcade.collide(this.burger1.ingredient1,this.downBread1.ingredient1, function(){
+            this.ingredientIngredient.play();
+            if(this.downBread1.isDone == false)
+            {
+                var f = this.burger1.updateTempPos(this.downBread1.tempPos); 
+                this.downBread1.allTouched = true;
+                if(this.burger1.ingredient1.y == this.burger1.tempPos){
+                    this.burger1.stopMoving();
+                }
+            }
+            else
+            {
+                this.burger1.stopMoving();
+                this.burger1.isDone = true;
+            }
+            
+               },null, this);
+        
+        //Columna 2
+        this.game.physics.arcade.collide(this.upBread2.ingredient1,this.lettuce2.ingredient1, function(){
+            this.ingredientIngredient.play();
+            if(this.lettuce2.isDone == false)
+            {
+                var f = this.upBread2.updateTempPos(this.lettuce2.tempPos); 
+                this.lettuce2.allTouched = true;
+                if(this.upBread2.ingredient1.y == this.upBread2.tempPos){
+                        this.upBread2.stopMoving();
+                }
+            }
+            else
+            {
+                this.upBread2.stopMoving();
+                this.upBread2.isDone = true;
+            }
+               },null, this);
+        this.game.physics.arcade.collide(this.lettuce2.ingredient1,this.burger2.ingredient1, function(){
+            this.ingredientIngredient.play();
+            if(this.burger2.isDone == false)
+            {
+                var f = this.lettuce2.updateTempPos(this.burger2.tempPos); 
+                this.burger2.allTouched = true;
+                if(this.lettuce2.ingredient1.y == this.lettuce2.tempPos){
+                        this.lettuce2.stopMoving();
+                }
+            }
+            else
+            {
+                this.lettuce2.stopMoving();
+                this.lettuce2.isDone = true;
+            }
+               },null, this);
+        this.game.physics.arcade.collide(this.burger2.ingredient1,this.downBread2.ingredient1, function(){
+            this.ingredientIngredient.play();
+            if(this.downBread2.isDone == false)
+            {
+                var f = this.burger2.updateTempPos(this.downBread2.tempPos); 
+                this.downBread2.allTouched = true;
+                if(this.burger2.ingredient1.y == this.burger2.tempPos){
+                        this.burger2.stopMoving();
+                }
+            }
+            else
+            {
+                this.burger2.stopMoving();
+                this.burger2.isDone = true;
+            }
+               },null, this);
+        
+        //Columna 3
+        this.game.physics.arcade.collide(this.upBread3.ingredient1,this.lettuce3.ingredient1, function(){
+            this.ingredientIngredient.play();
+            if(this.lettuce3.isDone == false)
+            {
+                var f = this.upBread3.updateTempPos(this.lettuce3.tempPos); 
+                this.lettuce3.allTouched = true;
+                if(this.upBread3.ingredient1.y == this.upBread3.tempPos){
+                        this.upBread3.stopMoving();
+                }
+            }
+            else
+            {
+                this.upBread3.stopMoving();
+                this.upBread3.isDone = true;
+            }
+               },null, this);
+        this.game.physics.arcade.collide(this.lettuce3.ingredient1,this.burger3.ingredient1, function(){
+            this.ingredientIngredient.play();
+            if(this.burger3.isDone == false)
+            {
+                var f = this.lettuce3.updateTempPos(this.burger3.tempPos); 
+                this.burger3.allTouched = true;
+                if(this.lettuce3.ingredient1.y == this.lettuce3.tempPos){
+                        this.lettuce3.stopMoving();
+                }
+            }
+            else
+            {
+                this.lettuce3.stopMoving();
+                this.lettuce3.isDone = true;
+            }
+               },null, this);
+        this.game.physics.arcade.collide(this.burger3.ingredient1,this.downBread3.ingredient1, function(){
+            this.ingredientIngredient.play();
+            if(this.downBread3.isDone == false)
+            {
+                var f = this.burger3.updateTempPos(this.downBread3.tempPos); 
+                this.downBread3.allTouched = true;
+                if(this.burger3.ingredient1.y == this.burger3.tempPos){
+                        this.burger3.stopMoving();
+                }
+            }
+            else
+            {
+                this.burger3.stopMoving();
+                this.burger3.isDone = true;
+            }
+               },null, this);
+        
+        //Columna 4
+        this.game.physics.arcade.collide(this.upBread4.ingredient1,this.lettuce4.ingredient1, function(){
+            this.ingredientIngredient.play();
+            if(this.lettuce4.isDone == false)
+            {
+                var f = this.upBread4.updateTempPos(this.lettuce4.tempPos); 
+                this.lettuce4.allTouched = true;
+                if(this.upBread4.ingredient1.y == this.upBread4.tempPos){
+                        this.upBread4.stopMoving();
+                }
+            }
+            else
+            {
+                this.upBread4.stopMoving();
+                this.upBread4.isDone = true;
+            }
+               },null, this);
+        this.game.physics.arcade.collide(this.lettuce4.ingredient1,this.burger4.ingredient1, function(){
+            this.ingredientIngredient.play();
+            if(this.burger4.isDone == false)
+            {
+                var f = this.lettuce4.updateTempPos(this.burger4.tempPos); 
+                this.burger4.allTouched = true;
+                if(this.lettuce4.ingredient1.y == this.lettuce4.tempPos){
+                        this.lettuce4.stopMoving();
+                }
+            }
+            else
+            {
+                this.lettuce4.stopMoving();
+                this.lettuce4.isDone = true;
+            }
+               },null, this);
+        this.game.physics.arcade.collide(this.burger4.ingredient1,this.downBread4.ingredient1, function(){
+            this.ingredientIngredient.play();
+            if(this.downBread4.isDone == false)
+            {
+                var f = this.burger4.updateTempPos(this.downBread4.tempPos); 
+                this.downBread4.allTouched = true;
+                if(this.burger4.ingredient1.y == this.burger4.tempPos){
+                        this.burger4.stopMoving();
+                }
+            }
+            else
+            {
+                this.burger4.stopMoving();
+                this.burger4.isDone = true;
+            }
+               },null, this);
+    },
+    ingredientFloorColisions:function(){
+        this.game.physics.arcade.collide(this.upBread1.ingredient1, this.burgerColisions, function(){this.upBread1.x += 1;}, null, this);
+    },
+    saveData:function(){
+        if(parseInt(this.scoreHI.text) < parseInt(this.score.text))
+        {
+            var t = JSON.parse(localStorage.getItem('actualUser'));
+            t.highScore = this.score.text;
+            //console.log(t.highScore);
+            localStorage.setItem('actualUser', JSON.stringify(t));
+        
+            localStorage.setItem('user' + t.username, JSON.stringify(t));
+        }
+        
+    },
+    loadData:function(){
+        
+        var t = JSON.parse(localStorage.getItem('actualUser'));
+        console.log(t.highScore);
+        this.scoreHI.text = t.highScore;
+    },
+    lessLive:function(){
+        this.chef.lives--;
+    },
+    updateHighScore:function(){
+        var test = JSON.parse(localStorage.getItem('ranking'));
+        
+        //Sort highScore
+        var players = [test.player1, test.player2, test.player3, test.player4, test.player5, JSON.parse(localStorage.getItem('actualUser')).username];
+        var p = [test.points1, test.points2, test.points3, test.points4, test.points5, this.chef.points];    
+        
+        console.log(players[0]);
+        
+        var swap;
+        var n = 5;
+        do {
+            swap = false;
+            for (var i=0; i < n; i++)
+            {
+                if (p[i] < p[i+1])
+                {
+                    var temp = p[i];
+                    console.log(temp + "HOLA");
+                    var temp1 = players[i];
+                    p[i] = p[i+1];
+                    players[i] = players[i+1];
+                    p[i+1] = temp;
+                    players[i+1] = temp1;
+                    swap = true;
+                }
+            }
+            n--;
+        } while (swap);
+        
+        var j = 0;
+        
+        test.player1 = players[j];
+        test.player2 = players[j+1];
+        test.player3 = players[j+2];
+        test.player4 = players[j+3];
+        test.player5 = players[j+4];
+        
+        test.points1 = p[j];
+        test.points2 = p[j+1];
+        test.points3 = p[j+2];
+        test.points4 = p[j+3];
+        test.points5 = p[j+4];
+        
+        localStorage.setItem('ranking', JSON.stringify(test));
+    },
+    getScore:function(){
+        var t = JSON.parse(localStorage.getItem('score'));
+        this.chef.points = t.s;
+    },
+    setScore:function(){
+        var test = { 's': this.chef.points };
+        localStorage.setItem('score', JSON.stringify(test));
     },
     render:function(){
         //this.powerUp.body.setSize(22, 28, 20, 16);

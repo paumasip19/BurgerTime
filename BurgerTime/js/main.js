@@ -7,8 +7,8 @@ var gameOptions={
     menuHeight:1000,
     level1Width:1140,
     level1Height:1000,
-    level2Width:1140,
-    level2Height:800,
+    level2Width:1040,
+    level2Height:1000,
     level3Width:1140,
     level3Height:800,
     heroGravity:15000,
@@ -30,5 +30,5 @@ burgertime.game.state.add('menu',burgertime.menu);
 burgertime.game.state.add('access_screen',burgertime.access_screen);
 burgertime.game.state.add('level1Multi1',burgertime.level1Multi1);
 burgertime.game.state.add('level1Multi2',burgertime.level1Multi2);
-burgertime.game.state.start('access_screen');
+burgertime.game.state.start('level2');
 
