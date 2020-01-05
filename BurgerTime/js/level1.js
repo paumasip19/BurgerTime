@@ -243,6 +243,8 @@ burgertime.level1 ={
     },
     update:function(){   
         
+        console.log(this.chef.lives);
+        
         if(this.chef.lives == 0)
         {
             var h = this.saveData();

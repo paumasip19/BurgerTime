@@ -69,6 +69,15 @@ burgertime.level3 ={
         
         this.espacio = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         this.cursors = this.game.input.keyboard.createCursorKeys();
+        this.pButton = this.game.input.keyboard.addKey(Phaser.Keyboard.P);
+        
+        //Trial HighScore
+        this.oneButton = this.game.input.keyboard.addKey(Phaser.Keyboard.ONE);
+        this.oneButton.onDown.add(this.saveData, this);
+        this.twoButton = this.game.input.keyboard.addKey(Phaser.Keyboard.TWO);
+        this.twoButton.onDown.add(this.loadData, this);
+        this.threeButton = this.game.input.keyboard.addKey(Phaser.Keyboard.THREE);
+        this.threeButton.onDown.add(this.lessLive, this);
         
         this.music = this.game.add.audio('mainTheme');
         this.start = this.game.add.audio('start');
@@ -211,6 +220,7 @@ burgertime.level3 ={
         this.lifesText.fontSize=40;
         
         var h = this.loadData();
+        var l = this.getScore();
     },
     musicChange:function(){
         this.music.play();
@@ -224,7 +234,7 @@ burgertime.level3 ={
         if(this.chef.lives == 0)
         {
             var h = this.saveData();
-            var s = this.updateHighScore();
+            //var s = this.updateHighScore();
             this.state.start('menu');
         }
         
@@ -350,6 +360,7 @@ burgertime.level3 ={
             this.complete.play();
             this.chef.points = 0;
             this.levelCompleted = false;
+            var s = this.setScore();
             this.state.start('menu');
         }
         
