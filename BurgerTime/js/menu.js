@@ -6,6 +6,8 @@ burgertime.menu ={
         this.scale.pageAlignHorizontally = true;
         this.scale.pageAlignVertically = true;
         
+        this.scale.setGameSize(gameOptions.menuWidth,gameOptions.menuHeight);
+        
     this.game.world.setBounds(0,0,gameOptions.menuWidth,gameOptions.menuHeight);
     },
     preload:function(){

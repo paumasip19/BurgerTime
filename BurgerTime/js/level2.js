@@ -77,7 +77,12 @@ burgertime.level2 ={
         this.twoButton = this.game.input.keyboard.addKey(Phaser.Keyboard.TWO);
         this.twoButton.onDown.add(this.loadData, this);
         this.threeButton = this.game.input.keyboard.addKey(Phaser.Keyboard.THREE);
-        this.threeButton.onDown.add(this.lessLive, this);
+        this.threeButton.onDown.add(this.nextLevel, this);
+        
+        this.fourButton = this.game.input.keyboard.addKey(Phaser.Keyboard.FOUR);
+        this.fourButton.onDown.add(this.setScore, this);    
+        this.fiveButton = this.game.input.keyboard.addKey(Phaser.Keyboard.FIVE);
+        this.fiveButton.onDown.add(this.getScore, this);
         
         this.music = this.game.add.audio('mainTheme');
         this.start = this.game.add.audio('start');
@@ -216,12 +221,10 @@ burgertime.level2 ={
     },
     update:function(){  
         
-        console.log(this.chef.lives);
-        
         if(this.chef.lives == 0)
         {
             var h = this.saveData();
-            //var s = this.updateHighScore();
+            var s = this.updateHighScore();
             this.state.start('menu');
         }
         
@@ -674,14 +677,16 @@ burgertime.level2 ={
         
         localStorage.setItem('ranking', JSON.stringify(test));
     },
+    nextLevel:function(){
+        this.levelCompleted = true;
+    },
     getScore:function(){
-        var t = JSON.parse(localStorage.getItem('score'));
-        this.chef.points = t.s;
+        this.chef.points = JSON.parse(localStorage.getItem('scoreLevelReal'));
     },
     setScore:function(){
-        var test = { 's': this.chef.points };
-        localStorage.setItem('score', JSON.stringify(test));
-    },
+        localStorage.setItem('scoreLevelReal', JSON.stringify(this.chef.points));
+        console.log(this.chef.points);
+    }, 
     render:function(){
         //this.powerUp.body.setSize(22, 28, 20, 16);
         //this.game.debug.body(this.powerUp);
