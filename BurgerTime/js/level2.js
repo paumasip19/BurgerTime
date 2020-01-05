@@ -23,7 +23,11 @@ burgertime.level2 ={
         this.load.image('Map', ruta+'SpritesheetMaps.png');    
         this.load.tilemap('level2','assets/levels/Level2.json',null,Phaser.Tilemap.TILED_JSON);
         
-        this.load.spritesheet('chef', ruta+'ChefRamsay.png', 12, 25);
+         this.load.spritesheet('chef', ruta+'ChefRamsay.png', 12, 25);
+        this.load.spritesheet('salchicha', ruta+'Salchicha.png',14, 25);
+        this.load.image('PimientaTirada', ruta+'PimientaTirada.png',13, 25);
+        this.load.image('PimientaIcon', ruta+'PeppersIcon.png',13, 25);
+        this.load.image('VidasIcon', ruta+'LifesIcon.png',13, 25);
         this.load.image('PowerUp1', ruta+'PowerUp1.png');
         this.load.image('PowerUp2', ruta+'PowerUp2.png');
         this.load.image('PowerUp3', ruta+'PowerUp3.png');
@@ -80,6 +84,7 @@ burgertime.level2 ={
         this.walkIngredient = this.game.add.audio('walk_ingredient');
         this.start.play();
         
+        this.loadPeppers();
         
         this.map = this.game.add.tilemap('level2');
         this.map.addTilesetImage('Map');
@@ -102,6 +107,14 @@ burgertime.level2 ={
         this.dead = false;
         this.startLevel = true;
         this.levelCompleted = false;
+        
+        this.peppersIcon = this.game.add.tileSprite(this.game.width/6*5-25,this.game.height/20,30,30, 'PimientaIcon');
+        this.peppersIcon.anchor.setTo(1,0);
+        this.peppersIcon.scale.setTo(1.5);
+
+        this.lifesIcon = this.game.add.tileSprite(this.game.width*0.93,this.game.height/20,30,30, 'VidasIcon');
+        this.lifesIcon.anchor.setTo(1,0);
+        this.lifesIcon.scale.setTo(1.5);
         
         this.changeMusic = this.game.time.events.add(Phaser.Timer.SECOND*3,this.musicChange,this);
         
@@ -154,6 +167,39 @@ burgertime.level2 ={
         this.game.physics.arcade.enable(this.bandeja4);
         this.bandeja4.body.allowGravity = false;
         this.bandeja4.body.immovable = true;
+        
+        this.score=this.game.add.text(this.game.width/3+25,this.game.height/20,'0');
+        this.score.puntos=0; 
+        this.score.anchor.setTo(1,0);
+        this.score.font = 'arcade';
+        this.score.fill='#FFFFFF';
+        this.score.fontSize=40;
+
+        this.hiText=this.game.add.text(this.game.width/3+125,this.game.height/20,'HI');
+        this.hiText.anchor.setTo(1,0);
+        this.hiText.font = 'arcade';
+        this.hiText.fill='#FFFFFF';
+        this.hiText.fontSize=40;
+
+        this.scoreHI=this.game.add.text(this.game.width/3*2+50,this.game.height/20,'0');
+        this.scoreHI.anchor.setTo(1,0);
+        this.scoreHI.font = 'arcade';
+        this.scoreHI.fill='#FFFFFF';
+        this.scoreHI.fontSize=40;
+
+        this.peppersText=this.game.add.text(this.game.width/6*5,this.game.height/20,'0');
+        this.peppersText.anchor.setTo(1,0);
+        this.peppersText.font = 'arcade';
+        this.peppersText.fill='#FFFFFF';
+        this.peppersText.fontSize=40;
+
+        this.lifesText=this.game.add.text(this.game.width-50,this.game.height/20,'0');
+        this.lifesText.anchor.setTo(1,0);
+        this.lifesText.font = 'arcade';
+        this.lifesText.fill='#FFFFFF';
+        this.lifesText.fontSize=40;
+        
+        var h = this.loadData();
     },
     musicChange:function(){
         this.music.play();
@@ -560,6 +606,10 @@ burgertime.level2 ={
     },
     lessLive:function(){
         this.chef.lives--;
+    },
+    loadPeppers:function(){
+        this.peppers = this.add.group();
+        this.peppers.enableBody = true;
     },
     updateHighScore:function(){
         var test = JSON.parse(localStorage.getItem('ranking'));

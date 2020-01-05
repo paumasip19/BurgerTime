@@ -24,6 +24,10 @@ burgertime.level3 ={
         this.load.tilemap('level3','assets/levels/Level3.json',null,Phaser.Tilemap.TILED_JSON);
         
         this.load.spritesheet('chef', ruta+'ChefRamsay.png', 12, 25);
+        this.load.spritesheet('salchicha', ruta+'Salchicha.png',14, 25);
+        this.load.image('PimientaTirada', ruta+'PimientaTirada.png',13, 25);
+        this.load.image('PimientaIcon', ruta+'PeppersIcon.png',13, 25);
+        this.load.image('VidasIcon', ruta+'LifesIcon.png',13, 25);
         this.load.image('PowerUp1', ruta+'PowerUp1.png');
         this.load.image('PowerUp2', ruta+'PowerUp2.png');
         this.load.image('PowerUp3', ruta+'PowerUp3.png');
@@ -46,8 +50,6 @@ burgertime.level3 ={
         this.load.image('BreadUp2',ruta+'UpBread2.png');
         this.load.image('BreadUp3',ruta+'UpBread3.png');
         this.load.image('Bandeja', ruta+"Recolector.png");
-        this.load.image('BandejaNoLeft', ruta+"RecolectorNoLeft.png");
-        this.load.image('BandejaNoRight', ruta+"RecolectorNoRight.png");
         
         this.load.audio('mainTheme', 'assets/audio/main_theme.mp3');
         this.load.audio('start', 'assets/audio/game_start.mp3');
@@ -82,6 +84,7 @@ burgertime.level3 ={
         this.walkIngredient = this.game.add.audio('walk_ingredient');
         this.start.play();
         
+        this.loadPeppers();
         
         this.map = this.game.add.tilemap('level3');
         this.map.addTilesetImage('Map');
@@ -104,6 +107,14 @@ burgertime.level3 ={
         this.dead = false;
         this.startLevel = true;
         this.levelCompleted = false;
+        
+        this.peppersIcon = this.game.add.tileSprite(this.game.width/6*5-25,this.game.height/20,30,30, 'PimientaIcon');
+        this.peppersIcon.anchor.setTo(1,0);
+        this.peppersIcon.scale.setTo(1.5);
+
+        this.lifesIcon = this.game.add.tileSprite(this.game.width*0.93,this.game.height/20,30,30, 'VidasIcon');
+        this.lifesIcon.anchor.setTo(1,0);
+        this.lifesIcon.scale.setTo(1.5);
         
         this.changeMusic = this.game.time.events.add(Phaser.Timer.SECOND*3,this.musicChange,this);
         
@@ -167,9 +178,46 @@ burgertime.level3 ={
         this.game.physics.arcade.enable(this.bandeja6);
         this.bandeja6.body.allowGravity = false;
         this.bandeja6.body.immovable = true;
+        
+        this.score=this.game.add.text(this.game.width/3+25,this.game.height/20,'0');
+        this.score.puntos=0; 
+        this.score.anchor.setTo(1,0);
+        this.score.font = 'arcade';
+        this.score.fill='#FFFFFF';
+        this.score.fontSize=40;
+
+        this.hiText=this.game.add.text(this.game.width/3+125,this.game.height/20,'HI');
+        this.hiText.anchor.setTo(1,0);
+        this.hiText.font = 'arcade';
+        this.hiText.fill='#FFFFFF';
+        this.hiText.fontSize=40;
+
+        this.scoreHI=this.game.add.text(this.game.width/3*2+50,this.game.height/20,'0');
+        this.scoreHI.anchor.setTo(1,0);
+        this.scoreHI.font = 'arcade';
+        this.scoreHI.fill='#FFFFFF';
+        this.scoreHI.fontSize=40;
+
+        this.peppersText=this.game.add.text(this.game.width/6*5,this.game.height/20,'0');
+        this.peppersText.anchor.setTo(1,0);
+        this.peppersText.font = 'arcade';
+        this.peppersText.fill='#FFFFFF';
+        this.peppersText.fontSize=40;
+
+        this.lifesText=this.game.add.text(this.game.width-50,this.game.height/20,'0');
+        this.lifesText.anchor.setTo(1,0);
+        this.lifesText.font = 'arcade';
+        this.lifesText.fill='#FFFFFF';
+        this.lifesText.fontSize=40;
+        
+        var h = this.loadData();
     },
     musicChange:function(){
         this.music.play();
+    },
+    loadPeppers:function(){
+        this.peppers = this.add.group();
+        this.peppers.enableBody = true;
     },
     update:function(){          
         
@@ -193,6 +241,10 @@ burgertime.level3 ={
         this.game.physics.arcade.collide(this.chef,this.floor,this.platformTouch, null, this);
         
         var c = this.ingredientColisions();
+        
+        this.score.text=this.chef.points;
+        this.peppersText.text=this.chef.pepper;
+        this.lifesText.text=this.chef.lives;
         
         if(this.isPowerUp == false){
             if(this.timeElapsedActivate > 3){
@@ -531,6 +583,81 @@ burgertime.level3 ={
                 this.burger6.isDone = true;
             }
                },null, this);
+    },
+    saveData:function(){
+        if(parseInt(this.scoreHI.text) < parseInt(this.score.text))
+        {
+            var t = JSON.parse(localStorage.getItem('actualUser'));
+            t.highScore = this.score.text;
+            //console.log(t.highScore);
+            localStorage.setItem('actualUser', JSON.stringify(t));
+        
+            localStorage.setItem('user' + t.username, JSON.stringify(t));
+        }
+        
+    },
+    loadData:function(){
+        
+        var t = JSON.parse(localStorage.getItem('actualUser'));
+        console.log(t.highScore);
+        this.scoreHI.text = t.highScore;
+    },
+    lessLive:function(){
+        this.chef.lives--;
+    },
+    updateHighScore:function(){
+        var test = JSON.parse(localStorage.getItem('ranking'));
+        
+        //Sort highScore
+        var players = [test.player1, test.player2, test.player3, test.player4, test.player5, JSON.parse(localStorage.getItem('actualUser')).username];
+        var p = [test.points1, test.points2, test.points3, test.points4, test.points5, this.chef.points];    
+        
+        console.log(players[0]);
+        
+        var swap;
+        var n = 5;
+        do {
+            swap = false;
+            for (var i=0; i < n; i++)
+            {
+                if (p[i] < p[i+1])
+                {
+                    var temp = p[i];
+                    console.log(temp + "HOLA");
+                    var temp1 = players[i];
+                    p[i] = p[i+1];
+                    players[i] = players[i+1];
+                    p[i+1] = temp;
+                    players[i+1] = temp1;
+                    swap = true;
+                }
+            }
+            n--;
+        } while (swap);
+        
+        var j = 0;
+        
+        test.player1 = players[j];
+        test.player2 = players[j+1];
+        test.player3 = players[j+2];
+        test.player4 = players[j+3];
+        test.player5 = players[j+4];
+        
+        test.points1 = p[j];
+        test.points2 = p[j+1];
+        test.points3 = p[j+2];
+        test.points4 = p[j+3];
+        test.points5 = p[j+4];
+        
+        localStorage.setItem('ranking', JSON.stringify(test));
+    },
+    getScore:function(){
+        var t = JSON.parse(localStorage.getItem('score'));
+        this.chef.points = t.s;
+    },
+    setScore:function(){
+        var test = { 's': this.chef.points };
+        localStorage.setItem('score', JSON.stringify(test));
     },
     activatePowerUp:function(){
         this.powerUp = new burgertime.powerUp_prefab(this.game, 400, 400, this.chef);
