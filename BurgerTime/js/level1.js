@@ -124,8 +124,14 @@ burgertime.level1 ={
         this.chef = new burgertime.chef_prefab(this.game,this.game.world.centerX+150,this.game.world.centerY + 100,gameOptions.heroSpeed,gameOptions.heroSpeed,this);
         this.chef.frame = 7;
         
-        this.salchicha = new burgertime.enemy_prefab(this.game,this.game.world.centerX - 70,this.game.world.centerY,gameOptions.heroSpeed-50,gameOptions.heroSpeed-50,this);
+        this.salchicha = new burgertime.enemy_prefab(this.game,this.game.world.centerX - 70,this.game.world.centerY,gameOptions.heroSpeed-100,gameOptions.heroSpeed-50,this);
         this.salchicha.body.allowGravity = false;
+        
+        this.salchicha2 = new burgertime.enemy_prefab(this.game,3000,3000,gameOptions.heroSpeed-100,gameOptions.heroSpeed-50,this);
+        this.salchicha2.body.allowGravity = false;
+        
+        this.salchicha3 = new burgertime.enemy_prefab(this.game,2000,2000,gameOptions.heroSpeed-100,gameOptions.heroSpeed-50,this);
+        this.salchicha3.body.allowGravity = false;
         
         this.isPowerUp = false;
         this.dead = false;
@@ -164,6 +170,18 @@ burgertime.level1 ={
         this.stair9 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*15,gameOptions.level1Height/35*13.5,gameOptions.level1Height/35*11.5,'TileTransparente');
         this.stair10 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*17,gameOptions.level1Height/35*5,gameOptions.level1Height/35*9,'TileTransparente');
         this.stair11 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*17,gameOptions.level1Height/35*17.5,gameOptions.level1Height/35*7.5,'TileTransparente');
+        
+        this.changeDir1 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*1+30,gameOptions.level1Height/35*4,gameOptions.level1Height/35*5,'TileBlanca');
+        this.changeDir3 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*1+30,gameOptions.level1Height/35*12,gameOptions.level1Height/35*12,'TileBlanca');
+        this.changeDir6 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*3+30,gameOptions.level1Height/35*8,gameOptions.level1Height/35*11,'TileBlanca');
+        this.changeDir9 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*5+30,gameOptions.level1Height/35*4,gameOptions.level1Height/35*20,'TileBlanca');
+        this.changeDir14 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*7+30,gameOptions.level1Height/35*4,gameOptions.level1Height/35*7,'TileBlanca');
+        this.changeDir16 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*9+30,gameOptions.level1Height/35*4,gameOptions.level1Height/35*20,'TileBlanca');
+        this.changeDir20 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*11+30,gameOptions.level1Height/35*8,gameOptions.level1Height/35*7,'TileBlanca');
+        this.changeDir22 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*13+30,gameOptions.level1Height/35*4,gameOptions.level1Height/35*20,'TileBlanca');
+        this.changeDir27 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*15+30,gameOptions.level1Height/35*12.5,gameOptions.level1Height/35*11.5,'TileBlanca');
+        this.changeDir30 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*17+30,gameOptions.level1Height/35*4,gameOptions.level1Height/35*9,'TileBlanca');
+        this.changeDir33 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*17+30,gameOptions.level1Height/35*16.5,gameOptions.level1Height/35*7.5,'TileBlanca');
         
         this.upBread1 = new burgertime.ingredient_prefab(this.game,75+60, 120+145,'BreadUp1','BreadUp2','BreadUp3', this.chef,this);
         this.upBread2 = new burgertime.ingredient_prefab(this.game,315+60,0+145,'BreadUp1','BreadUp2','BreadUp3', this.chef,this);
@@ -268,6 +286,60 @@ burgertime.level1 ={
         this.game.physics.arcade.collide(this.chef, this.collisionMap);
         
         
+        //_________________________________________________________________________________________________________________
+        //_________________________________________________________________________________________________________________
+        
+        if (this.game.physics.arcade.overlap(this.salchicha, this.changeDir1)  || 
+           this.game.physics.arcade.overlap(this.salchicha, this.changeDir3)   || 
+           this.game.physics.arcade.overlap(this.salchicha, this.changeDir6)   || 
+           this.game.physics.arcade.overlap(this.salchicha, this.changeDir9)   || 
+           this.game.physics.arcade.overlap(this.salchicha, this.changeDir14)  || 
+           this.game.physics.arcade.overlap(this.salchicha, this.changeDir16)  || 
+           this.game.physics.arcade.overlap(this.salchicha, this.changeDir20)  || 
+           this.game.physics.arcade.overlap(this.salchicha, this.changeDir22)  || 
+           this.game.physics.arcade.overlap(this.salchicha, this.changeDir27)  || 
+           this.game.physics.arcade.overlap(this.salchicha, this.changeDir30)  || 
+           this.game.physics.arcade.overlap(this.salchicha, this.changeDir33))
+            {   this.salchichaOverlaps = true; } else {
+                this.salchichaOverlaps = false;
+            }
+        
+        if (this.game.physics.arcade.overlap(this.salchicha2, this.changeDir1)  || 
+           this.game.physics.arcade.overlap(this.salchicha2, this.changeDir3)   || 
+           this.game.physics.arcade.overlap(this.salchicha2, this.changeDir6)   || 
+           this.game.physics.arcade.overlap(this.salchicha2, this.changeDir9)   || 
+           this.game.physics.arcade.overlap(this.salchicha2, this.changeDir14)  || 
+           this.game.physics.arcade.overlap(this.salchicha2, this.changeDir16)  || 
+           this.game.physics.arcade.overlap(this.salchicha2, this.changeDir20)  || 
+           this.game.physics.arcade.overlap(this.salchicha2, this.changeDir22)  || 
+           this.game.physics.arcade.overlap(this.salchicha2, this.changeDir27)  || 
+           this.game.physics.arcade.overlap(this.salchicha2, this.changeDir30)  || 
+           this.game.physics.arcade.overlap(this.salchicha2, this.changeDir33))
+            {   this.salchicha2Overlaps = true; } else {
+                this.salchicha2Overlaps = false;
+            }
+        
+        if (this.game.physics.arcade.overlap(this.salchicha3, this.changeDir1)  || 
+           this.game.physics.arcade.overlap(this.salchicha3, this.changeDir3)   || 
+           this.game.physics.arcade.overlap(this.salchicha3, this.changeDir6)   || 
+           this.game.physics.arcade.overlap(this.salchicha3, this.changeDir9)   || 
+           this.game.physics.arcade.overlap(this.salchicha3, this.changeDir14)  || 
+           this.game.physics.arcade.overlap(this.salchicha3, this.changeDir16)  || 
+           this.game.physics.arcade.overlap(this.salchicha3, this.changeDir20)  || 
+           this.game.physics.arcade.overlap(this.salchicha3, this.changeDir22)  || 
+           this.game.physics.arcade.overlap(this.salchicha3, this.changeDir27)  || 
+           this.game.physics.arcade.overlap(this.salchicha3, this.changeDir30)  || 
+           this.game.physics.arcade.overlap(this.salchicha3, this.changeDir33))
+            {   this.salchicha3Overlaps = true; } else {
+                this.salchicha3Overlaps = false;
+            }
+        
+        
+        //_________________________________________________________________________________________________________________
+        //_________________________________________________________________________________________________________________
+        
+        
+        
         if(this.game.physics.arcade.overlap(this.chef, this.stair1)  || 
            this.game.physics.arcade.overlap(this.chef, this.stair2)  ||
            this.game.physics.arcade.overlap(this.chef, this.stair3)  ||
@@ -287,8 +359,154 @@ burgertime.level1 ={
               this.chef.body.allowGravity = true;
         }
         
+        
+         
+        //_________________________________________________________________________________________________________________
+        //_________________________________________________________________________________________________________________
+        
+        if((this.salchichaOverlaps) && ((this.salchicha.y - this.chef.y <= -120) || (this.salchicha.y - this.chef.y >= 40))) // Enemigo en una escalera y fuera de la altura del player
+           {
+                    this.salchicha.goStairs();   
+           } 
+        
+        
+        else 
+           {
+               if(this.salchicha.camesFromUnder && this.salchicha.y - this.chef.y > -60) // Si viene por debajo del player pero llega a la altura a la que debe girar para saltar bache misterioso
+               {
+                   this.salchicha.direcc = 1;
+               }
+               else // No viene por debajo del player || Llega a la altura a la que debe girar para saltar bache misterioso
+               {
+                  this.salchicha.camesFromUnder = false;
+                  if(this.salchicha.upDown == true && this.chef.dead == false) // (El player está vivo) && (El enemigo no está en una escalera || Ha detectado al jugador a su altura)
+                    {
+                        this.salchicha.body.allowGravity = true;
+                        this.salchicha.upDown = false;
+                        this.salchicha.timeToSwitchSides -= this.game.time.physicsElapsed;
+                        if(this.chef.body.position.x > this.salchicha.body.position.x)
+                        {
+                            this.salchicha.direction = 2;
+                        }
+                        else
+                        {
+                            this.salchicha.direction = -2;
+                        }
+                        if(this.salchicha.timeToSwitchSides <= 0)
+                        {
+                            this.salchicha.direction = this.salchicha.direction * (-1);
+                            this.salchicha.timeToSwitchSides = 5;
+                        }
+                    }
+                    else if(this.chef.dead && this.salchichaOverlaps) // Player muerto y enemigo en una escalera
+                    {
+                        this.salchicha.goStairs(); 
+                    }
+                    
+               }
+            }
+        
+        //----------------------------------------------------------
+        
+        if((this.salchicha2Overlaps) && ((this.salchicha2.y - this.chef.y <= -120) || (this.salchicha2.y - this.chef.y >= 40))) // Enemigo en una escalera y fuera de la altura del player
+           {
+                    this.salchicha2.goStairs();
+                    console.log('SSSSSS');
+           } 
+        
+        
+        else 
+           {
+               if(this.salchicha2.camesFromUnder && this.salchicha2.y - this.chef.y > -60) // Si viene por debajo del player pero llega a la altura a la que debe girar para saltar bache misterioso
+               {
+                   this.salchicha2.direcc = 1;
+               }
+               else // No viene por debajo del player || Llega a la altura a la que debe girar para saltar bache misterioso
+               {
+                  this.salchicha2.camesFromUnder = false;
+                  if(this.salchicha2.upDown == true && this.chef.dead == false) // (El player está vivo) && (El enemigo no está en una escalera || Ha detectado al jugador a su altura)
+                    {
+                        this.salchicha2.body.allowGravity = true;
+                        this.salchicha2.upDown = false;
+                        this.salchicha2.timeToSwitchSides -= this.game.time.physicsElapsed;
+                        if(this.chef.body.position.x > this.salchicha2.body.position.x)
+                        {
+                            this.salchicha2.direction = 2;
+                        }
+                        else
+                        {
+                            this.salchicha2.direction = -2;
+                        }
+                        if(this.salchicha2.timeToSwitchSides <= 0)
+                        {
+                            this.salchicha2.direction = this.salchicha2.direction * (-1);
+                            this.salchicha2.timeToSwitchSides = 5;
+                        }
+                    }
+                    else if(this.chef.dead && this.salchicha2Overlaps) // Player muerto y enemigo en una escalera
+                    {
+                        this.salchicha2.goStairs(); 
+                    }
+                    
+               }
+            }
+        
+
+        
+        //__________________________________________________________
+        
+        if((this.salchicha3Overlaps) && ((this.salchicha3.y - this.chef.y <= -120) || (this.salchicha3.y - this.chef.y >= 40))) // Enemigo en una escalera y fuera de la altura del player
+           {
+                    this.salchicha3.goStairs();   
+           } 
+       
+        
+        else 
+           {
+               if(this.salchicha3.camesFromUnder && this.salchicha3.y - this.chef.y > -60) // Si viene por debajo del player pero llega a la altura a la que debe girar para saltar bache misterioso
+               {
+                   this.salchicha3.direcc = 1;
+               }
+               else // No viene por debajo del player || Llega a la altura a la que debe girar para saltar bache misterioso
+               {
+                  this.salchicha3.camesFromUnder = false;
+                  if(this.salchicha3.upDown == true && this.chef.dead == false) // (El player está vivo) && (El enemigo no está en una escalera || Ha detectado al jugador a su altura)
+                    {
+                        this.salchicha3.body.allowGravity = true;
+                        this.salchicha3.upDown = false;
+                        this.salchicha3.timeToSwitchSides -= this.game.time.physicsElapsed;
+                        if(this.chef.body.position.x > this.salchicha3.body.position.x)
+                        {
+                            this.salchicha3.direction = 2;
+                        }
+                        else
+                        {
+                            this.salchicha3.direction = -2;
+                        }
+                        if(this.salchicha3.timeToSwitchSides <= 0)
+                        {
+                            this.salchicha3.direction = this.salchicha3.direction * (-1);
+                            this.salchicha3.timeToSwitchSides = 5;
+                        }
+                    }
+                    else if(this.chef.dead && this.salchicha3Overlaps) // Player muerto y enemigo en una escalera
+                    {
+                        this.salchicha3.goStairs(); 
+                    }
+                    
+               }
+            }
+        
+        
+        //_________________________________________________________________________________________________________________
+        //_________________________________________________________________________________________________________________
+        
+        
+        
         //this.game.physics.arcade.collide(this.chef, this.burgerColisions);
-        this.game.physics.arcade.collide(this.chef,this.salchicha,this.killChef,null,this); this.game.physics.arcade.collide(this.chef,this.salchicha2,this.killChef,null,this); this.game.physics.arcade.collide(this.chef,this.salchicha3,this.killChef,null,this);
+        this.game.physics.arcade.collide(this.chef,this.salchicha,this.killChef,null,this); 
+        this.game.physics.arcade.collide(this.chef,this.salchicha2,this.killChef,null,this); 
+        this.game.physics.arcade.collide(this.chef,this.salchicha3,this.killChef,null,this);
         
         this.score.text=this.chef.points;
         this.peppersText.text=this.chef.pepper;
@@ -408,10 +626,40 @@ burgertime.level1 ={
                 else{
                     //this.chef.body.position.x = this.chef.initPosX;
                     //this.chef.body.position.y = this.chef.initPosY;
+                    
+                    //this.salchicha = new burgertime.enemy_prefab(this.game,this.game.world.centerX - 70,this.game.world.centerY,gameOptions.heroSpeed-100,gameOptions.heroSpeed-50,this);
+                    this.salchicha.recolocate();
+                    this.salchicha.body.allowGravity = false;
+                    
+                    //this.salchicha2 = new burgertime.enemy_prefab(this.game,50,146,gameOptions.heroSpeed-100,gameOptions.heroSpeed-50,this);
+                    this.salchicha2.recolocate();
+                    this.salchicha2.body.allowGravity = false;
+                    
+                    //this.salchicha3 = new burgertime.enemy_prefab(this.game,gameOptions.level1Width-60,508,gameOptions.heroSpeed-100,gameOptions.heroSpeed-50,this);
+                    this.salchicha3.recolocate();
+                    this.salchicha3.body.allowGravity = false;
+                    
+                    
                     this.chef.frame = 3;
                     this.chef.body.enable = true;
                     this.chef.position.x = this.game.world.centerX+150;
                     this.chef.position.y = this.game.world.centerX+100;
+                    //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    
+                    //this.salchicha = new burgertime.enemy_prefab(this.game,this.game.world.centerX - 70,this.game.world.centerY,gameOptions.heroSpeed-100,gameOptions.heroSpeed-50,this);
+                    this.salchicha.recolocate();
+                    this.salchicha.body.allowGravity = false;
+                    
+                    //this.salchicha2 = new burgertime.enemy_prefab(this.game,50,146,gameOptions.heroSpeed-100,gameOptions.heroSpeed-50,this);
+                    this.salchicha2.recolocate();
+                    this.salchicha2.body.allowGravity = false;
+                    
+                    //this.salchicha3 = new burgertime.enemy_prefab(this.game,gameOptions.level1Width-60,508,gameOptions.heroSpeed-100,gameOptions.heroSpeed-50,this);
+                    this.salchicha3.recolocate();
+                    this.salchicha3.body.allowGravity = false;
+                    
+                    //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    
                     this.chef.dead = false;
                     this.chef.doOnce = false;
                 }
@@ -777,6 +1025,9 @@ burgertime.level1 ={
     },
     nextLevel:function(){
         this.levelCompleted = true;
+    },
+    enableEnemyStairs:function(_enemy){
+        _enemy.canChangeDirec = true;
     },
     render:function(){
         //this.powerUp.body.setSize(22, 28, 20, 16);
