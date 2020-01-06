@@ -25,13 +25,36 @@ burgertime.ranking ={
         this.goBackButton = this.game.add.button(730, 700, 'ButtonUIGoBack', this.return, this, 2, 1, 0);
         this.goBackButton.scale.setTo(0.8);
         
+        
         var g = this.getScores();
     },
     return:function(){
         this.state.start('menu');
     },
     getScores:function(){
-        var t = JSON.parse(localStorage.getItem('ranking'));
+        try{
+            var t = JSON.parse(localStorage.getItem('ranking'));
+            if(t.player1 == "")
+            {
+                var s = this.makeScores();
+            }
+        } catch(e) {
+            var t = {
+                'player1': "AAA",
+                'player2': "BBB",
+                'player3': "CCC",
+                'player4': "DDD",
+                'player5': "EEE",
+                'points1': "0",
+                'points2': "0",
+                'points3': "0",
+                'points4': "0",
+                'points5': "0"
+            }
+            
+            localStorage.setItem('ranking', JSON.stringify(t));
+        }
+        
         
         this.p1=this.game.add.text(700, 300,t.player1);
         this.p1.anchor.setTo(1,0);
@@ -95,7 +118,7 @@ burgertime.ranking ={
         this.points5.fontSize=60;
     },
     makeScores:function(){
-        var test = { 'player1': "Pau", 'player2': "Pau", 'player3': "Pau", 'player4': "Pau", 'player5': "Pau", 'points1': "100", 'points2': "200", 'points3': "100", 'points4': "100", 'points5': "100" };
+        var test = { 'player1': "AAA", 'player2': "BBB", 'player3': "CCC", 'player4': "DDD", 'player5': "EEE", 'points1': "0", 'points2': "0", 'points3': "0", 'points4': "0", 'points5': "0" };
         localStorage.setItem('ranking', JSON.stringify(test));
     }
 };
