@@ -3,7 +3,7 @@ var burgertime = burgertime || {};
 burgertime.chef_prefab = function(_game,_x,_y,_speedX,_speedY,_level){
     Phaser.Sprite.call(this,_game,_x,_y,'chef');
     //console.log('3');
-    this.scale.setTo(2.5);
+    this.scale.setTo(2);
     this.anchor.setTo(.5);
     //this.animations.add('right',[0,1],10,false);
     this.animations.add('walk',[0,1,2],15,false);
@@ -29,7 +29,7 @@ burgertime.chef_prefab = function(_game,_x,_y,_speedX,_speedY,_level){
     this.initPosX = _x;
     this.initPosY = _y;
     this.doOnce = false;
-    this.body.setSize(12, 15, 0, 0);
+    this.body.setSize(12, 12, 0, 0);
 };
 
 burgertime.chef_prefab.prototype = Object.create(Phaser.Sprite.prototype);

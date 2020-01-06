@@ -51,6 +51,9 @@ burgertime.level2 ={
         this.load.image('BreadUp3',ruta+'UpBread3.png');
         this.load.image('Bandeja', ruta+"Recolector.png");
         
+        this.load.image('TileBlanca', ruta+"Imagen127.png");
+        this.load.image('TileTransparente', ruta+"Imagen128.png");
+        
         this.load.audio('mainTheme', 'assets/audio/main_theme.mp3');
         this.load.audio('start', 'assets/audio/game_start.mp3');
         this.load.audio('levelComplete', 'assets/audio/stage_complete.mp3');
@@ -133,6 +136,21 @@ burgertime.level2 ={
         this.changeMusic = this.game.time.events.add(Phaser.Timer.SECOND*3,this.musicChange,this);
         
         this.collideStairs = this.game.time.events.add(Phaser.Timer.SECOND*2,this.activateStairs,this);
+        
+        this.stair1 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*0,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*10,'TileTransparente');
+        this.stair2 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*2,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*10,'TileTransparente');
+        this.stair3 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*4,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*10,'TileTransparente');
+        this.stair4 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*6,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*18,'TileTransparente');
+        this.stair5 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*8,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*22.5,'TileTransparente');
+        this.stair6 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*10,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*18,'TileTransparente');
+        this.stair7 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*12,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*10,'TileTransparente');
+        this.stair8 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*14,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*10,'TileTransparente');
+        this.stair9 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*16,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*10,'TileTransparente');
+        this.stair10 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*18,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*10,'TileTransparente');
+        this.stair11 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*30,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*7.5,'TileTransparente');
+        
+        
+        
         
         /*this.timer1 = this.game.time.events.loop(Phaser.Timer.SECOND*2,this.activatePowerUp,this);
         this.timer2 = this.game.time.events.loop(Phaser.Timer.SECOND*3,this.deactivatePowerUp,this);*/
@@ -237,8 +255,31 @@ burgertime.level2 ={
         
         var c = this.ingredientColisions();
         
-        this.game.physics.arcade.collide(this.chef,this.stairs,this.stairTouch, null, this);
+        //this.game.physics.arcade.collide(this.chef,this.stairs,this.stairTouch, null, this);
+        
         this.game.physics.arcade.collide(this.chef,this.floor,this.platformTouch, null, this);
+        this.game.physics.arcade.collide(this.chef, this.collisionMap);
+        
+        
+        if(this.game.physics.arcade.overlap(this.chef, this.stair1)  || 
+           this.game.physics.arcade.overlap(this.chef, this.stair2)  ||
+           this.game.physics.arcade.overlap(this.chef, this.stair3)  ||
+           this.game.physics.arcade.overlap(this.chef, this.stair4)  ||
+           this.game.physics.arcade.overlap(this.chef, this.stair5)  ||
+           this.game.physics.arcade.overlap(this.chef, this.stair6)  ||
+           this.game.physics.arcade.overlap(this.chef, this.stair7)  ||
+           this.game.physics.arcade.overlap(this.chef, this.stair8)  ||
+           this.game.physics.arcade.overlap(this.chef, this.stair9)  ||
+           this.game.physics.arcade.overlap(this.chef, this.stair10) ||
+           this.game.physics.arcade.overlap(this.chef, this.stair11))
+        {
+              this.chef.body.allowGravity = false;
+        }
+        else
+        {
+              this.chef.body.allowGravity = true;
+        }
+        
         
         this.score.text=this.chef.points;
         this.peppersText.text=this.chef.pepper;
@@ -311,21 +352,34 @@ burgertime.level2 ={
             
           if(this.chef.pepper > 0) {
                 this.chef.canMove = false;
-                
+              
                 if(this.chef.lastMove == 'U') { 
                     this.animacionA = this.chef.animations.play('pepperUp',5,false,false);
                     this.animacionA.onComplete.add(function(){this.chef.canMove = true;},this);
+                    this.chef.pepper--; 
+                    this.pepperThrow = new burgertime.pepper_prefab(this.game,this.chef.x,this.chef.top,this.chef.lastMove,'PimientaTirada');
                 }
                 else if(this.chef.lastMove == 'D') { 
                     this.animacionB = this.chef.animations.play('pepperDown',5,false,false);
                     this.animacionB.onComplete.add(function(){this.chef.canMove = true;},this);
+                    this.chef.pepper--; 
+                    this.pepperThrow = new burgertime.pepper_prefab(this.game,this.chef.x,this.chef.bottom,this.chef.lastMove,'PimientaTirada');
+                    
                 }
                 else {
                     this.animacionC = this.chef.animations.play('pepperSide',5,false,false);
                     this.animacionC.onComplete.add(function(){this.chef.canMove = true;},this);
+                    
+                    if(this.chef.lastMove == 'R') {
+                        this.chef.pepper--; 
+                        this.pepperThrow = new burgertime.pepper_prefab(this.game,this.chef.left,this.chef.y,this.chef.lastMove,'PimientaTirada');
+                    }
+                    else{
+                        this.chef.pepper--; 
+                        this.pepperThrow = new burgertime.pepper_prefab(this.game,this.chef.left,this.chef.y,this.chef.lastMove,'PimientaTirada');
+                    }                 
                 }
-               this.chef.pepper--;                 
-           }
+            }
         }
                 
         if(this.chef.lives <= 0){                // Si Chef Muere, la condicion es cuando colisiona con enemigo
