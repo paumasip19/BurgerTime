@@ -73,6 +73,18 @@ burgertime.ingredient_prefab.prototype.fall = function(){
     this.game.physics.arcade.collide(this.ingredient4, this.level.salchicha, this.killEnemy1, null, this);
     this.game.physics.arcade.collide(this.ingredient5, this.level.salchicha, this.killEnemy1, null, this);
     
+    this.game.physics.arcade.collide(this.ingredient1, this.level.salchicha2, this.killEnemy2, null, this);
+    this.game.physics.arcade.collide(this.ingredient2, this.level.salchicha2, this.killEnemy2, null, this);
+    this.game.physics.arcade.collide(this.ingredient3, this.level.salchicha2, this.killEnemy2, null, this);
+    this.game.physics.arcade.collide(this.ingredient4, this.level.salchicha2, this.killEnemy2, null, this);
+    this.game.physics.arcade.collide(this.ingredient5, this.level.salchicha2, this.killEnemy2, null, this);
+    
+    this.game.physics.arcade.collide(this.ingredient1, this.level.salchicha3, this.killEnemy3, null, this);
+    this.game.physics.arcade.collide(this.ingredient2, this.level.salchicha3, this.killEnemy3, null, this);
+    this.game.physics.arcade.collide(this.ingredient3, this.level.salchicha3, this.killEnemy3, null, this);
+    this.game.physics.arcade.collide(this.ingredient4, this.level.salchicha3, this.killEnemy3, null, this);
+    this.game.physics.arcade.collide(this.ingredient5, this.level.salchicha3, this.killEnemy3, null, this);
+    
     this.ingredient1.position.y += 1;
     this.ingredient2.position.y += 1;
     this.ingredient3.position.y += 1;
@@ -101,6 +113,24 @@ burgertime.ingredient_prefab.prototype.killEnemy1 = function(){
     if(!this.level.salchicha.oneTime){
         this.level.salchicha.dead = true;
         this.level.salchicha.oneTime = true;
+    }
+};
+burgertime.ingredient_prefab.prototype.killEnemy2 = function(){
+    if(this.level.salchicha2.body.enable){
+        this.level.salchicha2.body.enable = false;
+    }
+    if(!this.level.salchicha2.oneTime){
+        this.level.salchicha2.dead = true;
+        this.level.salchicha2.oneTime = true;
+    }
+};
+burgertime.ingredient_prefab.prototype.killEnemy3 = function(){
+    if(this.level.salchicha3.body.enable){
+        this.level.salchicha3.body.enable = false;
+    }
+    if(!this.level.salchicha3.oneTime){
+        this.level.salchicha3.dead = true;
+        this.level.salchicha3.oneTime = true;
     }
 };
 

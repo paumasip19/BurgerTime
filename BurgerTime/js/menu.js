@@ -18,7 +18,9 @@ burgertime.menu ={
         
         this.cursors = this.game.input.keyboard.createCursorKeys();
         this.enter = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
-        //this.space.onDown.add(function(){this.nextLevel();},this); 
+        //this.space.onDown.add(function(){this.nextLevel();},this);
+        var test = { 'gameScore': "0" };
+        localStorage.setItem('gameS', JSON.stringify(test));
     },
     create:function(){
         this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
