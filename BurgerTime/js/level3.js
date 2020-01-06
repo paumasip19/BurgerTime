@@ -260,7 +260,7 @@ burgertime.level3 ={
         this.lifesText.fontSize=40;
         
         var h = this.loadData();
-        var l = this.getScore();
+        //var l = this.getScore();
     },
     musicChange:function(){
         this.music.play();
