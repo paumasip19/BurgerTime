@@ -16,7 +16,9 @@ var gameOptions={
     heroJump:450,
     firstTime:1,
     levelPlayer1: '',
-    levelPlayer2: ''
+    levelPlayer2: '',
+    level1Multi3Completed: false,
+    level2Multi3Completed: false
 }
 
 burgertime.game = new Phaser.Game(gameOptions.gameWidth,gameOptions.gameHeight,Phaser.AUTO,null,this,false,false);
