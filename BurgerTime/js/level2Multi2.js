@@ -1,6 +1,6 @@
 var burgertime = burgertime || {};
 
-burgertime.level2 ={
+burgertime.level2Multi2 ={
     init:function(){
         this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
         this.scale.pageAlignHorizontally = true;
@@ -61,6 +61,7 @@ burgertime.level2 ={
         
         this.espacio = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         this.cursors = this.game.input.keyboard.createCursorKeys();
+        this.pButton = this.game.input.keyboard.addKey(Phaser.Keyboard.P);
         
         this.music = this.game.add.audio('mainTheme');
         this.start = this.game.add.audio('start');
@@ -77,20 +78,35 @@ burgertime.level2 ={
         this.start.play();
         
         
+        this.loadPeppers();
+        
         this.map = this.game.add.tilemap('level2');
         this.map.addTilesetImage('Map');
         
         this.floor = this.map.createLayer('Floor');
         this.map.setCollisionBetween(3,3,true,'Floor');
         
+        this.collisionMap = this.map.createLayer('Collisions');
+        this.map.setCollisionBetween(6,6,true,'Collisions');
+        
         this.stairs = this.map.createLayer('Stairs');
         this.map.setCollisionBetween(4,5,true,'Stairs');
         
         this.background = this.map.createLayer('Background');
-        this.map.setCollisionBetween(6,6,true,'Background');
+        
+        this.enemies = 3;
         
         this.chef = new burgertime.chef_prefab(this.game,this.game.world.centerX+150,this.game.world.centerY + 100,gameOptions.heroSpeed,gameOptions.heroSpeed,this);
         this.chef.frame = 7;
+        
+        this.salchicha = new burgertime.enemy_prefab(this.game,this.game.world.centerX - 70,this.game.world.centerY,gameOptions.heroSpeed-100,gameOptions.heroSpeed-50,this);
+        this.salchicha.body.allowGravity = false;
+        
+        this.salchicha2 = new burgertime.enemy_prefab(this.game,3000,3000,gameOptions.heroSpeed-100,gameOptions.heroSpeed-50,this);
+        this.salchicha2.body.allowGravity = false;
+        
+        this.salchicha3 = new burgertime.enemy_prefab(this.game,2000,2000,gameOptions.heroSpeed-100,gameOptions.heroSpeed-50,this);
+        this.salchicha3.body.allowGravity = false;
         
         //this.breadUp = new burgertime.ingredient_prefab(this.game,100,100,this,'BreadUp1');
         
@@ -99,37 +115,133 @@ burgertime.level2 ={
         this.startLevel = true;
         this.levelCompleted = false;
         
+        this.peppersIcon = this.game.add.tileSprite(this.game.width/6*5-25,this.game.height/20,30,30, 'PimientaIcon');
+        this.peppersIcon.anchor.setTo(1,0);
+        this.peppersIcon.scale.setTo(1.5);
+
+        this.lifesIcon = this.game.add.tileSprite(this.game.width*0.93,this.game.height/20,30,30, 'VidasIcon');
+        this.lifesIcon.anchor.setTo(1,0);
+        this.lifesIcon.scale.setTo(1.5);
+        
         this.changeMusic = this.game.time.events.add(Phaser.Timer.SECOND*3,this.musicChange,this);
         
         this.collideStairs = this.game.time.events.add(Phaser.Timer.SECOND*2,this.activateStairs,this);
-        
-        /*this.timer1 = this.game.time.events.loop(Phaser.Timer.SECOND*2,this.activatePowerUp,this);
-        this.timer2 = this.game.time.events.loop(Phaser.Timer.SECOND*3,this.deactivatePowerUp,this);*/
         
         this.timeElapsedActivate = 0;
         this.timeElapsedDeactivate = 0;
         
         this.timerStairs = this.game.time.events.loop(Phaser.Timer.SECOND,this.activateStairs,this);
         
-        this.upBread1 = new burgertime.ingredient_prefab(this.game,75, 0-5,'BreadUp1','BreadUp2','BreadUp3', this.chef, this);
-        this.upBread2 = new burgertime.ingredient_prefab(this.game,315,0-5,'BreadUp1','BreadUp2','BreadUp3', this.chef, this);
-        this.upBread3 = new burgertime.ingredient_prefab(this.game,555,0-5,'BreadUp1','BreadUp2','BreadUp3', this.chef, this);
-        this.upBread4 = new burgertime.ingredient_prefab(this.game,800,0-5,'BreadUp1','BreadUp2','BreadUp3', this.chef, this);
+        this.spawnSalchicha1 = this.game.time.events.add(Phaser.Timer.SECOND*2,this.spawnEnemy1,this);
+        this.spawnSalchicha1 = this.game.time.events.add(Phaser.Timer.SECOND*3,this.spawnEnemy2,this);
         
-        this.lettuce1 = new burgertime.ingredient_prefab(this.game,75, 55-5,'Lettuce1','Lettuce2','Lettuce3', this.chef, this);
-        this.lettuce2 = new burgertime.ingredient_prefab(this.game,315,180-5,'Lettuce1','Lettuce2','Lettuce3', this.chef, this);
-        this.letuce3 = new burgertime.ingredient_prefab(this.game,555,420-5,'Lettuce1','Lettuce2','Lettuce3', this.chef, this);
-        this.lettuce4 = new burgertime.ingredient_prefab(this.game,800,120-5,'Lettuce1','Lettuce2','Lettuce3', this.chef, this);
+        this.stair1 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*1,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*10,'TileTransparente');
+        this.stair2 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*3,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*10,'TileTransparente');
+        this.stair3 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*5,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*10,'TileTransparente');
+        this.stair4 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*7,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*18,'TileTransparente');
+        this.stair5 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*9,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*22.5,'TileTransparente');
+        this.stair6 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*11,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*18,'TileTransparente');
+        this.stair7 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*13,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*10,'TileTransparente');
+        this.stair8 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*15,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*10,'TileTransparente');
+        this.stair9 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*17,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*10,'TileTransparente');
+        this.stair10 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*19,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*10,'TileTransparente');
+        this.stair11 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*30,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*7.5,'TileTransparente');
         
-        this.burger1 = new burgertime.ingredient_prefab(this.game,75, 120-5,'Meat1','Meat2','Meat3', this.chef, this);
-        this.burger2 = new burgertime.ingredient_prefab(this.game,315,55-5,'Meat1','Meat2','Meat3', this.chef, this);
-        this.burger3 = new burgertime.ingredient_prefab(this.game,555,300-5,'Meat1','Meat2','Meat3', this.chef, this);
-        this.burger4 = new burgertime.ingredient_prefab(this.game,800,180-5,'Meat1','Meat2','Meat3', this.chef, this);
+        this.changeDir1 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*1+30,gameOptions.level1Height/35*3.5,gameOptions.level1Height/35*10,'TileTransparente');
+        this.changeDir2 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*3+30,gameOptions.level1Height/35*3.5,gameOptions.level1Height/35*10,'TileTransparente');
+        this.changeDir3 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*5+30,gameOptions.level1Height/35*3.5,gameOptions.level1Height/35*10,'TileTransparente');
+        this.changeDir4 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*7+30,gameOptions.level1Height/35*3.5,gameOptions.level1Height/35*18,'TileTransparente');
+        this.changeDir5 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*9+30,gameOptions.level1Height/35*3.5,gameOptions.level1Height/35*22.5,'TileTransparente');
+        this.changeDir6 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*11+30,gameOptions.level1Height/35*3.5,gameOptions.level1Height/35*18,'TileTransparente');
+        this.changeDir7 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*13+30,gameOptions.level1Height/35*3.5,gameOptions.level1Height/35*10,'TileTransparente');
+        this.changeDir8 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*15+30,gameOptions.level1Height/35*3.5,gameOptions.level1Height/35*10,'TileTransparente');
+        this.changeDir9 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*19+30,gameOptions.level1Height/35*3.5,gameOptions.level1Height/35*10,'TileTransparente');
+        this.changeDir10 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*17+30,gameOptions.level1Height/35*3.5,gameOptions.level1Height/35*10,'TileTransparente');
         
-        this.downBread1 = new burgertime.ingredient_prefab(this.game,75, 240-5,'BreadDown1','BreadDown2','BreadDown3', this.chef, this);
-        this.downBread2 = new burgertime.ingredient_prefab(this.game,315,480-5,'BreadDown1','BreadDown2','BreadDown3', this.chef, this);
-        this.downBread3 = new burgertime.ingredient_prefab(this.game,555,480-5,'BreadDown1','BreadDown2','BreadDown3', this.chef, this);
-        this.downBread4 = new burgertime.ingredient_prefab(this.game,800,240-5,'BreadDown1','BreadDown2','BreadDown3', this.chef, this);
+        
+        /*this.timer1 = this.game.time.events.loop(Phaser.Timer.SECOND*2,this.activatePowerUp,this);
+        this.timer2 = this.game.time.events.loop(Phaser.Timer.SECOND*3,this.deactivatePowerUp,this);*/
+        
+        this.timerStairs = this.game.time.events.loop(Phaser.Timer.SECOND,this.activateStairs,this);
+        
+        this.upBread1 = new burgertime.ingredient_prefab(this.game,75+60, 145,'BreadUp1','BreadUp2','BreadUp3', this.chef,this);
+        this.upBread2 = new burgertime.ingredient_prefab(this.game,315+60,0+145,'BreadUp1','BreadUp2','BreadUp3', this.chef,this);
+        this.upBread3 = new burgertime.ingredient_prefab(this.game,555+60,0+145,'BreadUp1','BreadUp2','BreadUp3', this.chef,this);
+        this.upBread4 = new burgertime.ingredient_prefab(this.game,800+60,0+145,'BreadUp1','BreadUp2','BreadUp3', this.chef,this);
+        
+        this.lettuce1 = new burgertime.ingredient_prefab(this.game,75+60, 60+145,'Lettuce1','Lettuce2','Lettuce3', this.chef,this);
+        this.lettuce2 = new burgertime.ingredient_prefab(this.game,315+60,60+145,'Lettuce1','Lettuce2','Lettuce3', this.chef,this);
+        this.lettuce3 = new burgertime.ingredient_prefab(this.game,555+60,300+145,'Lettuce1','Lettuce2','Lettuce3', this.chef,this);
+        this.lettuce4 = new burgertime.ingredient_prefab(this.game,800+60,120+145,'Lettuce1','Lettuce2','Lettuce3', this.chef,this);
+        
+        this.burger1 = new burgertime.ingredient_prefab(this.game,75+60, 120+145,'Cheese1','Cheese2','Cheese3', this.chef,this);
+        this.burger2 = new burgertime.ingredient_prefab(this.game,315+60,180+145,'Cheese1','Cheese2','Cheese3', this.chef,this);
+        this.burger3 = new burgertime.ingredient_prefab(this.game,555+60,420+145,'Cheese1','Cheese2','Cheese3', this.chef,this);
+        this.burger4 = new burgertime.ingredient_prefab(this.game,800+60,180+145,'Cheese1','Cheese2','Cheese3', this.chef,this);
+        
+        this.downBread1 = new burgertime.ingredient_prefab(this.game,75+60, 240+145,'BreadDown1','BreadDown2','BreadDown3', this.chef,this);
+        this.downBread2 = new burgertime.ingredient_prefab(this.game,315+60,480+145,'BreadDown1','BreadDown2','BreadDown3', this.chef,this);
+        this.downBread3 = new burgertime.ingredient_prefab(this.game,555+60,480+145,'BreadDown1','BreadDown2','BreadDown3', this.chef,this);
+        this.downBread4 = new burgertime.ingredient_prefab(this.game,800+60,240+145,'BreadDown1','BreadDown2','BreadDown3', this.chef,this);
+        
+        this.bandeja1 = this.game.add.sprite(125,900,'Bandeja',0);
+        this.game.physics.arcade.enable(this.bandeja1);
+        this.bandeja1.body.allowGravity = false;
+        this.bandeja1.body.immovable = true;
+        
+        this.bandeja2 = this.game.add.sprite(365,900,'Bandeja',0);
+        this.game.physics.arcade.enable(this.bandeja2);
+        this.bandeja2.body.allowGravity = false;
+        this.bandeja2.body.immovable = true;
+        
+        this.bandeja3 = this.game.add.sprite(605,900,'Bandeja',0);
+        this.game.physics.arcade.enable(this.bandeja3);
+        this.bandeja3.body.allowGravity = false;
+        this.bandeja3.body.immovable = true;
+        
+        this.bandeja4 = this.game.add.sprite(845,900,'Bandeja',0);
+        this.game.physics.arcade.enable(this.bandeja4);
+        this.bandeja4.body.allowGravity = false;
+        this.bandeja4.body.immovable = true;
+        
+        this.score=this.game.add.text(this.game.width/3+25,this.game.height/20,'0');
+        this.score.puntos=0; 
+        this.score.anchor.setTo(1,0);
+        this.score.font = 'arcade';
+        this.score.fill='#FFFFFF';
+        this.score.fontSize=40;
+
+        this.hiText=this.game.add.text(this.game.width/3+125,this.game.height/20,'HI');
+        this.hiText.anchor.setTo(1,0);
+        this.hiText.font = 'arcade';
+        this.hiText.fill='#FFFFFF';
+        this.hiText.fontSize=40;
+
+        this.scoreHI=this.game.add.text(this.game.width/3*2+50,this.game.height/20,'0');
+        this.scoreHI.anchor.setTo(1,0);
+        this.scoreHI.font = 'arcade';
+        this.scoreHI.fill='#FFFFFF';
+        this.scoreHI.fontSize=40;
+
+        this.peppersText=this.game.add.text(this.game.width/6*5,this.game.height/20,'0');
+        this.peppersText.anchor.setTo(1,0);
+        this.peppersText.font = 'arcade';
+        this.peppersText.fill='#FFFFFF';
+        this.peppersText.fontSize=40;
+
+        this.lifesText=this.game.add.text(this.game.width-50,this.game.height/20,'0');
+        this.lifesText.anchor.setTo(1,0);
+        this.lifesText.font = 'arcade';
+        this.lifesText.fill='#FFFFFF';
+        this.lifesText.fontSize=40;
+        
+        this.player2Text = this.game.add.text(this.game.width/4 - 50, this.game.height/20,'PLAYER2');
+        this.player2Text.anchor.setTo(1,0);
+        this.player2Text.font = 'aracde';
+        this.player2Text.fill = '#FFFFFF';
+        this.player2Text.fontSize = 40;
+        
+        var h = this.loadData();
     },
     musicChange:function(){
         this.music.play();
@@ -138,6 +250,8 @@ burgertime.level2 ={
         
         if(this.chef.lives == 0)
         {
+            this.music.pause();
+            this.complete.play();
             var h = this.saveData();
             this.state.start('menu');
             //this.state.start('menu');
@@ -150,10 +264,61 @@ burgertime.level2 ={
             this.levelCompleted = true;
         }
         
+        var c = this.ingredientColisions();
+        
         //this.game.physics.arcade.collide(this.chef,this.stairs,this.stairTouch, null, this);
-        this.game.physics.arcade.collide(this.chef,this.floor,this.platformTouch, null, this);
+        
         this.game.physics.arcade.collide(this.chef,this.floor,this.platformTouch, null, this);
         this.game.physics.arcade.collide(this.chef, this.collisionMap);
+        
+        //_________________________________________________________________________________________________________________
+        //_________________________________________________________________________________________________________________
+        
+        if (this.game.physics.arcade.overlap(this.salchicha, this.changeDir1) || 
+           this.game.physics.arcade.overlap(this.salchicha, this.changeDir2)  || 
+           this.game.physics.arcade.overlap(this.salchicha, this.changeDir3)  || 
+           this.game.physics.arcade.overlap(this.salchicha, this.changeDir4)  || 
+           this.game.physics.arcade.overlap(this.salchicha, this.changeDir5)  || 
+           this.game.physics.arcade.overlap(this.salchicha, this.changeDir6)  || 
+           this.game.physics.arcade.overlap(this.salchicha, this.changeDir7)  || 
+           this.game.physics.arcade.overlap(this.salchicha, this.changeDir8)  || 
+           this.game.physics.arcade.overlap(this.salchicha, this.changeDir9)  || 
+           this.game.physics.arcade.overlap(this.salchicha, this.changeDir10))
+            {   this.salchichaOverlaps = true; } else {
+                this.salchichaOverlaps = false;
+            }
+        
+        if (this.game.physics.arcade.overlap(this.salchicha2, this.changeDir1) || 
+           this.game.physics.arcade.overlap(this.salchicha2, this.changeDir2)  || 
+           this.game.physics.arcade.overlap(this.salchicha2, this.changeDir3)  || 
+           this.game.physics.arcade.overlap(this.salchicha2, this.changeDir4)  || 
+           this.game.physics.arcade.overlap(this.salchicha2, this.changeDir5)  || 
+           this.game.physics.arcade.overlap(this.salchicha2, this.changeDir6)  || 
+           this.game.physics.arcade.overlap(this.salchicha2, this.changeDir7)  || 
+           this.game.physics.arcade.overlap(this.salchicha2, this.changeDir8)  || 
+           this.game.physics.arcade.overlap(this.salchicha2, this.changeDir9)  || 
+           this.game.physics.arcade.overlap(this.salchicha2, this.changeDir10))
+            {   this.salchicha2Overlaps = true; } else {
+                this.salchicha2Overlaps = false;
+            }
+        
+        if (this.game.physics.arcade.overlap(this.salchicha3, this.changeDir1) || 
+           this.game.physics.arcade.overlap(this.salchicha3, this.changeDir2)  || 
+           this.game.physics.arcade.overlap(this.salchicha3, this.changeDir3)  || 
+           this.game.physics.arcade.overlap(this.salchicha3, this.changeDir4)  || 
+           this.game.physics.arcade.overlap(this.salchicha3, this.changeDir5)  || 
+           this.game.physics.arcade.overlap(this.salchicha3, this.changeDir6)  || 
+           this.game.physics.arcade.overlap(this.salchicha3, this.changeDir7)  || 
+           this.game.physics.arcade.overlap(this.salchicha3, this.changeDir8)  || 
+           this.game.physics.arcade.overlap(this.salchicha3, this.changeDir9)  || 
+           this.game.physics.arcade.overlap(this.salchicha3, this.changeDir10))
+            {   this.salchicha3Overlaps = true; } else {
+                this.salchicha3Overlaps = false;
+            }
+        
+        
+        //_________________________________________________________________________________________________________________
+        //_________________________________________________________________________________________________________________
         
         
         if(this.game.physics.arcade.overlap(this.chef, this.stair1)  || 
@@ -175,17 +340,156 @@ burgertime.level2 ={
               this.chef.body.allowGravity = true;
         }
         
-        //this.game.physics.arcade.collide(this.chef, this.burgerColisions);
-        this.game.physics.arcade.collide(this.chef,this.salchicha,this.killChef,null,this); this.game.physics.arcade.collide(this.chef,this.salchicha2,this.killChef,null,this); this.game.physics.arcade.collide(this.chef,this.salchicha3,this.killChef,null,this);
+        
+         //_________________________________________________________________________________________________________________
+        //_________________________________________________________________________________________________________________
+        
+        if((this.salchichaOverlaps) && ((this.salchicha.y - this.chef.y <= -120) || (this.salchicha.y - this.chef.y >= 40))) // Enemigo en una escalera y fuera de la altura del player
+           {
+                    this.salchicha.goStairs();   
+           } 
+        
+        
+        else 
+           {
+               if(this.salchicha.camesFromUnder && this.salchicha.y - this.chef.y > -60) // Si viene por debajo del player pero llega a la altura a la que debe girar para saltar bache misterioso
+               {
+                   this.salchicha.direcc = 1;
+               }
+               else // No viene por debajo del player || Llega a la altura a la que debe girar para saltar bache misterioso
+               {
+                  this.salchicha.camesFromUnder = false;
+                  if(this.salchicha.upDown == true && this.chef.dead == false) // (El player está vivo) && (El enemigo no está en una escalera || Ha detectado al jugador a su altura)
+                    {
+                        this.salchicha.body.allowGravity = true;
+                        this.salchicha.upDown = false;
+                        this.salchicha.timeToSwitchSides -= this.game.time.physicsElapsed;
+                        if(this.chef.body.position.x > this.salchicha.body.position.x)
+                        {
+                            this.salchicha.direction = 2;
+                        }
+                        else
+                        {
+                            this.salchicha.direction = -2;
+                        }
+                        if(this.salchicha.timeToSwitchSides <= 0)
+                        {
+                            this.salchicha.direction = this.salchicha.direction * (-1);
+                            this.salchicha.timeToSwitchSides = 5;
+                        }
+                    }
+                    else if(this.chef.dead && this.salchichaOverlaps) // Player muerto y enemigo en una escalera
+                    {
+                        this.salchicha.goStairs(); 
+                    }
+                    
+               }
+            }
+        
+        //----------------------------------------------------------
+        
+        if((this.salchicha2Overlaps) && ((this.salchicha2.y - this.chef.y <= -120) || (this.salchicha2.y - this.chef.y >= 40))) // Enemigo en una escalera y fuera de la altura del player
+           {
+                    this.salchicha2.goStairs();
+           } 
+        
+        
+        else 
+           {
+               if(this.salchicha2.camesFromUnder && this.salchicha2.y - this.chef.y > -60) // Si viene por debajo del player pero llega a la altura a la que debe girar para saltar bache misterioso
+               {
+                   this.salchicha2.direcc = 1;
+               }
+               else // No viene por debajo del player || Llega a la altura a la que debe girar para saltar bache misterioso
+               {
+                  this.salchicha2.camesFromUnder = false;
+                  if(this.salchicha2.upDown == true && this.chef.dead == false) // (El player está vivo) && (El enemigo no está en una escalera || Ha detectado al jugador a su altura)
+                    {
+                        this.salchicha2.body.allowGravity = true;
+                        this.salchicha2.upDown = false;
+                        this.salchicha2.timeToSwitchSides -= this.game.time.physicsElapsed;
+                        if(this.chef.body.position.x > this.salchicha2.body.position.x)
+                        {
+                            this.salchicha2.direction = 2;
+                        }
+                        else
+                        {
+                            this.salchicha2.direction = -2;
+                        }
+                        if(this.salchicha2.timeToSwitchSides <= 0)
+                        {
+                            this.salchicha2.direction = this.salchicha2.direction * (-1);
+                            this.salchicha2.timeToSwitchSides = 5;
+                        }
+                    }
+                    else if(this.chef.dead && this.salchicha2Overlaps) // Player muerto y enemigo en una escalera
+                    {
+                        this.salchicha2.goStairs(); 
+                    }
+                    
+               }
+            }
+        
+
+        
+        //__________________________________________________________
+        
+        if((this.salchicha3Overlaps) && ((this.salchicha3.y - this.chef.y <= -120) || (this.salchicha3.y - this.chef.y >= 40))) // Enemigo en una escalera y fuera de la altura del player
+           {
+                    this.salchicha3.goStairs();   
+           } 
+       
+        
+        else 
+           {
+               if(this.salchicha3.camesFromUnder && this.salchicha3.y - this.chef.y > -60) // Si viene por debajo del player pero llega a la altura a la que debe girar para saltar bache misterioso
+               {
+                   this.salchicha3.direcc = 1;
+               }
+               else // No viene por debajo del player || Llega a la altura a la que debe girar para saltar bache misterioso
+               {
+                  this.salchicha3.camesFromUnder = false;
+                  if(this.salchicha3.upDown == true && this.chef.dead == false) // (El player está vivo) && (El enemigo no está en una escalera || Ha detectado al jugador a su altura)
+                    {
+                        this.salchicha3.body.allowGravity = true;
+                        this.salchicha3.upDown = false;
+                        this.salchicha3.timeToSwitchSides -= this.game.time.physicsElapsed;
+                        if(this.chef.body.position.x > this.salchicha3.body.position.x)
+                        {
+                            this.salchicha3.direction = 2;
+                        }
+                        else
+                        {
+                            this.salchicha3.direction = -2;
+                        }
+                        if(this.salchicha3.timeToSwitchSides <= 0)
+                        {
+                            this.salchicha3.direction = this.salchicha3.direction * (-1);
+                            this.salchicha3.timeToSwitchSides = 5;
+                        }
+                    }
+                    else if(this.chef.dead && this.salchicha3Overlaps) // Player muerto y enemigo en una escalera
+                    {
+                        this.salchicha3.goStairs(); 
+                    }
+                    
+               }
+            }
+        
+        
+        //_________________________________________________________________________________________________________________
+        //_________________________________________________________________________________________________________________
+        
+        this.game.physics.arcade.collide(this.chef,this.salchicha,this.killChef,null,this); 
+        this.game.physics.arcade.collide(this.chef,this.salchicha2,this.killChef,null,this); 
+        this.game.physics.arcade.collide(this.chef,this.salchicha3,this.killChef,null,this);
+        
         
         this.score.text=this.chef.points;
         this.peppersText.text=this.chef.pepper;
         this.lifesText.text=this.chef.lives;
-
-        var c = this.ingredientColisions();
-        var e = this.ingredientFloorColisions();
         
-     //Power Up
+        //Power Up
         if(this.isPowerUp == false){
             if(this.timeElapsedActivate > 3){
                 this.activatePowerUp();
@@ -215,42 +519,46 @@ burgertime.level2 ={
        
         //this.activatePowerUp();
         //console.log(this.isPowerUp);
-        if(!this.chef.dead){
-            if(this.cursors.left.isDown && this.chef.canMove == true){
-                this.chef.body.velocity.x = -this.chef.speedX;
-                this.chef.body.velocity.y = 0;
-                this.chef.animations.play('walk');
-                this.chef.scale.x = 2.5;
-                this.chef.lastMove = 'L';
-            }
-            else if(this.cursors.right.isDown && this.chef.canMove == true){
-                this.chef.body.velocity.x = this.chef.speedX;
-                this.chef.body.velocity.y = 0;
-                this.chef.animations.play('walk');
-                this.chef.scale.x = -2.5;
-                this.chef.lastMove = 'R';
-            }
-            else if(this.cursors.up.isDown && this.chef.canMove == true){
-                this.chef.body.velocity.y = -this.chef.speedY;
-                this.chef.body.velocity.x = 0;
-                this.chef.animations.play('up');
-                this.chef.lastMove = 'U';
-            }
-            else if(this.cursors.down.isDown && this.chef.canMove == true){
-                this.chef.body.velocity.y = this.chef.speedY;
-                this.chef.body.velocity.x = 0;
-                this.chef.animations.play('down');
-                this.chef.lastMove = 'D';
-
-            }else{
-                this.chef.body.velocity.x = 0;
-                this.chef.body.velocity.y = 0;
-
-            }
+       
+        //this.activatePowerUp();
+        //console.log(this.isPowerUp);
+        
+        if(this.cursors.left.isDown && this.chef.canMove == true && this.chef.dead == false){
+            this.chef.body.velocity.x = -this.chef.speedX;
+            this.chef.body.velocity.y = 0;
+            this.chef.animations.play('walk');
+            this.chef.scale.x = 2.5
+            this.chef.lastMove = 'L';
+            ;
+        }
+        else if(this.cursors.right.isDown && this.chef.canMove == true && this.chef.dead == false){
+            this.chef.body.velocity.x = this.chef.speedX;
+            this.chef.body.velocity.y = 0;
+            this.chef.animations.play('walk');
+            this.chef.scale.x = -2.5;
+            this.chef.lastMove = 'R';
+        }
+        else if(this.cursors.up.isDown && this.chef.canMove == true && this.chef.dead == false){
+            this.chef.body.velocity.y = -this.chef.speedY;
+            this.chef.body.velocity.x = 0;
+            this.chef.animations.play('up');
+            this.chef.lastMove = 'U';
+        }
+        else if(this.cursors.down.isDown && this.chef.canMove == true && this.chef.dead == false){
+            this.chef.body.velocity.y = this.chef.speedY;
+            this.chef.body.velocity.x = 0;
+            this.chef.animations.play('down');
+            this.chef.lastMove = 'D';
+            
+        }else{
+            this.chef.body.velocity.x = 0;
+            this.chef.body.velocity.y = 0;
+            
         }
         
         if(this.espacio.downDuration(1)){        // Lanzamiento de Pimienta
-          if(this.chef.pepper > 0) {
+            
+          if(this.chef.pepper > 0 && this.chef.dead == false) {
                 this.chef.canMove = false;
               
                 if(this.chef.lastMove == 'U') { 
@@ -281,9 +589,7 @@ burgertime.level2 ={
                 }
             }
         }
-        console.log(gameOptions.levelPlayer1);
-        console.log(gameOptions.levelPlayer2);
-        //console.log(this.chef.lives);
+                
         if(this.chef.dead && !this.chef.doOnce){                // Si Chef Muere, la condicion es cuando colisiona con enemigo
             this.chef.doOnce = true;
             this.music.pause();
@@ -297,18 +603,33 @@ burgertime.level2 ={
                 else{
                     //this.chef.body.position.x = this.chef.initPosX;
                     //this.chef.body.position.y = this.chef.initPosY;
+                    
+                    //this.salchicha = new burgertime.enemy_prefab(this.game,this.game.world.centerX - 70,this.game.world.centerY,gameOptions.heroSpeed-100,gameOptions.heroSpeed-50,this);
+                    this.salchicha.recolocate();
+                    this.salchicha.body.allowGravity = false;
+                    
+                    //this.salchicha2 = new burgertime.enemy_prefab(this.game,50,146,gameOptions.heroSpeed-100,gameOptions.heroSpeed-50,this);
+                    this.salchicha2.recolocate();
+                    this.salchicha2.body.allowGravity = false;
+                    
+                    //this.salchicha3 = new burgertime.enemy_prefab(this.game,gameOptions.level1Width-60,508,gameOptions.heroSpeed-100,gameOptions.heroSpeed-50,this);
+                    this.salchicha3.recolocate();
+                    this.salchicha3.body.allowGravity = false;
+                    
+                    
                     this.chef.frame = 3;
                     this.chef.body.enable = true;
-                    this.chef.body.position.x = this.game.world.centerX+150;
-                    this.chef.body.position.y = this.game.world.centerX+100;
+                    this.chef.position.x = this.chef.initPosX;
+                    this.chef.position.y = this.chef.initPosY-90;
+                    
                     var w = this.saveData();
-                    if(gameOptions.firstTime == 2){
-                        this.state.start('level1Multi2');
+                    
+                    if(gameOptions.level1Multi3Completed){
+                        this.state.start(gameOptions.levelPlayer2);
                     }
                     else{
                         this.state.start(gameOptions.levelPlayer1);
                     }
-                    
                     this.chef.dead = false;
                     this.chef.doOnce = false;
                 }
@@ -319,22 +640,44 @@ burgertime.level2 ={
             //  PLayer Gasta Vida
             //this.chef.lives = 3;
             this.dead = false;
-            
+            //this.state.start('level2');
         }
         
         if(this.levelCompleted){
             this.music.pause();
             this.complete.play();
-            this.chef.points = 0;
+            //this.chef.points = 0;
+            var w = this.saveData();
             this.levelCompleted = false;
-            var s = this.setScore(); //Guarda score para siguiente nivel
-            //next level
-            this.state.start('level2Multi1');
+            if(t.lives1 <= 0 || gameOptions.level1Multi3Complited){
+                this.state.start('level3Multi2');
+            }
         }
         
         if(this.enemies != 3){
             this.spawnEnemy1();
             this.enemies++;
+        }
+        
+    },
+    spawnEnemy1:function(){
+        this.salchicha2 = new burgertime.enemy_prefab(this.game,50,146,gameOptions.heroSpeed-50,gameOptions.heroSpeed-50,this);
+        this.salchicha.body.allowGravity = false;
+    },
+    spawnEnemy2:function(){
+        this.salchicha3 = new burgertime.enemy_prefab(this.game,gameOptions.level1Width-60,308,gameOptions.heroSpeed-50,gameOptions.heroSpeed-50,this);
+        this.salchicha.body.allowGravity = false;
+    },
+    killChef:function(){
+        //console.log('les go');
+        this.chef.body.enable = false;
+        this.chef.dead = true;
+    },
+    collideBreadPlayer:function(_bread,_player){
+        if(_bread.canBeHit)
+        {
+            _bread.position.y += 10;
+            _bread.canBeHit = false;
         }
         
     },
@@ -364,6 +707,225 @@ burgertime.level2 ={
         this.chef.body.allowGravity = true;
         this.map.setCollisionBetween(4,5,true,'Stairs');
     },
+     stopMoving:function(_ingredient){
+        _ingredient.ingredientIsTouched = false;
+        _ingredient.ingredientIsTouched = false;
+        _ingredient.ingredientIsTouched = false;
+        _ingredient.ingredientIsTouched = false;
+        _ingredient.ingredientIsTouched = false;
+        _ingredient.allTouched = false;
+    },
+    ingredientColisions:function(){
+        this.game.physics.arcade.collide(this.downBread1.ingredient1, this.bandeja1, function(){this.downBread1.ingredientDone();}, null, this);
+        this.game.physics.arcade.collide(this.downBread2.ingredient1, this.bandeja2, function(){this.downBread2.ingredientDone();}, null, this);
+        this.game.physics.arcade.collide(this.downBread3.ingredient1, this.bandeja3, function(){this.downBread3.ingredientDone();}, null, this);
+        this.game.physics.arcade.collide(this.downBread4.ingredient1, this.bandeja4, function(){this.downBread4.ingredientDone();}, null, this);
+        
+
+        //Columna 1
+        this.game.physics.arcade.collide(this.upBread1.ingredient1,this.lettuce1.ingredient1, function(){
+            this.ingredientIngredient.play();
+            if(this.lettuce1.isDone == false)
+            {
+                var f = this.upBread1.updateTempPos(this.lettuce1.tempPos); 
+                this.lettuce1.allTouched = true;
+                if(this.upBread1.ingredient1.y == this.upBread1.tempPos){
+                        this.upBread1.stopMoving();
+                }
+            }
+            else
+            {
+                this.upBread1.stopMoving();
+                this.upBread1.isDone = true;
+            }
+               },null, this);
+        this.game.physics.arcade.collide(this.lettuce1.ingredient1,this.burger1.ingredient1, function(){
+            this.ingredientIngredient.play();
+            if(this.burger1.isDone == false)
+            {
+                var f = this.lettuce1.updateTempPos(this.burger1.tempPos); 
+                this.burger1.allTouched = true;
+                if(this.lettuce1.ingredient1.y == this.lettuce1.tempPos){
+                        this.lettuce1.stopMoving();
+                }
+            }
+            else
+            {
+                this.lettuce1.stopMoving();
+                this.lettuce1.isDone = true;
+            }
+               },null, this);
+        this.game.physics.arcade.collide(this.burger1.ingredient1,this.downBread1.ingredient1, function(){
+            this.ingredientIngredient.play();
+            if(this.downBread1.isDone == false)
+            {
+                var f = this.burger1.updateTempPos(this.downBread1.tempPos); 
+                this.downBread1.allTouched = true;
+                if(this.burger1.ingredient1.y == this.burger1.tempPos){
+                    this.burger1.stopMoving();
+                }
+            }
+            else
+            {
+                this.burger1.stopMoving();
+                this.burger1.isDone = true;
+            }
+            
+               },null, this);
+        
+        //Columna 2
+        this.game.physics.arcade.collide(this.upBread2.ingredient1,this.lettuce2.ingredient1, function(){
+            this.ingredientIngredient.play();
+            if(this.lettuce2.isDone == false)
+            {
+                var f = this.upBread2.updateTempPos(this.lettuce2.tempPos); 
+                this.lettuce2.allTouched = true;
+                if(this.upBread2.ingredient1.y == this.upBread2.tempPos){
+                        this.upBread2.stopMoving();
+                }
+            }
+            else
+            {
+                this.upBread2.stopMoving();
+                this.upBread2.isDone = true;
+            }
+               },null, this);
+        this.game.physics.arcade.collide(this.lettuce2.ingredient1,this.burger2.ingredient1, function(){
+            this.ingredientIngredient.play();
+            if(this.burger2.isDone == false)
+            {
+                var f = this.lettuce2.updateTempPos(this.burger2.tempPos); 
+                this.burger2.allTouched = true;
+                if(this.lettuce2.ingredient1.y == this.lettuce2.tempPos){
+                        this.lettuce2.stopMoving();
+                }
+            }
+            else
+            {
+                this.lettuce2.stopMoving();
+                this.lettuce2.isDone = true;
+            }
+               },null, this);
+        this.game.physics.arcade.collide(this.burger2.ingredient1,this.downBread2.ingredient1, function(){
+            this.ingredientIngredient.play();
+            if(this.downBread2.isDone == false)
+            {
+                var f = this.burger2.updateTempPos(this.downBread2.tempPos); 
+                this.downBread2.allTouched = true;
+                if(this.burger2.ingredient1.y == this.burger2.tempPos){
+                        this.burger2.stopMoving();
+                }
+            }
+            else
+            {
+                this.burger2.stopMoving();
+                this.burger2.isDone = true;
+            }
+               },null, this);
+        
+        //Columna 3
+        this.game.physics.arcade.collide(this.upBread3.ingredient1,this.lettuce3.ingredient1, function(){
+            this.ingredientIngredient.play();
+            if(this.lettuce3.isDone == false)
+            {
+                var f = this.upBread3.updateTempPos(this.lettuce3.tempPos); 
+                this.lettuce3.allTouched = true;
+                if(this.upBread3.ingredient1.y == this.upBread3.tempPos){
+                        this.upBread3.stopMoving();
+                }
+            }
+            else
+            {
+                this.upBread3.stopMoving();
+                this.upBread3.isDone = true;
+            }
+               },null, this);
+        this.game.physics.arcade.collide(this.lettuce3.ingredient1,this.burger3.ingredient1, function(){
+            this.ingredientIngredient.play();
+            if(this.burger3.isDone == false)
+            {
+                var f = this.lettuce3.updateTempPos(this.burger3.tempPos); 
+                this.burger3.allTouched = true;
+                if(this.lettuce3.ingredient1.y == this.lettuce3.tempPos){
+                        this.lettuce3.stopMoving();
+                }
+            }
+            else
+            {
+                this.lettuce3.stopMoving();
+                this.lettuce3.isDone = true;
+            }
+               },null, this);
+        this.game.physics.arcade.collide(this.burger3.ingredient1,this.downBread3.ingredient1, function(){
+            this.ingredientIngredient.play();
+            if(this.downBread3.isDone == false)
+            {
+                var f = this.burger3.updateTempPos(this.downBread3.tempPos); 
+                this.downBread3.allTouched = true;
+                if(this.burger3.ingredient1.y == this.burger3.tempPos){
+                        this.burger3.stopMoving();
+                }
+            }
+            else
+            {
+                this.burger3.stopMoving();
+                this.burger3.isDone = true;
+            }
+               },null, this);
+        
+        //Columna 4
+        this.game.physics.arcade.collide(this.upBread4.ingredient1,this.lettuce4.ingredient1, function(){
+            this.ingredientIngredient.play();
+            if(this.lettuce4.isDone == false)
+            {
+                var f = this.upBread4.updateTempPos(this.lettuce4.tempPos); 
+                this.lettuce4.allTouched = true;
+                if(this.upBread4.ingredient1.y == this.upBread4.tempPos){
+                        this.upBread4.stopMoving();
+                }
+            }
+            else
+            {
+                this.upBread4.stopMoving();
+                this.upBread4.isDone = true;
+            }
+               },null, this);
+        this.game.physics.arcade.collide(this.lettuce4.ingredient1,this.burger4.ingredient1, function(){
+            this.ingredientIngredient.play();
+            if(this.burger4.isDone == false)
+            {
+                var f = this.lettuce4.updateTempPos(this.burger4.tempPos); 
+                this.burger4.allTouched = true;
+                if(this.lettuce4.ingredient1.y == this.lettuce4.tempPos){
+                        this.lettuce4.stopMoving();
+                }
+            }
+            else
+            {
+                this.lettuce4.stopMoving();
+                this.lettuce4.isDone = true;
+            }
+               },null, this);
+        this.game.physics.arcade.collide(this.burger4.ingredient1,this.downBread4.ingredient1, function(){
+            this.ingredientIngredient.play();
+            if(this.downBread4.isDone == false)
+            {
+                var f = this.burger4.updateTempPos(this.downBread4.tempPos); 
+                this.downBread4.allTouched = true;
+                if(this.burger4.ingredient1.y == this.burger4.tempPos){
+                        this.burger4.stopMoving();
+                }
+            }
+            else
+            {
+                this.burger4.stopMoving();
+                this.burger4.isDone = true;
+            }
+               },null, this);
+    },
+    ingredientFloorColisions:function(){
+        this.game.physics.arcade.collide(this.upBread1.ingredient1, this.burgerColisions, function(){this.upBread1.x += 1;}, null, this);
+    },
     saveData:function(){
         var t = JSON.parse(localStorage.getItem('actualUser'));
         /*if(parseInt(this.scoreHI.text) < parseInt(this.score.text))
@@ -384,184 +946,188 @@ burgertime.level2 ={
             t.level2 = 'level1Multi2';
             
              //Save upBread
-           t.upBread112 = this.upBread1.ingredient1.body.position.y;
-           t.upBread122 = this.upBread1.ingredient2.body.position.y;
-           t.upBread132 = this.upBread1.ingredient3.body.position.y;
-           t.upBread142 = this.upBread1.ingredient4.body.position.y;
-           t.upBread152 = this.upBread1.ingredient5.body.position.y;
-           t.upBread112isTouched = this.upBread1.ingredient1.ingredientIsTouched;
-           t.upBread122isTouched = this.upBread1.ingredient2.ingredientIsTouched;
-           t.upBread132isTouched = this.upBread1.ingredient3.ingredientIsTouched;
-           t.upBread142isTouched = this.upBread1.ingredient4.ingredientIsTouched;
-           t.upBread152isTouched = this.upBread1.ingredient5.ingredientIsTouched;
+           t.upBread1122 = this.upBread1.ingredient1.body.position.y;
+           t.upBread1222 = this.upBread1.ingredient2.body.position.y;
+           t.upBread1322 = this.upBread1.ingredient3.body.position.y;
+           t.upBread1422 = this.upBread1.ingredient4.body.position.y;
+           t.upBread1522 = this.upBread1.ingredient5.body.position.y;
+           t.upBread1122isTouched = this.upBread1.ingredient1.ingredientIsTouched;
+           t.upBread1222isTouched = this.upBread1.ingredient2.ingredientIsTouched;
+           t.upBread1322isTouched = this.upBread1.ingredient3.ingredientIsTouched;
+           t.upBread1422isTouched = this.upBread1.ingredient4.ingredientIsTouched;
+           t.upBread1522isTouched = this.upBread1.ingredient5.ingredientIsTouched;
+            t.upBread1122isDone = this.upBread1.isDone;
+           t.upBread1222isDone = this.upBread2.isDone;
+           t.upBread1322isDone = this.upBread3.isDone;
+           t.upBread1422isDone = this.upBread4.isDone;
             
-            t.upBread212 = this.upBread2.ingredient1.body.position.y;
-           t.upBread222 = this.upBread2.ingredient2.body.position.y;
-           t.upBread232 = this.upBread2.ingredient3.body.position.y;
-           t.upBread242 = this.upBread2.ingredient4.body.position.y;
-           t.upBread252 = this.upBread2.ingredient5.body.position.y;
-           t.upBread212isTouched = this.upBread2.ingredient1.ingredientIsTouched;
-           t.upBread222isTouched = this.upBread2.ingredient2.ingredientIsTouched;
-           t.upBread232isTouched = this.upBread2.ingredient3.ingredientIsTouched;
-           t.upBread242isTouched = this.upBread2.ingredient4.ingredientIsTouched;
-           t.upBread252isTouched = this.upBread2.ingredient5.ingredientIsTouched;
+            t.upBread2122 = this.upBread2.ingredient1.body.position.y;
+           t.upBread2222 = this.upBread2.ingredient2.body.position.y;
+           t.upBread2322 = this.upBread2.ingredient3.body.position.y;
+           t.upBread2422 = this.upBread2.ingredient4.body.position.y;
+           t.upBread2522 = this.upBread2.ingredient5.body.position.y;
+           t.upBread2122isTouched = this.upBread2.ingredient1.ingredientIsTouched;
+           t.upBread2222isTouched = this.upBread2.ingredient2.ingredientIsTouched;
+           t.upBread2322isTouched = this.upBread2.ingredient3.ingredientIsTouched;
+           t.upBread2422isTouched = this.upBread2.ingredient4.ingredientIsTouched;
+           t.upBread2522isTouched = this.upBread2.ingredient5.ingredientIsTouched;
             
-            t.upBread312 = this.upBread3.ingredient1.body.position.y;
-           t.upBread322 = this.upBread3.ingredient2.body.position.y;
-           t.upBread332 = this.upBread3.ingredient3.body.position.y;
-           t.upBread342 = this.upBread3.ingredient4.body.position.y;
-           t.upBread352 = this.upBread3.ingredient5.body.position.y;
-           t.upBread312isTouched = this.upBread3.ingredient1.ingredientIsTouched;
-           t.upBread322isTouched = this.upBread3.ingredient2.ingredientIsTouched;
-           t.upBread332isTouched = this.upBread3.ingredient3.ingredientIsTouched;
-           t.upBread342isTouched = this.upBread3.ingredient4.ingredientIsTouched;
-           t.upBread352isTouched = this.upBread3.ingredient5.ingredientIsTouched;
+            t.upBread3122 = this.upBread3.ingredient1.body.position.y;
+           t.upBread3222 = this.upBread3.ingredient2.body.position.y;
+           t.upBread3322 = this.upBread3.ingredient3.body.position.y;
+           t.upBread3422 = this.upBread3.ingredient4.body.position.y;
+           t.upBread3522 = this.upBread3.ingredient5.body.position.y;
+           t.upBread3122isTouched = this.upBread3.ingredient1.ingredientIsTouched;
+           t.upBread3222isTouched = this.upBread3.ingredient2.ingredientIsTouched;
+           t.upBread3322isTouched = this.upBread3.ingredient3.ingredientIsTouched;
+           t.upBread3422isTouched = this.upBread3.ingredient4.ingredientIsTouched;
+           t.upBread3522isTouched = this.upBread3.ingredient5.ingredientIsTouched;
             
-            t.upBread412 = this.upBread4.ingredient1.body.position.y;
-           t.upBread422 = this.upBread4.ingredient2.body.position.y;
-           t.upBread432 = this.upBread4.ingredient3.body.position.y;
-           t.upBread442 = this.upBread4.ingredient4.body.position.y;
-           t.upBread452 = this.upBread4.ingredient5.body.position.y;
-           t.upBread412isTouched = this.upBread4.ingredient1.ingredientIsTouched;
-           t.upBread422isTouched = this.upBread4.ingredient2.ingredientIsTouched;
-           t.upBread432sTouched = this.upBread4.ingredient3.ingredientIsTouched;
-           t.upBread442sTouched = this.upBread4.ingredient4.ingredientIsTouched;
-           t.upBread452sTouched = this.upBread4.ingredient5.ingredientIsTouched;
+            t.upBread4122 = this.upBread4.ingredient1.body.position.y;
+           t.upBread4222 = this.upBread4.ingredient2.body.position.y;
+           t.upBread4322 = this.upBread4.ingredient3.body.position.y;
+           t.upBread4422 = this.upBread4.ingredient4.body.position.y;
+           t.upBread4522 = this.upBread4.ingredient5.body.position.y;
+           t.upBread4122isTouched = this.upBread4.ingredient1.ingredientIsTouched;
+           t.upBread4222isTouched = this.upBread4.ingredient2.ingredientIsTouched;
+           t.upBread4322isTouched = this.upBread4.ingredient3.ingredientIsTouched;
+           t.upBread4422isTouched = this.upBread4.ingredient4.ingredientIsTouched;
+           t.upBread4522isTouched = this.upBread4.ingredient5.ingredientIsTouched;
             
             //Save lettuce
-            t.lettuce112 = this.lettuce1.ingredient1.position.y;
-            t.lettuce122 = this.lettuce1.ingredient2.position.y;
-            t.lettuce132 = this.lettuce1.ingredient3.position.y;
-            t.lettuce142 = this.lettuce1.ingredient4.position.y;
-            t.lettuce152 = this.lettuce1.ingredient5.position.y;
-            t.lettuce112isTouched = this.lettuce1.ingredient1.ingredientIsTouched;
-            t.lettuce122isTouched = this.lettuce1.ingredient2.ingredientIsTouched;
-            t.lettuce132isTouched = this.lettuce1.ingredient3.ingredientIsTouched;
-            t.lettuce142isTouched = this.lettuce1.ingredient4.ingredientIsTouched;
-            t.lettuce152isTouched = this.lettuce1.ingredient5.ingredientIsTouched;
+            t.lettuce1122 = this.lettuce1.ingredient1.position.y;
+            t.lettuce1222 = this.lettuce1.ingredient2.position.y;
+            t.lettuce1322 = this.lettuce1.ingredient3.position.y;
+            t.lettuce1422 = this.lettuce1.ingredient4.position.y;
+            t.lettuce1522 = this.lettuce1.ingredient5.position.y;
+            t.lettuce1122isTouched = this.lettuce1.ingredient1.ingredientIsTouched;
+            t.lettuce1222isTouched = this.lettuce1.ingredient2.ingredientIsTouched;
+            t.lettuce1322isTouched = this.lettuce1.ingredient3.ingredientIsTouched;
+            t.lettuce1422isTouched = this.lettuce1.ingredient4.ingredientIsTouched;
+            t.lettuce1522isTouched = this.lettuce1.ingredient5.ingredientIsTouched;
             
-            t.lettuce212 = this.lettuce2.ingredient1.position.y;
-            t.lettuce222 = this.lettuce2.ingredient2.position.y;
-            t.lettuce232 = this.lettuce2.ingredient3.position.y;
-            t.lettuce242 = this.lettuce2.ingredient4.position.y;
-            t.lettuce252 = this.lettuce2.ingredient5.position.y;
-            t.lettuce212isTouched = this.lettuce2.ingredient1.ingredientIsTouched;
-            t.lettuce222isTouched = this.lettuce2.ingredient2.ingredientIsTouched;
-            t.lettuce232isTouched = this.lettuce2.ingredient3.ingredientIsTouched;
-            t.lettuce242isTouched = this.lettuce2.ingredient4.ingredientIsTouched;
-            t.lettuce252isTouched = this.lettuce2.ingredient5.ingredientIsTouched;
+            t.lettuce2122 = this.lettuce2.ingredient1.position.y;
+            t.lettuce2222 = this.lettuce2.ingredient2.position.y;
+            t.lettuce2322 = this.lettuce2.ingredient3.position.y;
+            t.lettuce2422 = this.lettuce2.ingredient4.position.y;
+            t.lettuce2522 = this.lettuce2.ingredient5.position.y;
+            t.lettuce2122isTouched = this.lettuce2.ingredient1.ingredientIsTouched;
+            t.lettuce2222isTouched = this.lettuce2.ingredient2.ingredientIsTouched;
+            t.lettuce2322isTouched = this.lettuce2.ingredient3.ingredientIsTouched;
+            t.lettuce2422isTouched = this.lettuce2.ingredient4.ingredientIsTouched;
+            t.lettuce2522isTouched = this.lettuce2.ingredient5.ingredientIsTouched;
             
-            t.lettuce312 = this.lettuce3.ingredient1.position.y;
-            t.lettuce322 = this.lettuce3.ingredient2.position.y;
-            t.lettuce332 = this.lettuce3.ingredient3.position.y;
-            t.lettuce342 = this.lettuce3.ingredient4.position.y;
-            t.lettuce352 = this.lettuce3.ingredient5.position.y;
-            t.lettuce312isTouched = this.lettuce3.ingredient1.ingredientIsTouched;
-            t.lettuce322isTouched = this.lettuce3.ingredient2.ingredientIsTouched;
-            t.lettuce332isTouched = this.lettuce3.ingredient3.ingredientIsTouched;
-            t.lettuce342isTouched = this.lettuce3.ingredient4.ingredientIsTouched;
-            t.lettuce352isTouched = this.lettuce3.ingredient5.ingredientIsTouched;
+            t.lettuce3122 = this.lettuce3.ingredient1.position.y;
+            t.lettuce3222 = this.lettuce3.ingredient2.position.y;
+            t.lettuce3322 = this.lettuce3.ingredient3.position.y;
+            t.lettuce3422 = this.lettuce3.ingredient4.position.y;
+            t.lettuce3522 = this.lettuce3.ingredient5.position.y;
+            t.lettuce3122isTouched = this.lettuce3.ingredient1.ingredientIsTouched;
+            t.lettuce3222isTouched = this.lettuce3.ingredient2.ingredientIsTouched;
+            t.lettuce3322isTouched = this.lettuce3.ingredient3.ingredientIsTouched;
+            t.lettuce3422isTouched = this.lettuce3.ingredient4.ingredientIsTouched;
+            t.lettuce3522isTouched = this.lettuce3.ingredient5.ingredientIsTouched;
             
-            t.lettuce412 = this.lettuce4.ingredient1.position.y;
-            t.lettuce422 = this.lettuce4.ingredient2.position.y;
-            t.lettuce432 = this.lettuce4.ingredient3.position.y;
-            t.lettuce442 = this.lettuce4.ingredient4.position.y;
-            t.lettuce452 = this.lettuce4.ingredient5.position.y;
-            t.lettuce412isTouched = this.lettuce4.ingredient1.ingredientIsTouched;
-            t.lettuce422isTouched = this.lettuce4.ingredient2.ingredientIsTouched;
-            t.lettuce432isTouched = this.lettuce4.ingredient3.ingredientIsTouched;
-            t.lettuce442isTouched = this.lettuce4.ingredient4.ingredientIsTouched;
-            t.lettuce452isTouched = this.lettuce4.ingredient5.ingredientIsTouched;
+            t.lettuce4122 = this.lettuce4.ingredient1.position.y;
+            t.lettuce4222 = this.lettuce4.ingredient2.position.y;
+            t.lettuce4322 = this.lettuce4.ingredient3.position.y;
+            t.lettuce4422 = this.lettuce4.ingredient4.position.y;
+            t.lettuce4522 = this.lettuce4.ingredient5.position.y;
+            t.lettuce4122isTouched = this.lettuce4.ingredient1.ingredientIsTouched;
+            t.lettuce4222isTouched = this.lettuce4.ingredient2.ingredientIsTouched;
+            t.lettuce4322isTouched = this.lettuce4.ingredient3.ingredientIsTouched;
+            t.lettuce4422isTouched = this.lettuce4.ingredient4.ingredientIsTouched;
+            t.lettuce4522isTouched = this.lettuce4.ingredient5.ingredientIsTouched;
             
             //Save burger
-            t.burger112 = this.burger1.ingredient1.position.y;
-            t.burger122 = this.burger1.ingredient2.position.y;
-            t.burger132 = this.burger1.ingredient3.position.y;
-            t.burger142 = this.burger1.ingredient4.position.y;
-            t.burger152 = this.burger1.ingredient5.position.y;
-            t.burger112isTouched = this.burger1.ingredient1.ingredientIsTouched;
-            t.burger122isTouched = this.burger1.ingredient2.ingredientIsTouched;
-            t.burger132isTouched = this.burger1.ingredient3.ingredientIsTouched;
-            t.burger142isTouched = this.burger1.ingredient4.ingredientIsTouched;
-            t.burger152isTouched = this.burger1.ingredient5.ingredientIsTouched;
+            t.burger1122 = this.burger1.ingredient1.position.y;
+            t.burger1222 = this.burger1.ingredient2.position.y;
+            t.burger1322 = this.burger1.ingredient3.position.y;
+            t.burger1422 = this.burger1.ingredient4.position.y;
+            t.burger1522 = this.burger1.ingredient5.position.y;
+            t.burger1122isTouched = this.burger1.ingredient1.ingredientIsTouched;
+            t.burger1222isTouched = this.burger1.ingredient2.ingredientIsTouched;
+            t.burger1322isTouched = this.burger1.ingredient3.ingredientIsTouched;
+            t.burger1422isTouched = this.burger1.ingredient4.ingredientIsTouched;
+            t.burger1522isTouched = this.burger1.ingredient5.ingredientIsTouched;
             
-            t.burger212 = this.burger2.ingredient1.position.y;
-            t.burger222 = this.burger2.ingredient2.position.y;
-            t.burger232 = this.burger2.ingredient3.position.y;
-            t.burger242 = this.burger2.ingredient4.position.y;
-            t.burger252 = this.burger2.ingredient5.position.y;
-            t.burger212isTouched = this.burger2.ingredient1.ingredientIsTouched;
-            t.burger222isTouched = this.burger2.ingredient2.ingredientIsTouched;
-            t.burger232isTouched = this.burger2.ingredient3.ingredientIsTouched;
-            t.burger242isTouched = this.burger2.ingredient4.ingredientIsTouched;
-            t.burger252isTouched = this.burger2.ingredient5.ingredientIsTouched;
+            t.burger2122 = this.burger2.ingredient1.position.y;
+            t.burger2222 = this.burger2.ingredient2.position.y;
+            t.burger2322 = this.burger2.ingredient3.position.y;
+            t.burger2422 = this.burger2.ingredient4.position.y;
+            t.burger2522 = this.burger2.ingredient5.position.y;
+            t.burger2122isTouched = this.burger2.ingredient1.ingredientIsTouched;
+            t.burger2222isTouched = this.burger2.ingredient2.ingredientIsTouched;
+            t.burger2322isTouched = this.burger2.ingredient3.ingredientIsTouched;
+            t.burger2422isTouched = this.burger2.ingredient4.ingredientIsTouched;
+            t.burger2522isTouched = this.burger2.ingredient5.ingredientIsTouched;
             
-            t.burger312 = this.burger3.ingredient1.position.y;
-            t.burger322 = this.burger3.ingredient2.position.y;
-            t.burger332 = this.burger3.ingredient3.position.y;
-            t.burger342 = this.burger3.ingredient4.position.y;
-            t.burger352 = this.burger3.ingredient5.position.y;
-            t.burger312isTouched = this.burger3.ingredient1.ingredientIsTouched;
-            t.burger322isTouched = this.burger3.ingredient2.ingredientIsTouched;
-            t.burger332isTouched = this.burger3.ingredient3.ingredientIsTouched;
-            t.burger342isTouched = this.burger3.ingredient4.ingredientIsTouched;
-            t.burger352isTouched = this.burger3.ingredient5.ingredientIsTouched;
+            t.burger3122 = this.burger3.ingredient1.position.y;
+            t.burger3222 = this.burger3.ingredient2.position.y;
+            t.burger3322 = this.burger3.ingredient3.position.y;
+            t.burger3422 = this.burger3.ingredient4.position.y;
+            t.burger3522 = this.burger3.ingredient5.position.y;
+            t.burger3122isTouched = this.burger3.ingredient1.ingredientIsTouched;
+            t.burger3222isTouched = this.burger3.ingredient2.ingredientIsTouched;
+            t.burger3322isTouched = this.burger3.ingredient3.ingredientIsTouched;
+            t.burger3422isTouched = this.burger3.ingredient4.ingredientIsTouched;
+            t.burger3522isTouched = this.burger3.ingredient5.ingredientIsTouched;
             
-            t.burger412 = this.burger4.ingredient1.position.y;
-            t.burger422 = this.burger4.ingredient2.position.y;
-            t.burger432 = this.burger4.ingredient3.position.y;
-            t.burger442 = this.burger4.ingredient4.position.y;
-            t.burger452 = this.burger4.ingredient5.position.y;
-            t.burger412isTouched = this.burger4.ingredient1.ingredientIsTouched;
-            t.burger422isTouched = this.burger4.ingredient2.ingredientIsTouched;
-            t.burger432isTouched = this.burger4.ingredient3.ingredientIsTouched;
-            t.burger442isTouched = this.burger4.ingredient4.ingredientIsTouched;
-            t.burger452isTouched = this.burger4.ingredient5.ingredientIsTouched;
+            t.burger4122 = this.burger4.ingredient1.position.y;
+            t.burger4222 = this.burger4.ingredient2.position.y;
+            t.burger4322 = this.burger4.ingredient3.position.y;
+            t.burger4422 = this.burger4.ingredient4.position.y;
+            t.burger4522 = this.burger4.ingredient5.position.y;
+            t.burger4122isTouched = this.burger4.ingredient1.ingredientIsTouched;
+            t.burger4222isTouched = this.burger4.ingredient2.ingredientIsTouched;
+            t.burger4322isTouched = this.burger4.ingredient3.ingredientIsTouched;
+            t.burger4422isTouched = this.burger4.ingredient4.ingredientIsTouched;
+            t.burger4522isTouched = this.burger4.ingredient5.ingredientIsTouched;
             
             //Save downBread
-            t.downBread112 = this.downBread1.ingredient1.position.y;
-            t.downBread122 = this.downBread1.ingredient2.position.y;
-            t.downBread132 = this.downBread1.ingredient3.position.y;
-            t.downBread142 = this.downBread1.ingredient4.position.y;
-            t.downBread152 = this.downBread1.ingredient5.position.y;
-            t.downBread112isTouched = this.downBread1.ingredient1.ingredientIsTouched;
-            t.downBread122isTouched = this.downBread1.ingredient2.ingredientIsTouched;
-            t.downBread132isTouched = this.downBread1.ingredient3.ingredientIsTouched;
-            t.downBread142isTouched = this.downBread1.ingredient4.ingredientIsTouched;
-            t.downBread152isTouched = this.downBread1.ingredient5.ingredientIsTouched;
+            t.downBread1122 = this.downBread1.ingredient1.position.y;
+            t.downBread1222 = this.downBread1.ingredient2.position.y;
+            t.downBread1322 = this.downBread1.ingredient3.position.y;
+            t.downBread1422 = this.downBread1.ingredient4.position.y;
+            t.downBread1522 = this.downBread1.ingredient5.position.y;
+            t.downBread1122isTouched = this.downBread1.ingredient1.ingredientIsTouched;
+            t.downBread1222isTouched = this.downBread1.ingredient2.ingredientIsTouched;
+            t.downBread1322isTouched = this.downBread1.ingredient3.ingredientIsTouched;
+            t.downBread1422isTouched = this.downBread1.ingredient4.ingredientIsTouched;
+            t.downBread1522isTouched = this.downBread1.ingredient5.ingredientIsTouched;
             
-            t.downBread212 = this.downBread2.ingredient1.position.y;
-            t.downBread222 = this.downBread2.ingredient2.position.y;
-            t.downBread232 = this.downBread2.ingredient3.position.y;
-            t.downBread242 = this.downBread2.ingredient4.position.y;
-            t.downBread252 = this.downBread2.ingredient5.position.y;
-            t.downBread212isTouched = this.downBread2.ingredient1.ingredientIsTouched;
-            t.downBread222isTouched = this.downBread2.ingredient2.ingredientIsTouched;
-            t.downBread232isTouched = this.downBread2.ingredient3.ingredientIsTouched;
-            t.downBread242isTouched = this.downBread2.ingredient4.ingredientIsTouched;
-            t.downBread252isTouched = this.downBread2.ingredient5.ingredientIsTouched;
+            t.downBread2122 = this.downBread2.ingredient1.position.y;
+            t.downBread2222 = this.downBread2.ingredient2.position.y;
+            t.downBread2322 = this.downBread2.ingredient3.position.y;
+            t.downBread2422 = this.downBread2.ingredient4.position.y;
+            t.downBread2522 = this.downBread2.ingredient5.position.y;
+            t.downBread2122isTouched = this.downBread2.ingredient1.ingredientIsTouched;
+            t.downBread2222isTouched = this.downBread2.ingredient2.ingredientIsTouched;
+            t.downBread2322isTouched = this.downBread2.ingredient3.ingredientIsTouched;
+            t.downBread2422isTouched = this.downBread2.ingredient4.ingredientIsTouched;
+            t.downBread2522isTouched = this.downBread2.ingredient5.ingredientIsTouched;
             
-            t.downBread312 = this.downBread3.ingredient1.position.y;
-            t.downBread322 = this.downBread3.ingredient2.position.y;
-            t.downBread332 = this.downBread3.ingredient3.position.y;
-            t.downBread342 = this.downBread3.ingredient4.position.y;
-            t.downBread352 = this.downBread3.ingredient5.position.y;
-            t.downBread312isTouched = this.downBread3.ingredient1.ingredientIsTouched;
-            t.downBread322isTouched = this.downBread3.ingredient2.ingredientIsTouched;
-            t.downBread332isTouched = this.downBread3.ingredient3.ingredientIsTouched;
-            t.downBread342isTouched = this.downBread3.ingredient4.ingredientIsTouched;
-            t.downBread352isTouched = this.downBread3.ingredient5.ingredientIsTouched;
+            t.downBread3122 = this.downBread3.ingredient1.position.y;
+            t.downBread3222 = this.downBread3.ingredient2.position.y;
+            t.downBread3322 = this.downBread3.ingredient3.position.y;
+            t.downBread3422 = this.downBread3.ingredient4.position.y;
+            t.downBread3522 = this.downBread3.ingredient5.position.y;
+            t.downBread3122isTouched = this.downBread3.ingredient1.ingredientIsTouched;
+            t.downBread3222isTouched = this.downBread3.ingredient2.ingredientIsTouched;
+            t.downBread3322isTouched = this.downBread3.ingredient3.ingredientIsTouched;
+            t.downBread3422isTouched = this.downBread3.ingredient4.ingredientIsTouched;
+            t.downBread3522isTouched = this.downBread3.ingredient5.ingredientIsTouched;
             
-            t.downBread412 = this.downBread4.ingredient1.position.y;
-            t.downBread422 = this.downBread4.ingredient2.position.y;
-            t.downBread432 = this.downBread4.ingredient3.position.y;
-            t.downBread442 = this.downBread4.ingredient4.position.y;
-            t.downBread452 = this.downBread4.ingredient5.position.y;
-            t.downBread412isTouched = this.downBread4.ingredient1.ingredientIsTouched;
-            t.downBread422isTouched = this.downBread4.ingredient2.ingredientIsTouched;
-            t.downBread432isTouched = this.downBread4.ingredient3.ingredientIsTouched;
-            t.downBread442isTouched = this.downBread4.ingredient4.ingredientIsTouched;
-            t.downBread452isTouched = this.downBread4.ingredient5.ingredientIsTouched;
+            t.downBread4122 = this.downBread4.ingredient1.position.y;
+            t.downBread4222 = this.downBread4.ingredient2.position.y;
+            t.downBread4322 = this.downBread4.ingredient3.position.y;
+            t.downBread4422 = this.downBread4.ingredient4.position.y;
+            t.downBread4522 = this.downBread4.ingredient5.position.y;
+            t.downBread4122isTouched = this.downBread4.ingredient1.ingredientIsTouched;
+            t.downBread4222isTouched = this.downBread4.ingredient2.ingredientIsTouched;
+            t.downBread4322isTouched = this.downBread4.ingredient3.ingredientIsTouched;
+            t.downBread4422isTouched = this.downBread4.ingredient4.ingredientIsTouched;
+            t.downBread4522isTouched = this.downBread4.ingredient5.ingredientIsTouched;
         }
         localStorage.setItem('actualUser', JSON.stringify(t));
         
@@ -572,12 +1138,12 @@ burgertime.level2 ={
         
         var t = JSON.parse(localStorage.getItem('actualUser'));
         console.log(t.highScore);
-        if(gameOptions.firstTime == 2){
-            this.chef.points = 0;
-            this.chef.lives = 3;
-            this.chef.pepper = 3;
+        if(gameOptions.firstTime22 == 1){
+            this.chef.points = t.score2;
+            this.chef.lives = t.lives2;
+            this.chef.pepper = t.pepper2;
             gameOptions.levelPlayer2 = 'level2Multi2';
-            gameOptions.firstTime++;
+            gameOptions.firstTime22++;
         }else{
            //this.scoreHI.text = t.highScore;
             this.chef.points = t.score2;
@@ -586,189 +1152,199 @@ burgertime.level2 ={
             gameOptions.levelPlayer2 = t.level2;
             
             //Load upBread
-            this.upBread1.ingredient1.position.y = t.upBread112;
-            this.upBread1.ingredient2.position.y = t.upBread122;
-            this.upBread1.ingredient3.position.y = t.upBread132;
-            this.upBread1.ingredient4.position.y = t.upBread142;
-            this.upBread1.ingredient5.position.y = t.upBread152;
-            this.upBread1.ingredient1.ingredientIsTouched = t.upBread112isTouched;
-            this.upBread1.ingredient2.ingredientIsTouched = t.upBread122isTouched;
-            this.upBread1.ingredient3.ingredientIsTouched = t.upBread132isTouched;
-            this.upBread1.ingredient4.ingredientIsTouched = t.upBread142isTouched;
-            this.upBread1.ingredient5.ingredientIsTouched = t.upBread152isTouched;
+            this.upBread1.ingredient1.position.y = t.upBread1122;
+            this.upBread1.ingredient2.position.y = t.upBread1222;
+            this.upBread1.ingredient3.position.y = t.upBread1322;
+            this.upBread1.ingredient4.position.y = t.upBread1422;
+            this.upBread1.ingredient5.position.y = t.upBread1522;
+            this.upBread1.ingredient1.ingredientIsTouched = t.upBread1122isTouched;
+            this.upBread1.ingredient2.ingredientIsTouched = t.upBread1222isTouched;
+            this.upBread1.ingredient3.ingredientIsTouched = t.upBread1322isTouched;
+            this.upBread1.ingredient4.ingredientIsTouched = t.upBread1422isTouched;
+            this.upBread1.ingredient5.ingredientIsTouched = t.upBread1522isTouched;
+            this.upBread1.isDone = t.upBread1122isDone;
+            this.upBread2.isDone = t.upBread1222isDone;
+            this.upBread3.isDone = t.upBread1322isDone;
+            this.upBread4.isDone = t.upBread1422isDone;
             
-            this.upBread2.ingredient1.position.y = t.upBread212;
-            this.upBread2.ingredient2.position.y = t.upBread222;
-            this.upBread2.ingredient3.position.y = t.upBread232;
-            this.upBread2.ingredient4.position.y = t.upBread242;
-            this.upBread2.ingredient5.position.y = t.upBread252;
-            this.upBread2.ingredient1.ingredientIsTouched = t.upBread212isTouched;
-            this.upBread2.ingredient2.ingredientIsTouched = t.upBread222isTouched;
-            this.upBread2.ingredient3.ingredientIsTouched = t.upBread232isTouched;
-            this.upBread2.ingredient4.ingredientIsTouched = t.upBread242isTouched;
-            this.upBread2.ingredient5.ingredientIsTouched = t.upBread252isTouched;
+            this.upBread2.ingredient1.position.y = t.upBread2122;
+            this.upBread2.ingredient2.position.y = t.upBread2222;
+            this.upBread2.ingredient3.position.y = t.upBread2322;
+            this.upBread2.ingredient4.position.y = t.upBread2422;
+            this.upBread2.ingredient5.position.y = t.upBread2522;
+            this.upBread2.ingredient1.ingredientIsTouched = t.upBread2122isTouched;
+            this.upBread2.ingredient2.ingredientIsTouched = t.upBread2222isTouched;
+            this.upBread2.ingredient3.ingredientIsTouched = t.upBread2322isTouched;
+            this.upBread2.ingredient4.ingredientIsTouched = t.upBread2422isTouched;
+            this.upBread2.ingredient5.ingredientIsTouched = t.upBread2522isTouched;
             
-            this.upBread3.ingredient1.position.y = t.upBread312;
-            this.upBread3.ingredient2.position.y = t.upBread322;
-            this.upBread3.ingredient3.position.y = t.upBread332;
-            this.upBread3.ingredient4.position.y = t.upBread342;
-            this.upBread3.ingredient5.position.y = t.upBread352;
-            this.upBread3.ingredient1.ingredientIsTouched = t.upBread312isTouched;
-            this.upBread3.ingredient2.ingredientIsTouched = t.upBread322isTouched;
-            this.upBread3.ingredient3.ingredientIsTouched = t.upBread332isTouched;
-            this.upBread3.ingredient4.ingredientIsTouched = t.upBread342isTouched;
-            this.upBread3.ingredient5.ingredientIsTouched = t.upBread352isTouched;
+            this.upBread3.ingredient1.position.y = t.upBread3122;
+            this.upBread3.ingredient2.position.y = t.upBread3222;
+            this.upBread3.ingredient3.position.y = t.upBread3322;
+            this.upBread3.ingredient4.position.y = t.upBread3422;
+            this.upBread3.ingredient5.position.y = t.upBread3522;
+            this.upBread3.ingredient1.ingredientIsTouched = t.upBread3122isTouched;
+            this.upBread3.ingredient2.ingredientIsTouched = t.upBread3222isTouched;
+            this.upBread3.ingredient3.ingredientIsTouched = t.upBread3322isTouched;
+            this.upBread3.ingredient4.ingredientIsTouched = t.upBread3422isTouched;
+            this.upBread3.ingredient5.ingredientIsTouched = t.upBread3522isTouched;
             
-            this.upBread4.ingredient1.position.y = t.upBread412;
-            this.upBread4.ingredient2.position.y = t.upBread422;
-            this.upBread4.ingredient3.position.y = t.upBread432;
-            this.upBread4.ingredient4.position.y = t.upBread442;
-            this.upBread4.ingredient5.position.y = t.upBread452;
-            this.upBread4.ingredient1.ingredientIsTouched = t.upBread412isTouched;
-            this.upBread4.ingredient2.ingredientIsTouched = t.upBread422isTouched;
-            this.upBread4.ingredient3.ingredientIsTouched = t.upBread432isTouched;
-            this.upBread4.ingredient4.ingredientIsTouched = t.upBread442isTouched;
-            this.upBread4.ingredient5.ingredientIsTouched = t.upBread452isTouched;
+            this.upBread4.ingredient1.position.y = t.upBread4122;
+            this.upBread4.ingredient2.position.y = t.upBread4222;
+            this.upBread4.ingredient3.position.y = t.upBread4322;
+            this.upBread4.ingredient4.position.y = t.upBread4422;
+            this.upBread4.ingredient5.position.y = t.upBread4522;
+            this.upBread4.ingredient1.ingredientIsTouched = t.upBread4122isTouched;
+            this.upBread4.ingredient2.ingredientIsTouched = t.upBread4222isTouched;
+            this.upBread4.ingredient3.ingredientIsTouched = t.upBread4322isTouched;
+            this.upBread4.ingredient4.ingredientIsTouched = t.upBread4422isTouched;
+            this.upBread4.ingredient5.ingredientIsTouched = t.upBread4522isTouched;
             
             //Load lettuce
-            this.lettuce1.ingredient1.position.y = t.lettuce112;
-            this.lettuce1.ingredient2.position.y = t.lettuce122;
-            this.lettuce1.ingredient3.position.y = t.lettuce132;
-            this.lettuce1.ingredient4.position.y = t.lettuce142;
-            this.lettuce1.ingredient5.position.y = t.lettuce152;
-            this.lettuce1.ingredient1.ingredientIsTouched = t.lettuce112isTouched;
-            this.lettuce1.ingredient2.ingredientIsTouched = t.lettuce122isTouched;
-            this.lettuce1.ingredient3.ingredientIsTouched = t.lettuce132isTouched;
-            this.lettuce1.ingredient4.ingredientIsTouched = t.lettuce142isTouched;
-            this.lettuce1.ingredient5.ingredientIsTouched = t.lettuce152isTouched;
+            this.lettuce1.ingredient1.position.y = t.lettuce1122;
+            this.lettuce1.ingredient2.position.y = t.lettuce1222;
+            this.lettuce1.ingredient3.position.y = t.lettuce1322;
+            this.lettuce1.ingredient4.position.y = t.lettuce1422;
+            this.lettuce1.ingredient5.position.y = t.lettuce1522;
+            this.lettuce1.ingredient1.ingredientIsTouched = t.lettuce1122isTouched;
+            this.lettuce1.ingredient2.ingredientIsTouched = t.lettuce1222isTouched;
+            this.lettuce1.ingredient3.ingredientIsTouched = t.lettuce1322isTouched;
+            this.lettuce1.ingredient4.ingredientIsTouched = t.lettuce1422isTouched;
+            this.lettuce1.ingredient5.ingredientIsTouched = t.lettuce1522isTouched;
             
-            this.lettuce2.ingredient1.position.y = t.lettuce212;
-            this.lettuce2.ingredient2.position.y = t.lettuce222;
-            this.lettuce2.ingredient3.position.y = t.lettuce232;
-            this.lettuce2.ingredient4.position.y = t.lettuce242;
-            this.lettuce2.ingredient5.position.y = t.lettuce252;
-            this.lettuce2.ingredient1.ingredientIsTouched = t.lettuce212isTouched;
-            this.lettuce2.ingredient2.ingredientIsTouched = t.lettuce222isTouched;
-            this.lettuce2.ingredient3.ingredientIsTouched = t.lettuce232isTouched;
-            this.lettuce2.ingredient4.ingredientIsTouched = t.lettuce242isTouched;
-            this.lettuce2.ingredient5.ingredientIsTouched = t.lettuce252isTouched;
+            this.lettuce2.ingredient1.position.y = t.lettuce2122;
+            this.lettuce2.ingredient2.position.y = t.lettuce2222;
+            this.lettuce2.ingredient3.position.y = t.lettuce2322;
+            this.lettuce2.ingredient4.position.y = t.lettuce2422;
+            this.lettuce2.ingredient5.position.y = t.lettuce2522;
+            this.lettuce2.ingredient1.ingredientIsTouched = t.lettuce2122isTouched;
+            this.lettuce2.ingredient2.ingredientIsTouched = t.lettuce2222isTouched;
+            this.lettuce2.ingredient3.ingredientIsTouched = t.lettuce2322isTouched;
+            this.lettuce2.ingredient4.ingredientIsTouched = t.lettuce2422isTouched;
+            this.lettuce2.ingredient5.ingredientIsTouched = t.lettuce2522isTouched;
             
-            this.lettuce3.ingredient1.position.y = t.lettuce312;
-            this.lettuce3.ingredient2.position.y = t.lettuce322;
-            this.lettuce3.ingredient3.position.y = t.lettuce332;
-            this.lettuce3.ingredient4.position.y = t.lettuce342;
-            this.lettuce3.ingredient5.position.y = t.lettuce352;
-            this.lettuce3.ingredient1.ingredientIsTouched = t.lettuce312isTouched;
-            this.lettuce3.ingredient2.ingredientIsTouched = t.lettuce322isTouched;
-            this.lettuce3.ingredient3.ingredientIsTouched = t.lettuce332isTouched;
-            this.lettuce3.ingredient4.ingredientIsTouched = t.lettuce342isTouched;
-            this.lettuce3.ingredient5.ingredientIsTouched = t.lettuce352isTouched;
+            this.lettuce3.ingredient1.position.y = t.lettuce3122;
+            this.lettuce3.ingredient2.position.y = t.lettuce3222;
+            this.lettuce3.ingredient3.position.y = t.lettuce3322;
+            this.lettuce3.ingredient4.position.y = t.lettuce3422;
+            this.lettuce3.ingredient5.position.y = t.lettuce3522;
+            this.lettuce3.ingredient1.ingredientIsTouched = t.lettuce3122isTouched;
+            this.lettuce3.ingredient2.ingredientIsTouched = t.lettuce3222isTouched;
+            this.lettuce3.ingredient3.ingredientIsTouched = t.lettuce3322isTouched;
+            this.lettuce3.ingredient4.ingredientIsTouched = t.lettuce3422isTouched;
+            this.lettuce3.ingredient5.ingredientIsTouched = t.lettuce3522isTouched;
             
-            this.lettuce4.ingredient1.position.y = t.lettuce412;
-            this.lettuce4.ingredient2.position.y = t.lettuce422;
-            this.lettuce4.ingredient3.position.y = t.lettuce432;
-            this.lettuce4.ingredient4.position.y = t.lettuce442;
-            this.lettuce4.ingredient5.position.y = t.lettuce452;
-            this.lettuce4.ingredient1.ingredientIsTouched = t.lettuce412isTouched;
-            this.lettuce4.ingredient2.ingredientIsTouched = t.lettuce422isTouched;
-            this.lettuce4.ingredient3.ingredientIsTouched = t.lettuce432isTouched;
-            this.lettuce4.ingredient4.ingredientIsTouched = t.lettuce442isTouched;
-            this.lettuce4.ingredient5.ingredientIsTouched = t.lettuce452isTouched;
+            this.lettuce4.ingredient1.position.y = t.lettuce4122;
+            this.lettuce4.ingredient2.position.y = t.lettuce4222;
+            this.lettuce4.ingredient3.position.y = t.lettuce4322;
+            this.lettuce4.ingredient4.position.y = t.lettuce4422;
+            this.lettuce4.ingredient5.position.y = t.lettuce4522;
+            this.lettuce4.ingredient1.ingredientIsTouched = t.lettuce4122isTouched;
+            this.lettuce4.ingredient2.ingredientIsTouched = t.lettuce4222isTouched;
+            this.lettuce4.ingredient3.ingredientIsTouched = t.lettuce4322isTouched;
+            this.lettuce4.ingredient4.ingredientIsTouched = t.lettuce4422isTouched;
+            this.lettuce4.ingredient5.ingredientIsTouched = t.lettuce4522isTouched;
             
             //Load burger
-            this.burger1.ingredient1.position.y = t.burger112;
-            this.burger1.ingredient2.position.y = t.burger122;
-            this.burger1.ingredient3.position.y = t.burger132;
-            this.burger1.ingredient4.position.y = t.burger142;
-            this.burger1.ingredient5.position.y = t.burger152;
-            this.burger1.ingredient1.ingredientIsTouched = t.burger112isTouched;
-            this.burger1.ingredient2.ingredientIsTouched = t.burger122isTouched;
-            this.burger1.ingredient3.ingredientIsTouched = t.burger132isTouched;
-            this.burger1.ingredient4.ingredientIsTouched = t.burger142isTouched;
-            this.burger1.ingredient5.ingredientIsTouched = t.burger152isTouched;
+            this.burger1.ingredient1.position.y = t.burger1122;
+            this.burger1.ingredient2.position.y = t.burger1222;
+            this.burger1.ingredient3.position.y = t.burger1322;
+            this.burger1.ingredient4.position.y = t.burger1422;
+            this.burger1.ingredient5.position.y = t.burger1522;
+            this.burger1.ingredient1.ingredientIsTouched = t.burger1122isTouched;
+            this.burger1.ingredient2.ingredientIsTouched = t.burger1222isTouched;
+            this.burger1.ingredient3.ingredientIsTouched = t.burger1322isTouched;
+            this.burger1.ingredient4.ingredientIsTouched = t.burger1422isTouched;
+            this.burger1.ingredient5.ingredientIsTouched = t.burger1522isTouched;
             
-            this.burger2.ingredient1.position.y = t.burger212;
-            this.burger2.ingredient2.position.y = t.burger222;
-            this.burger2.ingredient3.position.y = t.burger232;
-            this.burger2.ingredient4.position.y = t.burger242;
-            this.burger2.ingredient5.position.y = t.burger252;
-            this.burger2.ingredient1.ingredientIsTouched = t.burger212isTouched;
-            this.burger2.ingredient2.ingredientIsTouched = t.burger222isTouched;
-            this.burger2.ingredient3.ingredientIsTouched = t.burger232isTouched;
-            this.burger2.ingredient4.ingredientIsTouched = t.burger242isTouched;
-            this.burger2.ingredient5.ingredientIsTouched = t.burger252isTouched;
+            this.burger2.ingredient1.position.y = t.burger2122;
+            this.burger2.ingredient2.position.y = t.burger2222;
+            this.burger2.ingredient3.position.y = t.burger2322;
+            this.burger2.ingredient4.position.y = t.burger2422;
+            this.burger2.ingredient5.position.y = t.burger2522;
+            this.burger2.ingredient1.ingredientIsTouched = t.burger2122isTouched;
+            this.burger2.ingredient2.ingredientIsTouched = t.burger2222isTouched;
+            this.burger2.ingredient3.ingredientIsTouched = t.burger2322isTouched;
+            this.burger2.ingredient4.ingredientIsTouched = t.burger2422isTouched;
+            this.burger2.ingredient5.ingredientIsTouched = t.burger2522isTouched;
             
-            this.burger3.ingredient1.position.y = t.burger312;
-            this.burger3.ingredient2.position.y = t.burger322;
-            this.burger3.ingredient3.position.y = t.burger332;
-            this.burger3.ingredient4.position.y = t.burger342;
-            this.burger3.ingredient5.position.y = t.burger352;
-            this.burger3.ingredient1.ingredientIsTouched = t.burger312isTouched;
-            this.burger3.ingredient2.ingredientIsTouched = t.burger322isTouched;
-            this.burger3.ingredient3.ingredientIsTouched = t.burger332isTouched;
-            this.burger3.ingredient4.ingredientIsTouched = t.burger342isTouched;
-            this.burger3.ingredient5.ingredientIsTouched = t.burger352isTouched;
+            this.burger3.ingredient1.position.y = t.burger3122;
+            this.burger3.ingredient2.position.y = t.burger3222;
+            this.burger3.ingredient3.position.y = t.burger3322;
+            this.burger3.ingredient4.position.y = t.burger3422;
+            this.burger3.ingredient5.position.y = t.burger3522;
+            this.burger3.ingredient1.ingredientIsTouched = t.burger3122isTouched;
+            this.burger3.ingredient2.ingredientIsTouched = t.burger3222isTouched;
+            this.burger3.ingredient3.ingredientIsTouched = t.burger3322isTouched;
+            this.burger3.ingredient4.ingredientIsTouched = t.burger3422isTouched;
+            this.burger3.ingredient5.ingredientIsTouched = t.burger3522isTouched;
             
-            this.burger4.ingredient1.position.y = t.burger412;
-            this.burger4.ingredient2.position.y = t.burger422;
-            this.burger4.ingredient3.position.y = t.burger432;
-            this.burger4.ingredient4.position.y = t.burger442;
-            this.burger4.ingredient5.position.y = t.burger452;
-            this.burger4.ingredient1.ingredientIsTouched = t.burger412isTouched;
-            this.burger4.ingredient2.ingredientIsTouched = t.burger422isTouched;
-            this.burger4.ingredient3.ingredientIsTouched = t.burger432isTouched;
-            this.burger4.ingredient4.ingredientIsTouched = t.burger442isTouched;
-            this.burger4.ingredient5.ingredientIsTouched = t.burger452isTouched;
+            this.burger4.ingredient1.position.y = t.burger4122;
+            this.burger4.ingredient2.position.y = t.burger4222;
+            this.burger4.ingredient3.position.y = t.burger4322;
+            this.burger4.ingredient4.position.y = t.burger4422;
+            this.burger4.ingredient5.position.y = t.burger4522;
+            this.burger4.ingredient1.ingredientIsTouched = t.burger4122isTouched;
+            this.burger4.ingredient2.ingredientIsTouched = t.burger4222isTouched;
+            this.burger4.ingredient3.ingredientIsTouched = t.burger4322isTouched;
+            this.burger4.ingredient4.ingredientIsTouched = t.burger4422isTouched;
+            this.burger4.ingredient5.ingredientIsTouched = t.burger4522isTouched;
             
             //Load downBread
-            this.downBread1.ingredient1.position.y = t.downBread112;
-            this.downBread1.ingredient2.position.y = t.downBread122;
-            this.downBread1.ingredient3.position.y = t.downBread132;
-            this.downBread1.ingredient4.position.y = t.downBread142;
-            this.downBread1.ingredient5.position.y = t.downBread152;
-            this.downBread1.ingredient1.ingredientIsTouched = t.downBread11;
-            this.downBread1.ingredient2.ingredientIsTouched = t.downBread12;
-            this.downBread1.ingredient3.ingredientIsTouched = t.downBread13;
-            this.downBread1.ingredient4.ingredientIsTouched = t.downBread14;
-            this.downBread1.ingredient5.ingredientIsTouched = t.downBread15;
+            this.downBread1.ingredient1.position.y = t.downBread1122;
+            this.downBread1.ingredient2.position.y = t.downBread1222;
+            this.downBread1.ingredient3.position.y = t.downBread1322;
+            this.downBread1.ingredient4.position.y = t.downBread1422;
+            this.downBread1.ingredient5.position.y = t.downBread1522;
+            this.downBread1.ingredient1.ingredientIsTouched = t.downBread1122isTouched;
+            this.downBread1.ingredient2.ingredientIsTouched = t.downBread1222isTouched;
+            this.downBread1.ingredient3.ingredientIsTouched = t.downBread1322isTouched;
+            this.downBread1.ingredient4.ingredientIsTouched = t.downBread1422isTouched;
+            this.downBread1.ingredient5.ingredientIsTouched = t.downBread1522isTouched;
             
-            this.downBread2.ingredient1.position.y = t.downBread212;
-            this.downBread2.ingredient2.position.y = t.downBread222;
-            this.downBread2.ingredient3.position.y = t.downBread232;
-            this.downBread2.ingredient4.position.y = t.downBread242;
-            this.downBread2.ingredient5.position.y = t.downBread252;
-            this.downBread2.ingredient1.ingredientIsTouched = t.downBread212isTouched;
-            this.downBread2.ingredient2.ingredientIsTouched = t.downBread222isTouched;
-            this.downBread2.ingredient3.ingredientIsTouched = t.downBread232isTouched;
-            this.downBread2.ingredient4.ingredientIsTouched = t.downBread242isTouched;
-            this.downBread2.ingredient5.ingredientIsTouched = t.downBread252isTouched;
+            this.downBread2.ingredient1.position.y = t.downBread2122;
+            this.downBread2.ingredient2.position.y = t.downBread2222;
+            this.downBread2.ingredient3.position.y = t.downBread2322;
+            this.downBread2.ingredient4.position.y = t.downBread2422;
+            this.downBread2.ingredient5.position.y = t.downBread2522;
+            this.downBread2.ingredient1.ingredientIsTouched = t.downBread2122isTouched;
+            this.downBread2.ingredient2.ingredientIsTouched = t.downBread2222isTouched;
+            this.downBread2.ingredient3.ingredientIsTouched = t.downBread2322isTouched;
+            this.downBread2.ingredient4.ingredientIsTouched = t.downBread2422isTouched;
+            this.downBread2.ingredient5.ingredientIsTouched = t.downBread2522isTouched;
             
-            this.downBread3.ingredient1.position.y = t.downBread312;
-            this.downBread3.ingredient2.position.y = t.downBread322;
-            this.downBread3.ingredient3.position.y = t.downBread332;
-            this.downBread3.ingredient4.position.y = t.downBread342;
-            this.downBread3.ingredient5.position.y = t.downBread352;
-            this.downBread3.ingredient1.ingredientIsTouched = t.downBread312isTouched;
-            this.downBread3.ingredient2.ingredientIsTouched = t.downBread322isTouched;
-            this.downBread3.ingredient3.ingredientIsTouched = t.downBread332isTouched;
-            this.downBread3.ingredient4.ingredientIsTouched = t.downBread342isTouched;
-            this.downBread3.ingredient5.ingredientIsTouched = t.downBread352isTouched;
+            this.downBread3.ingredient1.position.y = t.downBread3122;
+            this.downBread3.ingredient2.position.y = t.downBread3222;
+            this.downBread3.ingredient3.position.y = t.downBread3322;
+            this.downBread3.ingredient4.position.y = t.downBread3422;
+            this.downBread3.ingredient5.position.y = t.downBread3522;
+            this.downBread3.ingredient1.ingredientIsTouched = t.downBread3122isTouched;
+            this.downBread3.ingredient2.ingredientIsTouched = t.downBread3222isTouched;
+            this.downBread3.ingredient3.ingredientIsTouched = t.downBread3322isTouched;
+            this.downBread3.ingredient4.ingredientIsTouched = t.downBread3422isTouched;
+            this.downBread3.ingredient5.ingredientIsTouched = t.downBread3522isTouched;
             
-            this.downBread4.ingredient1.position.y = t.downBread412;
-            this.downBread4.ingredient2.position.y = t.downBread422;
-            this.downBread4.ingredient3.position.y = t.downBread432;
-            this.downBread4.ingredient4.position.y = t.downBread442;
-            this.downBread4.ingredient5.position.y = t.downBread452;
-            this.downBread4.ingredient1.ingredientIsTouched = t.downBread412isTouched;
-            this.downBread4.ingredient2.ingredientIsTouched = t.downBread422isTouched;
-            this.downBread4.ingredient3.ingredientIsTouched = t.downBread432isTouched;
-            this.downBread4.ingredient4.ingredientIsTouched = t.downBread442isTouched;
-            this.downBread4.ingredient5.ingredientIsTouched = t.downBread452isTouched;
+            this.downBread4.ingredient1.position.y = t.downBread4122;
+            this.downBread4.ingredient2.position.y = t.downBread4222;
+            this.downBread4.ingredient3.position.y = t.downBread4322;
+            this.downBread4.ingredient4.position.y = t.downBread4422;
+            this.downBread4.ingredient5.position.y = t.downBread4522;
+            this.downBread4.ingredient1.ingredientIsTouched = t.downBread4122isTouched;
+            this.downBread4.ingredient2.ingredientIsTouched = t.downBread4222isTouched;
+            this.downBread4.ingredient3.ingredientIsTouched = t.downBread4322isTouched;
+            this.downBread4.ingredient4.ingredientIsTouched = t.downBread4422isTouched;
+            this.downBread4.ingredient5.ingredientIsTouched = t.downBread4522isTouched;
         }
-    },
     },
     lessLive:function(){
         this.chef.lives--;
+    },
+    loadPeppers:function(){
+        this.peppers = this.add.group();
+        this.peppers.enableBody = true;
+    },
+    enableEnemyStairs:function(_enemy){
+        _enemy.canChangeDirec = true;
     },
     render:function(){
         //this.powerUp.body.setSize(22, 28, 20, 16);

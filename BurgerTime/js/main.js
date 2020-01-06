@@ -15,8 +15,12 @@ var gameOptions={
     heroSpeed:200,
     heroJump:450,
     firstTime:1,
-    levelPlayer1: '',
-    levelPlayer2: '',
+    firstTime21: 1,
+    firstTime22: 1,
+    firstTime31: 1,
+    firstTime32: 1,
+    levelPlayer1: 'level1Multi1',
+    levelPlayer2: 'level1Multi2',
     level1Multi3Completed: false,
     level2Multi3Completed: false
 }
@@ -32,5 +36,9 @@ burgertime.game.state.add('menu',burgertime.menu);
 burgertime.game.state.add('access_screen',burgertime.access_screen);
 burgertime.game.state.add('level1Multi1',burgertime.level1Multi1);
 burgertime.game.state.add('level1Multi2',burgertime.level1Multi2);
-burgertime.game.state.start('level1');
+burgertime.game.state.add('level2Multi1',burgertime.level2Multi1);
+burgertime.game.state.add('level2Multi2',burgertime.level2Multi2);
+burgertime.game.state.add('level3Multi1',burgertime.level3Multi1);
+burgertime.game.state.add('level3Multi2',burgertime.level3Multi2);
+burgertime.game.state.start('access_screen');
 

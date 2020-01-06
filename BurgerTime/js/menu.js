@@ -21,6 +21,15 @@ burgertime.menu ={
         //this.space.onDown.add(function(){this.nextLevel();},this);
         var test = { 'gameScore': "0" };
         localStorage.setItem('gameS', JSON.stringify(test));
+        gameOptions.firstTime = 1;
+        gameOptions.firstTime21 = 1;
+        gameOptions.firstTime22 = 1;
+        gameOptions.firstTime31 = 1;
+        gameOptions.firstTime32 = 1;
+        gameOptions.levelPlayer1 = 'level1Multi1';
+        gameOptions.levelPlayer2 = 'level2Multi1';
+        gameOptions.level3Multi1Completed = false;
+        gameOptions.level3Multi2Completed = false;
     },
     create:function(){
         this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
