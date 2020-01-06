@@ -171,17 +171,17 @@ burgertime.level1 ={
         this.stair10 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*17,gameOptions.level1Height/35*5,gameOptions.level1Height/35*9,'TileTransparente');
         this.stair11 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*17,gameOptions.level1Height/35*17.5,gameOptions.level1Height/35*7.5,'TileTransparente');
         
-        this.changeDir1 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*1+30,gameOptions.level1Height/35*4,gameOptions.level1Height/35*5,'TileBlanca');
-        this.changeDir3 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*1+30,gameOptions.level1Height/35*12,gameOptions.level1Height/35*12,'TileBlanca');
-        this.changeDir6 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*3+30,gameOptions.level1Height/35*8,gameOptions.level1Height/35*11,'TileBlanca');
-        this.changeDir9 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*5+30,gameOptions.level1Height/35*4,gameOptions.level1Height/35*20,'TileBlanca');
-        this.changeDir14 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*7+30,gameOptions.level1Height/35*4,gameOptions.level1Height/35*7,'TileBlanca');
-        this.changeDir16 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*9+30,gameOptions.level1Height/35*4,gameOptions.level1Height/35*20,'TileBlanca');
-        this.changeDir20 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*11+30,gameOptions.level1Height/35*8,gameOptions.level1Height/35*7,'TileBlanca');
-        this.changeDir22 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*13+30,gameOptions.level1Height/35*4,gameOptions.level1Height/35*20,'TileBlanca');
-        this.changeDir27 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*15+30,gameOptions.level1Height/35*12.5,gameOptions.level1Height/35*11.5,'TileBlanca');
-        this.changeDir30 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*17+30,gameOptions.level1Height/35*4,gameOptions.level1Height/35*9,'TileBlanca');
-        this.changeDir33 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*17+30,gameOptions.level1Height/35*16.5,gameOptions.level1Height/35*7.5,'TileBlanca');
+        this.changeDir1 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*1+30,gameOptions.level1Height/35*4,gameOptions.level1Height/35*5,'TileTransparente');
+        this.changeDir3 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*1+30,gameOptions.level1Height/35*12,gameOptions.level1Height/35*12,'TileTransparente');
+        this.changeDir6 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*3+30,gameOptions.level1Height/35*8,gameOptions.level1Height/35*11,'TileTransparente');
+        this.changeDir9 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*5+30,gameOptions.level1Height/35*4,gameOptions.level1Height/35*20,'TileTransparente');
+        this.changeDir14 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*7+30,gameOptions.level1Height/35*4,gameOptions.level1Height/35*7,'TileTransparente');
+        this.changeDir16 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*9+30,gameOptions.level1Height/35*4,gameOptions.level1Height/35*20,'TileTransparente');
+        this.changeDir20 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*11+30,gameOptions.level1Height/35*8,gameOptions.level1Height/35*7,'TileTransparente');
+        this.changeDir22 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*13+30,gameOptions.level1Height/35*4,gameOptions.level1Height/35*20,'TileTransparente');
+        this.changeDir27 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*15+30,gameOptions.level1Height/35*12.5,gameOptions.level1Height/35*11.5,'TileTransparente');
+        this.changeDir30 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*17+30,gameOptions.level1Height/35*4,gameOptions.level1Height/35*9,'TileTransparente');
+        this.changeDir33 = new burgertime.direcChanger(this.game,gameOptions.level1Width/19*17+30,gameOptions.level1Height/35*16.5,gameOptions.level1Height/35*7.5,'TileTransparente');
         
         this.upBread1 = new burgertime.ingredient_prefab(this.game,75+60, 120+145,'BreadUp1','BreadUp2','BreadUp3', this.chef,this);
         this.upBread2 = new burgertime.ingredient_prefab(this.game,315+60,0+145,'BreadUp1','BreadUp2','BreadUp3', this.chef,this);
@@ -281,7 +281,6 @@ burgertime.level1 ={
         }
         
         //this.game.physics.arcade.collide(this.chef,this.stairs,this.stairTouch, null, this);
-        this.game.physics.arcade.collide(this.chef,this.floor,this.platformTouch, null, this);
         this.game.physics.arcade.collide(this.chef,this.floor,this.platformTouch, null, this);
         this.game.physics.arcade.collide(this.chef, this.collisionMap);
         
@@ -411,7 +410,6 @@ burgertime.level1 ={
         if((this.salchicha2Overlaps) && ((this.salchicha2.y - this.chef.y <= -120) || (this.salchicha2.y - this.chef.y >= 40))) // Enemigo en una escalera y fuera de la altura del player
            {
                     this.salchicha2.goStairs();
-                    console.log('SSSSSS');
            } 
         
         
@@ -581,7 +579,7 @@ burgertime.level1 ={
         
         if(this.espacio.downDuration(1)){        // Lanzamiento de Pimienta
             
-          if(this.chef.pepper > 0) {
+          if(this.chef.pepper > 0 && this.chef.dead == false) {
                 this.chef.canMove = false;
               
                 if(this.chef.lastMove == 'U') { 
@@ -644,22 +642,6 @@ burgertime.level1 ={
                     this.chef.body.enable = true;
                     this.chef.position.x = this.game.world.centerX+150;
                     this.chef.position.y = this.game.world.centerX+100;
-                    //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-                    
-                    //this.salchicha = new burgertime.enemy_prefab(this.game,this.game.world.centerX - 70,this.game.world.centerY,gameOptions.heroSpeed-100,gameOptions.heroSpeed-50,this);
-                    this.salchicha.recolocate();
-                    this.salchicha.body.allowGravity = false;
-                    
-                    //this.salchicha2 = new burgertime.enemy_prefab(this.game,50,146,gameOptions.heroSpeed-100,gameOptions.heroSpeed-50,this);
-                    this.salchicha2.recolocate();
-                    this.salchicha2.body.allowGravity = false;
-                    
-                    //this.salchicha3 = new burgertime.enemy_prefab(this.game,gameOptions.level1Width-60,508,gameOptions.heroSpeed-100,gameOptions.heroSpeed-50,this);
-                    this.salchicha3.recolocate();
-                    this.salchicha3.body.allowGravity = false;
-                    
-                    //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-                    
                     this.chef.dead = false;
                     this.chef.doOnce = false;
                 }

@@ -30,5 +30,5 @@ burgertime.game.state.add('menu',burgertime.menu);
 burgertime.game.state.add('access_screen',burgertime.access_screen);
 burgertime.game.state.add('level1Multi1',burgertime.level1Multi1);
 burgertime.game.state.add('level1Multi2',burgertime.level1Multi2);
-burgertime.game.state.start('access_screen');
+burgertime.game.state.start('level3');
 
