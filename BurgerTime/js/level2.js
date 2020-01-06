@@ -109,11 +109,13 @@ burgertime.level2 ={
         this.floor = this.map.createLayer('Floor');
         this.map.setCollisionBetween(3,3,true,'Floor');
         
+        this.collisionMap = this.map.createLayer('Collisions');
+        this.map.setCollisionBetween(6,6,true,'Collisions');
+        
         this.stairs = this.map.createLayer('Stairs');
         this.map.setCollisionBetween(4,5,true,'Stairs');
         
         this.background = this.map.createLayer('Background');
-        this.map.setCollisionBetween(6,6,true,'Background');
         
         this.chef = new burgertime.chef_prefab(this.game,this.game.world.centerX+150,this.game.world.centerY + 100,gameOptions.heroSpeed,gameOptions.heroSpeed,this);
         this.chef.frame = 7;
@@ -137,16 +139,16 @@ burgertime.level2 ={
         
         this.collideStairs = this.game.time.events.add(Phaser.Timer.SECOND*2,this.activateStairs,this);
         
-        this.stair1 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*0,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*10,'TileTransparente');
-        this.stair2 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*2,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*10,'TileTransparente');
-        this.stair3 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*4,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*10,'TileTransparente');
-        this.stair4 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*6,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*18,'TileTransparente');
-        this.stair5 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*8,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*22.5,'TileTransparente');
-        this.stair6 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*10,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*18,'TileTransparente');
-        this.stair7 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*12,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*10,'TileTransparente');
-        this.stair8 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*14,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*10,'TileTransparente');
-        this.stair9 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*16,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*10,'TileTransparente');
-        this.stair10 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*18,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*10,'TileTransparente');
+        this.stair1 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*1,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*10,'TileTransparente');
+        this.stair2 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*3,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*10,'TileTransparente');
+        this.stair3 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*5,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*10,'TileTransparente');
+        this.stair4 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*7,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*18,'TileTransparente');
+        this.stair5 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*9,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*22.5,'TileTransparente');
+        this.stair6 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*11,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*18,'TileTransparente');
+        this.stair7 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*13,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*10,'TileTransparente');
+        this.stair8 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*15,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*10,'TileTransparente');
+        this.stair9 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*17,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*10,'TileTransparente');
+        this.stair10 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*19,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*10,'TileTransparente');
         this.stair11 = new burgertime.stairBox_prefab(this.game,gameOptions.level1Width/19*30,gameOptions.level1Height/35*4.5,gameOptions.level1Height/35*7.5,'TileTransparente');
         
         
@@ -160,42 +162,42 @@ burgertime.level2 ={
         
         this.timerStairs = this.game.time.events.loop(Phaser.Timer.SECOND,this.activateStairs,this);
         
-        this.upBread1 = new burgertime.ingredient_prefab(this.game,75, 145,'BreadUp1','BreadUp2','BreadUp3', this.chef,this);
-        this.upBread2 = new burgertime.ingredient_prefab(this.game,315,0+145,'BreadUp1','BreadUp2','BreadUp3', this.chef,this);
-        this.upBread3 = new burgertime.ingredient_prefab(this.game,555,0+145,'BreadUp1','BreadUp2','BreadUp3', this.chef,this);
-        this.upBread4 = new burgertime.ingredient_prefab(this.game,800,0+145,'BreadUp1','BreadUp2','BreadUp3', this.chef,this);
+        this.upBread1 = new burgertime.ingredient_prefab(this.game,75+60, 145,'BreadUp1','BreadUp2','BreadUp3', this.chef,this);
+        this.upBread2 = new burgertime.ingredient_prefab(this.game,315+60,0+145,'BreadUp1','BreadUp2','BreadUp3', this.chef,this);
+        this.upBread3 = new burgertime.ingredient_prefab(this.game,555+60,0+145,'BreadUp1','BreadUp2','BreadUp3', this.chef,this);
+        this.upBread4 = new burgertime.ingredient_prefab(this.game,800+60,0+145,'BreadUp1','BreadUp2','BreadUp3', this.chef,this);
         
-        this.lettuce1 = new burgertime.ingredient_prefab(this.game,75, 60+145,'Lettuce1','Lettuce2','Lettuce3', this.chef,this);
-        this.lettuce2 = new burgertime.ingredient_prefab(this.game,315,60+145,'Lettuce1','Lettuce2','Lettuce3', this.chef,this);
-        this.lettuce3 = new burgertime.ingredient_prefab(this.game,555,300+145,'Lettuce1','Lettuce2','Lettuce3', this.chef,this);
-        this.lettuce4 = new burgertime.ingredient_prefab(this.game,800,120+145,'Lettuce1','Lettuce2','Lettuce3', this.chef,this);
+        this.lettuce1 = new burgertime.ingredient_prefab(this.game,75+60, 60+145,'Lettuce1','Lettuce2','Lettuce3', this.chef,this);
+        this.lettuce2 = new burgertime.ingredient_prefab(this.game,315+60,60+145,'Lettuce1','Lettuce2','Lettuce3', this.chef,this);
+        this.lettuce3 = new burgertime.ingredient_prefab(this.game,555+60,300+145,'Lettuce1','Lettuce2','Lettuce3', this.chef,this);
+        this.lettuce4 = new burgertime.ingredient_prefab(this.game,800+60,120+145,'Lettuce1','Lettuce2','Lettuce3', this.chef,this);
         
-        this.burger1 = new burgertime.ingredient_prefab(this.game,75, 120+145,'Cheese1','Cheese2','Cheese3', this.chef,this);
-        this.burger2 = new burgertime.ingredient_prefab(this.game,315,180+145,'Cheese1','Cheese2','Cheese3', this.chef,this);
-        this.burger3 = new burgertime.ingredient_prefab(this.game,555,420+145,'Cheese1','Cheese2','Cheese3', this.chef,this);
-        this.burger4 = new burgertime.ingredient_prefab(this.game,800,180+145,'Cheese1','Cheese2','Cheese3', this.chef,this);
+        this.burger1 = new burgertime.ingredient_prefab(this.game,75+60, 120+145,'Cheese1','Cheese2','Cheese3', this.chef,this);
+        this.burger2 = new burgertime.ingredient_prefab(this.game,315+60,180+145,'Cheese1','Cheese2','Cheese3', this.chef,this);
+        this.burger3 = new burgertime.ingredient_prefab(this.game,555+60,420+145,'Cheese1','Cheese2','Cheese3', this.chef,this);
+        this.burger4 = new burgertime.ingredient_prefab(this.game,800+60,180+145,'Cheese1','Cheese2','Cheese3', this.chef,this);
         
-        this.downBread1 = new burgertime.ingredient_prefab(this.game,75, 240+145,'BreadDown1','BreadDown2','BreadDown3', this.chef,this);
-        this.downBread2 = new burgertime.ingredient_prefab(this.game,315,480+145,'BreadDown1','BreadDown2','BreadDown3', this.chef,this);
-        this.downBread3 = new burgertime.ingredient_prefab(this.game,555,480+145,'BreadDown1','BreadDown2','BreadDown3', this.chef,this);
-        this.downBread4 = new burgertime.ingredient_prefab(this.game,800,240+145,'BreadDown1','BreadDown2','BreadDown3', this.chef,this);
+        this.downBread1 = new burgertime.ingredient_prefab(this.game,75+60, 240+145,'BreadDown1','BreadDown2','BreadDown3', this.chef,this);
+        this.downBread2 = new burgertime.ingredient_prefab(this.game,315+60,480+145,'BreadDown1','BreadDown2','BreadDown3', this.chef,this);
+        this.downBread3 = new burgertime.ingredient_prefab(this.game,555+60,480+145,'BreadDown1','BreadDown2','BreadDown3', this.chef,this);
+        this.downBread4 = new burgertime.ingredient_prefab(this.game,800+60,240+145,'BreadDown1','BreadDown2','BreadDown3', this.chef,this);
         
-        this.bandeja1 = this.game.add.sprite(125-60,900,'Bandeja',0);
+        this.bandeja1 = this.game.add.sprite(125,900,'Bandeja',0);
         this.game.physics.arcade.enable(this.bandeja1);
         this.bandeja1.body.allowGravity = false;
         this.bandeja1.body.immovable = true;
         
-        this.bandeja2 = this.game.add.sprite(365-60,900,'Bandeja',0);
+        this.bandeja2 = this.game.add.sprite(365,900,'Bandeja',0);
         this.game.physics.arcade.enable(this.bandeja2);
         this.bandeja2.body.allowGravity = false;
         this.bandeja2.body.immovable = true;
         
-        this.bandeja3 = this.game.add.sprite(605-60,900,'Bandeja',0);
+        this.bandeja3 = this.game.add.sprite(605,900,'Bandeja',0);
         this.game.physics.arcade.enable(this.bandeja3);
         this.bandeja3.body.allowGravity = false;
         this.bandeja3.body.immovable = true;
         
-        this.bandeja4 = this.game.add.sprite(845-60,900,'Bandeja',0);
+        this.bandeja4 = this.game.add.sprite(845,900,'Bandeja',0);
         this.game.physics.arcade.enable(this.bandeja4);
         this.bandeja4.body.allowGravity = false;
         this.bandeja4.body.immovable = true;
