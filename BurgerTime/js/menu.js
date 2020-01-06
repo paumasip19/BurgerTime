@@ -27,7 +27,7 @@ burgertime.menu ={
         gameOptions.firstTime31 = 1;
         gameOptions.firstTime32 = 1;
         gameOptions.levelPlayer1 = 'level1Multi1';
-        gameOptions.levelPlayer2 = 'level2Multi1';
+        gameOptions.levelPlayer2 = 'level1Multi2';
         gameOptions.level3Multi1Completed = false;
         gameOptions.level3Multi2Completed = false;
     },

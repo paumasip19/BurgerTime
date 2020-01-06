@@ -654,7 +654,7 @@ burgertime.level2Multi1 ={
             var w = this.saveData();
             this.levelCompleted = false;
             //next level
-            this.state.start('level1Multi3');
+            this.state.start('level3Multi1');
         }
         
         if(this.enemies != 3){
